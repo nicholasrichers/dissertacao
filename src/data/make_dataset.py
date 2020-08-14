@@ -4,30 +4,34 @@
 import pandas as pd
 import numpy as np
 
-def get_data(nrows=None, low_memory=False):
+def get_data(nrows=None, low_memory=False, dataset="training"):
+
+
+    #GET PATH
+    if dataset=="training":
+        data_path = '../../data/raw/numerai_training_data.csv'
+
+    else:
+        data_path = "https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_tournament_data.csv.xz"
 
 
     #DOWNLOAD DATAFRAME
-    data_path = '../../data/raw/numerai_training_data.csv'
     df = pd.read_csv(data_path, nrows=nrows)
-
-    #Era column in numbers
-    df['era'] = df.loc[:, 'era'].str[3:].astype('int32')
-
-
     if low_memory == True:
         print("low memory activated")
         df = reduce_mem_usage(df, verbose=True)
 
     
-    print(df.info())
     #COLUMN NAMES
     X = [c for c in df if c.startswith("feature")]
     y = "target_kazutsugi"
 
     #PRINT MEMORY USAGE
-    #print(df.info())
+    print(df.info())
     return df, X, y
+
+
+
 
 
 def reduce_mem_usage(df, verbose=True):
@@ -58,7 +62,7 @@ def reduce_mem_usage(df, verbose=True):
     end_mem = df.memory_usage().sum() / 1024**2
     print('Memory usage after optimization is: {:.2f} MB'.format(end_mem))
     print('Decreased by {:.1f}%'.format(100 * (start_mem - end_mem) / start_mem))
-    df.to_csv('../../data/interim/numerai_training_data_low_memory.csv')
+    #df.to_csv('../../data/interim/numerai_training_data_low_memory.csv')
 
     return df
 
