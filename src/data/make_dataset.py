@@ -9,7 +9,7 @@ def get_data(nrows=None, low_memory=False, dataset="training"):
 
     #GET PATH
     if dataset=="training":
-        data_path = '../../data/raw/numerai_training_data.csv'
+        data_path = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_training_data.csv.xz'
 
     else:
         data_path = "https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_tournament_data.csv.xz"
