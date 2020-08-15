@@ -1,10 +1,12 @@
 import numpy as np
-from model import build_tuned_model, build_tuned_model_skopt
+from src.models.train_model import build_tuned_model, build_tuned_model_skopt
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.pipeline import make_pipeline
 
-def evaluate_model(features, target, name, model, param_grid, scorer, n_iter=10, cv_folds=5, pipeline=None):
+def evaluate_model(features, target, model, name, param_grid, scorer, n_iter=10, cv_folds=5, pipeline=None):
+  if pipeline is None: pipeline = make_pipeline('passthrough')
   tuned_model = build_tuned_model(name, model, features, target, param_grid, scorer, n_iter=n_iter, cv_folds=cv_folds, pipeline=pipeline)
   results = tuned_model.results
   best_result = results.query('rank_test_score == 1')
@@ -14,7 +16,8 @@ def evaluate_model(features, target, name, model, param_grid, scorer, n_iter=10,
 
 
 
-def evaluate_model_skopt(features, target, name, model, param_grid, scorer, n_iter=10, cv_folds=5, pipeline=None):
+def evaluate_model_skopt(features, target, model, name, param_grid, scorer, n_iter=10, cv_folds=5, pipeline=None):
+  if pipeline is None: pipeline = make_pipeline('passthrough')
   tuned_model = build_tuned_model_skopt(name, model, features, target, param_grid, scorer, n_iter=n_iter, cv_folds=cv_folds, pipeline=pipeline)
   results = tuned_model.results
   best_result = results.query('rank_test_score == 1')
@@ -227,7 +230,8 @@ def plot_calibration_curve(model, X_train, X_test, y_train, y_test, plot_=True):
 
 
 def get_cv_scores(model):
-  test_score_cols = ['split0_test_score', 'split1_test_score', 'split2_test_score', 'split3_test_score', 'split4_test_score']
+  #test_score_cols = ['split0_test_score', 'split1_test_score', 'split2_test_score', 'split3_test_score', 'split4_test_score']
+  test_score_cols =[c for c in model.results.columns if c.endswith("_test_score")]
   test_scores = model.results.sort_values('mean_test_score', ascending=False).head(1)[test_score_cols].values[0]
   return test_scores
 

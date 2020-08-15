@@ -26,6 +26,8 @@ def get_data(nrows=None, low_memory=False, dataset="training"):
     X = [c for c in df if c.startswith("feature")]
     y = "target_kazutsugi"
 
+    df['era'] = df.loc[:, 'era'].str[3:].astype('int32')
+
     #PRINT MEMORY USAGE
     print(df.info())
     return df, X, y

@@ -5,6 +5,8 @@ from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.calibration import CalibratedClassifierCV
 
+
+
 def build_tuned_model(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_folds, pipeline):
   from time import time
   start = time()
@@ -141,6 +143,7 @@ class Model(object):
     
     if self.pipeline is None:
       score = cross_val_score(self.model, X, y, scoring=scorer, cv=self.cv_folds, n_jobs=-1)
+      
     else:
       score = scorer(self.model_pipeline, X, y)
       
