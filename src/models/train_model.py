@@ -57,10 +57,10 @@ class Model(object):
     """ Fits the model and builds the full pipeline """
     if self.pipeline is None:
       X_transformed = X
-      self.pipeline = make_pipeline(self.model)
+      self.model_pipeline = make_pipeline(self.model)
     else:
       X_transformed = self.pipeline.fit_transform(X)
-      self.pipeline = make_pipeline(self.pipeline, self.model)
+      self.model_pipeline = make_pipeline(self.pipeline, self.model)
       
     self.model.fit(X_transformed, y)
     
@@ -91,7 +91,7 @@ class Model(object):
     # else:
     #   X_transformed = self.pipeline.fit_transform(X)
       
-    preds = self.pipeline.predict(X)
+    preds = self.model_pipeline.predict(X)
     
     return preds
 
@@ -114,8 +114,8 @@ class Model(object):
       model.predictions = self.model.predict(X)
       score = scorer(self.model, X, y)
     else:
-      model_predictions = self.pipeline.predict(X)
-      score = scorer(self.pipeline, X, y)
+      model_predictions = self.model_pipeline.predict(X)
+      score = scorer(self.model_pipeline, X, y)
 
     return score
 
@@ -143,9 +143,9 @@ class Model(object):
     
     if self.pipeline is None:
       score = cross_val_score(self.model, X, y, scoring=scorer, cv=self.cv_folds, n_jobs=-1)
-
+      
     else:
-      score = scorer(self.pipeline, X, y)
+      score = scorer(self.model_pipeline, X, y)
       
     return (score.mean(), score.std())
 
