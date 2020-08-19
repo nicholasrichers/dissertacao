@@ -70,3 +70,74 @@ def reduce_mem_usage(df, verbose=True):
 
 #training_data = reduce_mem_usage(pd.read_csv("https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_training_data.csv.xz"))
 #training_data.head()
+
+
+########
+
+import pandas as pd
+import numpy as np
+from joblib import dump, load
+import pyarrow.feather as feather
+
+
+def create_dtype():
+	#download Numerai training data and load as a pandas dataframe
+	TRAINING_DATAPATH = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_training_data.csv.xz'
+	df = pd.read_csv(TRAINING_DATAPATH, nrows=100) ## se der erro tira o nrows
+
+	#create a list of the feature columns
+	features = [c for c in df if c.startswith("feature")]
+
+	#create a list of the column names
+	col_list = ["id", "era", "data_type"]
+	col_list = col_list + features + ["target_kazutsugi"]
+
+	#create a list of corresponding data types to match the column name list
+	dtype_list_back = [np.float32] * 311
+	dtype_list_front = [str, str, str]
+	dtype_list = dtype_list_front + dtype_list_back
+
+	#use Python's zip function to combine the column name list and the data type list
+	dtype_zip = zip(col_list, dtype_list)
+
+	#convert the combined list to a dictionary to conform to pandas convention
+	dtype_dict = dict(dtype_zip)
+
+	#save the dictionary as a joblib file for future use
+	dump(dtype_dict, 'dtype_dict.joblib')
+	return dtype_dict
+
+
+#####
+
+
+def feather_df(Data_type="train"):
+
+	#load dictionary to import data in specific data types
+	dtype_dict = create_dtype
+
+
+	if Data_type == "train":
+		FILE_URL  = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_training_data.csv.xz'
+		FILE_NAME = 'training_compressed.feather'
+
+	else: 
+		FILE_URL  = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_tournament_data.csv.xz'
+		FILE_NAME = 'tournament_compressed.feather'
+
+
+	#download Numerai training data and load as a pandas dataframe
+	df = pd.read_csv(FILE_URL, dtype=dtype_dict)
+
+	#download Numerai tournament data and load as a pandas dataframe
+	TOURNAMENT_DATAPATH = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_tournament_data.csv.xz'
+	#df_tournament = pd.read_csv(TOURNAMENT_DATAPATH, dtype=dtype_dict)
+
+	#save Numerai training data as a compressed feather file
+	feather.write_feather(df, FILE_NAME)
+
+
+
+
+
+
