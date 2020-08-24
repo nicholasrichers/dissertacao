@@ -4,19 +4,24 @@
 import pandas as pd
 import numpy as np
 
-def get_data(nrows=None, low_memory=False, dataset="training"):
-
-
-    #GET PATH
-    if dataset=="training":
-        data_path = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_training_data.csv.xz'
-
-    else:
-        data_path = "https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_tournament_data.csv.xz"
+def get_data(nrows=None, low_memory=False, dataset="training", feather=False):
 
 
     #DOWNLOAD DATAFRAME
-    df = pd.read_csv(data_path, nrows=nrows)
+    if feather==True:
+    	df = pd.read_feather('../../Data/Interim/'+dataset+'_compressed.feather').iloc[:nrows,:]
+
+    elif dataset=="validation":
+        data_path = '../../Data/Interim/'+dataset+'_data.csv'
+        df = pd.read_csv(data_path, nrows=nrows)
+
+    else:
+    	data_path = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_'+dataset+'_data.csv.xz'
+    	df = pd.read_csv(data_path, nrows=nrows)
+
+
+
+    #Low memory
     if low_memory == True:
         print("low memory activated")
         df = reduce_mem_usage(df, verbose=True)
@@ -72,7 +77,9 @@ def reduce_mem_usage(df, verbose=True):
 #training_data.head()
 
 
-########
+########################################################################################
+########################################################################################
+########################################################################################
 
 import pandas as pd
 import numpy as np
@@ -104,26 +111,26 @@ def create_dtype():
 	dtype_dict = dict(dtype_zip)
 
 	#save the dictionary as a joblib file for future use
-	dump(dtype_dict, 'dtype_dict.joblib')
+	#dump(dtype_dict, 'dtype_dict.joblib')
 	return dtype_dict
 
 
 #####
 
 
-def feather_df(Data_type="train"):
+def create_feather_df(dataset="training"):
 
 	#load dictionary to import data in specific data types
-	dtype_dict = create_dtype
+	dtype_dict = create_dtype()
 
 
-	if Data_type == "train":
-		FILE_URL  = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_training_data.csv.xz'
-		FILE_NAME = 'training_compressed.feather'
+	#Get Data
+	if dataset == "validation": FILE_URL  = '../../Data/Interim/'+dataset+'_data.csv'
 
-	else: 
-		FILE_URL  = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_tournament_data.csv.xz'
-		FILE_NAME = 'tournament_compressed.feather'
+	else: FILE_URL  = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_'+dataset+'_data.csv.xz'
+	
+	#file Name	
+	FILE_NAME = '../../Data/Interim/' + dataset + '_compressed.feather'
 
 
 	#download Numerai training data and load as a pandas dataframe
@@ -135,6 +142,8 @@ def feather_df(Data_type="train"):
 
 	#save Numerai training data as a compressed feather file
 	feather.write_feather(df, FILE_NAME)
+
+	return df
 
 
 
