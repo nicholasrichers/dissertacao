@@ -121,7 +121,8 @@ class Model(object):
 
   def save(self, file_path):
     from joblib import dump
-    dump(self, file_path)
+    #dump(self, file_path)
+    dump(self, open(file_name, "wb"))
   
   @staticmethod
   def load(file_path):
@@ -197,7 +198,7 @@ class TunedModel(Model):
             n_jobs=-1, verbose=5)
         
         # Run it
-        grid_search.fit(X, y)
+        grid_search.fit(X, y)#, group=[2408, 2371,  221]
         
         # Save the model
         self.model = grid_search.best_estimator_

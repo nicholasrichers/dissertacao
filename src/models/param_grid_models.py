@@ -1,7 +1,7 @@
 #param drid models for randomsearchCV
 
 import numpy as np
-xgb_param_grid = {
+xgb_param_grid = { #n_estimators, max_depth
         'xgb__colsample_bylevel' : [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1.0],
         'xgb__colsample_bytree' :[0.6, 0.7, 0.8, 1.0],
         'xgb__gamma' : list(np.linspace(0.05, 1, 6)),
@@ -16,7 +16,7 @@ xgb_param_grid = {
 }
 
 
-lgbm_param_grid = {
+lgbm_param_grid = { #n_estimators, max_depth
     'lgbm__boosting_type': ['gbdt', 'goss', 'dart'],
     'lgbm__num_leaves': list(range(20, 150)),
     'lgbm__learning_rate': list(np.logspace(np.log10(0.005), np.log10(0.5), base = 10, num = 1000)),

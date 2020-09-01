@@ -6,7 +6,7 @@ from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.pipeline import make_pipeline
 
 def evaluate_model(features, target, model, name, param_grid, scorer, n_iter=10, cv_folds=5, pipeline=None):
-  if pipeline is None: pipeline = make_pipeline('passthrough')
+  #if pipeline is None: pipeline = make_pipeline('passthrough')
   tuned_model = build_tuned_model(name, model, features, target, param_grid, scorer, n_iter=n_iter, cv_folds=cv_folds, pipeline=pipeline)
   results = tuned_model.results
   best_result = results.query('rank_test_score == 1')
@@ -17,7 +17,7 @@ def evaluate_model(features, target, model, name, param_grid, scorer, n_iter=10,
 
 
 def evaluate_model_skopt(features, target, model, name, param_grid, scorer, n_iter=10, cv_folds=5, pipeline=None):
-  if pipeline is None: pipeline = make_pipeline('passthrough')
+  #if pipeline is None: pipeline = make_pipeline('passthrough')
   tuned_model = build_tuned_model_skopt(name, model, features, target, param_grid, scorer, n_iter=n_iter, cv_folds=cv_folds, pipeline=pipeline)
   results = tuned_model.results
   best_result = results.query('rank_test_score == 1')
