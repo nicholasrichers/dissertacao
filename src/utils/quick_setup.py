@@ -22,5 +22,3 @@ def get_libs():
     #folder src.data
     load_library('metrics_description', 'src/validation/metrics_description.py')
     load_library('metrics', 'src/validation/metrics.py')
-
-!pip install scikit-optimize

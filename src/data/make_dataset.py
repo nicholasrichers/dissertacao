@@ -11,7 +11,7 @@ def get_data(nrows=None, low_memory=False, dataset="training", feather=False):
     if feather==True:
     	df = pd.read_feather('../../Data/Interim/'+dataset+'_compressed.feather').iloc[:nrows,:]
 
-    elif dataset=="validation":
+    elif dataset == "validation":
         data_path = '../../Data/Interim/'+dataset+'_data.csv'
         df = pd.read_csv(data_path, nrows=nrows)
 
@@ -31,7 +31,8 @@ def get_data(nrows=None, low_memory=False, dataset="training", feather=False):
     X = [c for c in df if c.startswith("feature")]
     y = "target_kazutsugi"
 
-    df['era'] = df.loc[:, 'era'].str[3:].astype('int32')
+    if dataset != "tournament"
+        df['era'] = df.loc[:, 'era'].str[3:].astype('int32')
 
     #PRINT MEMORY USAGE
     print(df.info())

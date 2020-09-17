@@ -7034,3 +7034,247 @@
 2020-09-16 23:01:15,824:INFO:Declaring preprocessing parameters
 2020-09-16 23:01:15,824:INFO:Importing preprocessing module
 2020-09-16 23:01:17,123:INFO:Creating preprocessing pipeline
+2020-09-16 23:16:40,626:INFO:Preprocessing pipeline created successfully
+2020-09-16 23:16:40,637:INFO:No inverse transformer found
+2020-09-16 23:16:40,637:INFO:Creating grid variables
+2020-09-16 23:16:49,579:INFO:Creating global containers
+2020-09-16 23:24:49,749:INFO:create_model_container: 0
+2020-09-16 23:24:49,754:INFO:master_model_container: 0
+2020-09-16 23:24:49,754:INFO:display_container: 0
+2020-09-16 23:24:49,754:INFO:setup() succesfully completed......................................
+2020-09-16 23:24:51,141:INFO:Initializing compare_models()
+2020-09-16 23:24:51,142:INFO:compare_models(blacklist=None, whitelist=['ridge', 'lasso', 'en', 'lr', 'lar', 'llar', 'omp', 'br'], fold=3, round=4, sort=MSE, n_select=1, turbo=True, verbose=True)
+2020-09-16 23:24:51,142:INFO:Checking exceptions
+2020-09-16 23:24:51,142:INFO:Preloading libraries
+2020-09-16 23:24:51,142:INFO:Preparing display monitor
+2020-09-16 23:24:51,235:INFO:Copying training dataset
+2020-09-16 23:24:54,815:INFO:Importing libraries
+2020-09-16 23:24:54,944:INFO:Importing untrained models
+2020-09-16 23:24:55,022:INFO:Import successful
+2020-09-16 23:24:55,051:INFO:Defining folds
+2020-09-16 23:24:55,052:INFO:Declaring metric variables
+2020-09-16 23:24:55,053:INFO:Initializing Ridge Regression
+2020-09-16 23:24:55,105:INFO:Initializing Fold 1
+2020-09-16 23:25:00,611:INFO:Fitting Model
+2020-09-16 23:25:04,420:INFO:Evaluating Metrics
+2020-09-16 23:25:04,922:INFO:No inverse transformer found
+2020-09-16 23:25:04,922:INFO:Compiling Metrics
+2020-09-16 23:25:05,080:INFO:Initializing Fold 2
+2020-09-16 23:25:07,346:INFO:Fitting Model
+2020-09-16 23:25:08,704:INFO:Evaluating Metrics
+2020-09-16 23:25:08,788:INFO:No inverse transformer found
+2020-09-16 23:25:08,789:INFO:Compiling Metrics
+2020-09-16 23:25:08,824:INFO:Initializing Fold 3
+2020-09-16 23:25:09,407:INFO:Fitting Model
+2020-09-16 23:25:10,368:INFO:Evaluating Metrics
+2020-09-16 23:25:10,450:INFO:No inverse transformer found
+2020-09-16 23:25:10,450:INFO:Compiling Metrics
+2020-09-16 23:25:10,475:INFO:Calculating mean and std
+2020-09-16 23:25:10,476:INFO:Creating metrics dataframe
+2020-09-16 23:25:10,526:INFO:Initializing Lasso Regression
+2020-09-16 23:25:10,550:INFO:Initializing Fold 1
+2020-09-16 23:25:11,699:INFO:Fitting Model
+2020-09-16 23:25:13,628:INFO:Evaluating Metrics
+2020-09-16 23:25:14,082:INFO:No inverse transformer found
+2020-09-16 23:25:14,082:INFO:Compiling Metrics
+2020-09-16 23:25:14,111:INFO:Initializing Fold 2
+2020-09-16 23:25:14,623:INFO:Fitting Model
+2020-09-16 23:25:16,405:INFO:Evaluating Metrics
+2020-09-16 23:25:16,570:INFO:No inverse transformer found
+2020-09-16 23:25:16,570:INFO:Compiling Metrics
+2020-09-16 23:25:16,602:INFO:Initializing Fold 3
+2020-09-16 23:25:17,602:INFO:Fitting Model
+2020-09-16 23:25:18,525:INFO:Evaluating Metrics
+2020-09-16 23:25:18,598:INFO:No inverse transformer found
+2020-09-16 23:25:18,598:INFO:Compiling Metrics
+2020-09-16 23:25:18,625:INFO:Calculating mean and std
+2020-09-16 23:25:18,626:INFO:Creating metrics dataframe
+2020-09-16 23:25:18,658:INFO:Initializing Elastic Net
+2020-09-16 23:25:18,680:INFO:Initializing Fold 1
+2020-09-16 23:25:19,236:INFO:Fitting Model
+2020-09-16 23:25:20,203:INFO:Evaluating Metrics
+2020-09-16 23:25:20,275:INFO:No inverse transformer found
+2020-09-16 23:25:20,276:INFO:Compiling Metrics
+2020-09-16 23:25:20,303:INFO:Initializing Fold 2
+2020-09-16 23:25:20,817:INFO:Fitting Model
+2020-09-16 23:25:22,926:INFO:Evaluating Metrics
+2020-09-16 23:25:23,493:INFO:No inverse transformer found
+2020-09-16 23:25:23,493:INFO:Compiling Metrics
+2020-09-16 23:25:23,520:INFO:Initializing Fold 3
+2020-09-16 23:25:24,159:INFO:Fitting Model
+2020-09-16 23:25:27,211:INFO:Evaluating Metrics
+2020-09-16 23:25:27,699:INFO:No inverse transformer found
+2020-09-16 23:25:27,699:INFO:Compiling Metrics
+2020-09-16 23:25:27,727:INFO:Calculating mean and std
+2020-09-16 23:25:27,728:INFO:Creating metrics dataframe
+2020-09-16 23:25:27,760:INFO:Initializing Linear Regression
+2020-09-16 23:25:27,789:INFO:Initializing Fold 1
+2020-09-16 23:25:29,106:INFO:Fitting Model
+2020-09-16 23:25:39,205:INFO:Evaluating Metrics
+2020-09-16 23:25:39,745:INFO:No inverse transformer found
+2020-09-16 23:25:39,746:INFO:Compiling Metrics
+2020-09-16 23:25:39,809:INFO:Initializing Fold 2
+2020-09-16 23:25:42,063:INFO:Fitting Model
+2020-09-16 23:25:51,092:INFO:Evaluating Metrics
+2020-09-16 23:25:51,548:INFO:No inverse transformer found
+2020-09-16 23:25:51,548:INFO:Compiling Metrics
+2020-09-16 23:25:51,603:INFO:Initializing Fold 3
+2020-09-16 23:25:53,445:INFO:Fitting Model
+2020-09-16 23:26:01,991:INFO:Evaluating Metrics
+2020-09-16 23:26:02,546:INFO:No inverse transformer found
+2020-09-16 23:26:02,546:INFO:Compiling Metrics
+2020-09-16 23:26:02,580:INFO:Calculating mean and std
+2020-09-16 23:26:02,583:INFO:Creating metrics dataframe
+2020-09-16 23:26:02,616:INFO:Initializing Least Angle Regression
+2020-09-16 23:26:02,646:INFO:Initializing Fold 1
+2020-09-16 23:26:03,295:INFO:Fitting Model
+2020-09-16 23:26:05,580:INFO:Evaluating Metrics
+2020-09-16 23:26:06,214:INFO:No inverse transformer found
+2020-09-16 23:26:06,214:INFO:Compiling Metrics
+2020-09-16 23:26:06,278:INFO:Initializing Fold 2
+2020-09-16 23:26:07,393:INFO:Fitting Model
+2020-09-16 23:26:08,762:INFO:Evaluating Metrics
+2020-09-16 23:26:09,219:INFO:No inverse transformer found
+2020-09-16 23:26:09,220:INFO:Compiling Metrics
+2020-09-16 23:26:09,258:INFO:Initializing Fold 3
+2020-09-16 23:26:09,778:INFO:Fitting Model
+2020-09-16 23:26:11,319:INFO:Evaluating Metrics
+2020-09-16 23:26:11,749:INFO:No inverse transformer found
+2020-09-16 23:26:11,749:INFO:Compiling Metrics
+2020-09-16 23:26:11,781:INFO:Calculating mean and std
+2020-09-16 23:26:11,782:INFO:Creating metrics dataframe
+2020-09-16 23:26:11,812:INFO:Initializing Lasso Least Angle Regression
+2020-09-16 23:26:11,835:INFO:Initializing Fold 1
+2020-09-16 23:26:12,338:INFO:Fitting Model
+2020-09-16 23:26:13,514:INFO:Evaluating Metrics
+2020-09-16 23:26:13,881:INFO:No inverse transformer found
+2020-09-16 23:26:13,882:INFO:Compiling Metrics
+2020-09-16 23:26:13,909:INFO:Initializing Fold 2
+2020-09-16 23:26:14,415:INFO:Fitting Model
+2020-09-16 23:26:15,588:INFO:Evaluating Metrics
+2020-09-16 23:26:16,059:INFO:No inverse transformer found
+2020-09-16 23:26:16,059:INFO:Compiling Metrics
+2020-09-16 23:26:16,093:INFO:Initializing Fold 3
+2020-09-16 23:26:16,618:INFO:Fitting Model
+2020-09-16 23:26:17,757:INFO:Evaluating Metrics
+2020-09-16 23:26:18,187:INFO:No inverse transformer found
+2020-09-16 23:26:18,188:INFO:Compiling Metrics
+2020-09-16 23:26:18,214:INFO:Calculating mean and std
+2020-09-16 23:26:18,215:INFO:Creating metrics dataframe
+2020-09-16 23:26:18,238:INFO:Initializing Orthogonal Matching Pursuit
+2020-09-16 23:26:18,261:INFO:Initializing Fold 1
+2020-09-16 23:26:18,784:INFO:Fitting Model
+2020-09-16 23:26:20,010:INFO:Evaluating Metrics
+2020-09-16 23:26:20,409:INFO:No inverse transformer found
+2020-09-16 23:26:20,409:INFO:Compiling Metrics
+2020-09-16 23:26:20,440:INFO:Initializing Fold 2
+2020-09-16 23:26:20,989:INFO:Fitting Model
+2020-09-16 23:26:22,232:INFO:Evaluating Metrics
+2020-09-16 23:26:22,673:INFO:No inverse transformer found
+2020-09-16 23:26:22,673:INFO:Compiling Metrics
+2020-09-16 23:26:22,701:INFO:Initializing Fold 3
+2020-09-16 23:26:23,764:INFO:Fitting Model
+2020-09-16 23:26:25,003:INFO:Evaluating Metrics
+2020-09-16 23:26:25,466:INFO:No inverse transformer found
+2020-09-16 23:26:25,466:INFO:Compiling Metrics
+2020-09-16 23:26:25,495:INFO:Calculating mean and std
+2020-09-16 23:26:25,496:INFO:Creating metrics dataframe
+2020-09-16 23:26:25,519:INFO:Initializing Bayesian Ridge
+2020-09-16 23:26:25,533:INFO:Initializing Fold 1
+2020-09-16 23:26:26,810:INFO:Fitting Model
+2020-09-16 23:27:04,608:INFO:Evaluating Metrics
+2020-09-16 23:27:06,235:INFO:No inverse transformer found
+2020-09-16 23:27:06,235:INFO:Compiling Metrics
+2020-09-16 23:27:06,414:INFO:Initializing Fold 2
+2020-09-16 23:27:10,726:INFO:Fitting Model
+2020-09-16 23:28:11,910:INFO:Evaluating Metrics
+2020-09-16 23:28:14,002:INFO:No inverse transformer found
+2020-09-16 23:28:14,002:INFO:Compiling Metrics
+2020-09-16 23:28:14,108:INFO:Initializing Fold 3
+2020-09-16 23:28:18,845:INFO:Fitting Model
+2020-09-16 23:28:56,770:INFO:Evaluating Metrics
+2020-09-16 23:28:58,562:INFO:No inverse transformer found
+2020-09-16 23:28:58,562:INFO:Compiling Metrics
+2020-09-16 23:28:58,677:INFO:Calculating mean and std
+2020-09-16 23:28:58,684:INFO:Creating metrics dataframe
+2020-09-16 23:28:58,802:INFO:Finalizing top_n models
+2020-09-16 23:28:58,804:INFO:SubProcess create_model() called ==================================
+2020-09-16 23:28:58,997:INFO:Initializing create_model()
+2020-09-16 23:28:58,998:INFO:create_model(estimator=omp, ensemble=False, method=None, fold=10, round=4, cross_validation=True, verbose=False, system=False)
+2020-09-16 23:28:58,998:INFO:Checking exceptions
+2020-09-16 23:28:59,000:INFO:Preloading libraries
+2020-09-16 23:28:59,004:INFO:Preparing display monitor
+2020-09-16 23:28:59,137:INFO:Copying training dataset
+2020-09-16 23:29:04,263:INFO:Importing libraries
+2020-09-16 23:29:04,267:INFO:Defining folds
+2020-09-16 23:29:04,269:INFO:Declaring metric variables
+2020-09-16 23:29:04,270:INFO:Orthogonal Matching Pursuit Imported succesfully
+2020-09-16 23:29:04,271:INFO:Checking ensemble method
+2020-09-16 23:29:04,284:INFO:Initializing Fold 1
+2020-09-16 23:29:06,752:INFO:Fitting Model
+2020-09-16 23:29:12,844:INFO:Evaluating Metrics
+2020-09-16 23:29:13,152:INFO:No inverse transformation
+2020-09-16 23:29:13,152:INFO:Compiling Metrics
+2020-09-16 23:29:13,199:INFO:Initializing Fold 2
+2020-09-16 23:29:14,413:INFO:Fitting Model
+2020-09-16 23:29:16,060:INFO:Evaluating Metrics
+2020-09-16 23:29:16,206:INFO:No inverse transformation
+2020-09-16 23:29:16,206:INFO:Compiling Metrics
+2020-09-16 23:29:16,226:INFO:Initializing Fold 3
+2020-09-16 23:29:17,294:INFO:Fitting Model
+2020-09-16 23:29:18,997:INFO:Evaluating Metrics
+2020-09-16 23:29:19,094:INFO:No inverse transformation
+2020-09-16 23:29:19,094:INFO:Compiling Metrics
+2020-09-16 23:29:19,114:INFO:Initializing Fold 4
+2020-09-16 23:29:19,603:INFO:Fitting Model
+2020-09-16 23:29:21,246:INFO:Evaluating Metrics
+2020-09-16 23:29:21,327:INFO:No inverse transformation
+2020-09-16 23:29:21,327:INFO:Compiling Metrics
+2020-09-16 23:29:21,346:INFO:Initializing Fold 5
+2020-09-16 23:29:21,831:INFO:Fitting Model
+2020-09-16 23:29:23,456:INFO:Evaluating Metrics
+2020-09-16 23:29:23,572:INFO:No inverse transformation
+2020-09-16 23:29:23,572:INFO:Compiling Metrics
+2020-09-16 23:29:23,594:INFO:Initializing Fold 6
+2020-09-16 23:29:24,981:INFO:Fitting Model
+2020-09-16 23:29:29,296:INFO:Evaluating Metrics
+2020-09-16 23:29:29,534:INFO:No inverse transformation
+2020-09-16 23:29:29,534:INFO:Compiling Metrics
+2020-09-16 23:29:29,553:INFO:Initializing Fold 7
+2020-09-16 23:29:30,211:INFO:Fitting Model
+2020-09-16 23:29:31,836:INFO:Evaluating Metrics
+2020-09-16 23:29:31,946:INFO:No inverse transformation
+2020-09-16 23:29:31,947:INFO:Compiling Metrics
+2020-09-16 23:29:31,966:INFO:Initializing Fold 8
+2020-09-16 23:29:33,011:INFO:Fitting Model
+2020-09-16 23:29:34,636:INFO:Evaluating Metrics
+2020-09-16 23:29:34,705:INFO:No inverse transformation
+2020-09-16 23:29:34,706:INFO:Compiling Metrics
+2020-09-16 23:29:34,729:INFO:Initializing Fold 9
+2020-09-16 23:29:35,631:INFO:Fitting Model
+2020-09-16 23:29:37,252:INFO:Evaluating Metrics
+2020-09-16 23:29:37,325:INFO:No inverse transformation
+2020-09-16 23:29:37,325:INFO:Compiling Metrics
+2020-09-16 23:29:37,345:INFO:Initializing Fold 10
+2020-09-16 23:29:37,850:INFO:Fitting Model
+2020-09-16 23:29:39,409:INFO:Evaluating Metrics
+2020-09-16 23:29:39,479:INFO:No inverse transformation
+2020-09-16 23:29:39,479:INFO:Compiling Metrics
+2020-09-16 23:29:39,496:INFO:Calculating mean and std
+2020-09-16 23:29:39,498:INFO:Creating metrics dataframe
+2020-09-16 23:29:39,515:INFO:Finalizing model
+2020-09-16 23:29:41,364:INFO:Uploading results into container
+2020-09-16 23:29:41,364:INFO:Uploading model into container
+2020-09-16 23:29:41,364:INFO:create_model_container: 1
+2020-09-16 23:29:41,364:INFO:master_model_container: 1
+2020-09-16 23:29:41,365:INFO:display_container: 1
+2020-09-16 23:29:41,415:INFO:OrthogonalMatchingPursuit(fit_intercept=True, n_nonzero_coefs=None,
+                          normalize=True, precompute='auto', tol=None)
+2020-09-16 23:29:41,416:INFO:create_model() succesfully completed......................................
+2020-09-16 23:29:41,526:INFO:SubProcess create_model() end ==================================
+2020-09-16 23:29:41,733:INFO:create_model_container: 1
+2020-09-16 23:29:41,734:INFO:master_model_container: 1
+2020-09-16 23:29:41,734:INFO:display_container: 2
+2020-09-16 23:29:41,735:INFO:OrthogonalMatchingPursuit(fit_intercept=True, n_nonzero_coefs=None,
+                          normalize=True, precompute='auto', tol=None)
+2020-09-16 23:29:41,735:INFO:compare_models() succesfully completed......................................
