@@ -31,7 +31,7 @@ def get_data(nrows=None, low_memory=False, dataset="training", feather=False):
     X = [c for c in df if c.startswith("feature")]
     y = "target_kazutsugi"
 
-    if dataset != "tournament"
+    if dataset != "tournament":
         df['era'] = df.loc[:, 'era'].str[3:].astype('int32')
 
     #PRINT MEMORY USAGE
