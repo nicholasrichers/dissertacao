@@ -4,7 +4,13 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import minmax_scale
 import pandas as pd
 import numpy as np
-from src.validation import metrics_description
+
+#to use in google colab
+try:
+  from src.validation import metrics_description
+except:
+  import metrics_description
+
 
 #OK
 def spearmanr(target, pred):
