@@ -1,8 +1,3 @@
-
-def pip():
-  !git clone https://github.com/nicholasrichers/dissertacao.git
-  
-
 def load_library(NAME_LIB, FILE_PATH):
     from importlib.machinery import SourceFileLoader
     FILE_PATH = '/content/dissertacao/' + FILE_PATH
@@ -14,30 +9,15 @@ def get_libs():
     #load_library('paths', 'notebooks/Baseline/paths.py')
 
     
-    #folder src
+    #folder src.data
     load_library('make_dataset', 'src/data/make_dataset.py')
-    #load_library('pre_processing_macro', 'routines/pre_processing_macro.py')
-    #load_library('merge_datasets', 'routines/merge_datasets.py')
-    #load_library('pre_processing', 'routines/pre_processing.py')
-    #load_library('seasonal_error', 'routines/seasonal_error.py')
 
 
+    #folder src.data
+    load_library('train_model', 'src/models/train_model.py')
+    load_library('evaluation', 'src/models/evaluation.py')
 
+    #folder src.data
+    load_library('metrics', 'src/validation/metrics.py')
+    load_library('metrics_description', 'src/validation/metrics_description.py')
 
-def get_df():
-  REPO_URL = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_training_data.csv.xz'
-  df = pd.read_csv(REPO_URL, nrows=500)
-  #print(f'DF Shape: {df.shape}')
-  return df 
-    
-def setup():
-    pip()
-    get_libs()
-    df = get_df()
-    print("===========================================")
-    print("===========SETUP COMPLETE==================")
-    print("===========================================")
-    return df
-
-import pandas as pd
-X = setup()

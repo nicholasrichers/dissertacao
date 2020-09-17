@@ -1,9 +1,17 @@
 import numpy as np
-from src.models.train_model import build_tuned_model, build_tuned_model_skopt
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.pipeline import make_pipeline
+
+#to use in google colab
+try:
+  from src.models.train_model import build_tuned_model, build_tuned_model_skopt
+except:
+  from train_model import build_tuned_model, build_tuned_model_skopt
+
+
+
 
 def evaluate_model(features, target, model, name, param_grid, scorer, n_iter=10, cv_folds=5, pipeline=None):
   #if pipeline is None: pipeline = make_pipeline('passthrough')
