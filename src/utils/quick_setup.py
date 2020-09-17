@@ -1,5 +1,4 @@
-%%capture
-#ALL TOGETHER
+
 def pip():
   !git clone https://github.com/nicholasrichers/dissertacao.git
   
