@@ -7,7 +7,7 @@ from sklearn.calibration import CalibratedClassifierCV
 
 
 
-def build_tuned_model(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_folds, n_jobs=n_jobs, pipeline):
+def build_tuned_model(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_folds, n_jobs, pipeline):
   from time import time
   start = time()
   print('==> Starting K-fold cross validation for {} model, {} examples'.format(name, len(X_train)))
@@ -25,7 +25,7 @@ def build_tuned_model(name, base_model, X_train, y_train, hparams, scorer, n_ite
 
 
 
-def build_tuned_model_skopt(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_folds, n_jobs=n_jobs, pipeline):
+def build_tuned_model_skopt(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_folds, n_jobs, pipeline):
   from time import time
   start = time()
   print('==> Starting K-fold cross validation for {} model, {} examples'.format(name, len(X_train)))
