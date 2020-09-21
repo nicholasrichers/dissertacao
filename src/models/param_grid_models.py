@@ -13,6 +13,7 @@ xgb_param_grid = { #n_estimators, max_depth
         'xgb__reg_lambda' : list(np.logspace(-1, 1, num=10)/10),
         'xgb__subsample' : [0.6, 0.7, 0.8, 1.0],
         'xgb__scale_pos_weight' : [1, 10, 25, 50, 75, 99, 100, 1000, 3000,5000, 10000]
+        'xgb__objective': ["reg:squarederror"]
 }
 
 

@@ -97,23 +97,6 @@ def feature_exposure(df, pred):
 
 
 
-#NAO USO
-def max_feature_exposure(df, preds_df):
-    #df = df[df.data_type == 'validation']
-    feature_columns = [x for x in df.columns if x.startswith('feature_')]
-    fe = {}
-
-    for era in df.era.unique():
-        era_df = df[df.era == era]
-        pred_df_era = preds_df[preds_df.era == era]
-        correlations = []
-
-
-        for col in feature_columns:
-            correlations.append(np.corrcoef(pred_df_era['pred'], era_df[col])[0, 1])
-
-        fe[era] = np.std(correlations)
-    return max(fe.values())
 
 
 
@@ -142,7 +125,7 @@ def submission_metrics(df_val, preds, model_name=''):
     values = dict()
     values['Model_Name'] = model_name
     values['Max_Drawdown'] = np.min(era_scores)
-    values['Validation_Corr'] = np.mean(era_scores)
+    values['Validation_Mean'] = np.mean(era_scores)
     values['Median_corr'] = np.median(era_scores)
     values['Variance'] = np.var(era_scores)
     values['Std_Dev'] = np.std(era_scores)
@@ -163,7 +146,6 @@ def submission_metrics(df_val, preds, model_name=''):
 
     #by feature metrics
     values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
-    #values['Feat_exp_max'] = max_feature_exposure(df_val, new_df)
 
 
     metrics = metrics_description.get_metrics_dicts(values)

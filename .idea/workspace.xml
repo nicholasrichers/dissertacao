@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="38b01180-aefe-4e63-87f6-1abca4f2c936" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/models/GBM_model_python_1597566247245_1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/GBM_model_python_1597645189701_1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/nick_richers_trained_kazutsugi.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/nrichers_trained_kazutsugi.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/pycaret-teste.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/rf-baseline-pipeline.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/rf-baseline.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/sao_paulo-baseline.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/sao_paulo-pipeline.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Baseline/0.2-Baseline_Pycaret.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Baseline/0.2-Baseline_Pycaret.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Baseline/logs.log" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Baseline/logs.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Sao_Paulo/1.0-Sao_Paulo-Tipo_Modelo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Sao_Paulo/1.0-Sao_Paulo-Tipo_Modelo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reports/pycaret_compare_results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/reports/pycaret_compare_results.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/bayes_grid_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/bayes_grid_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/param_grid_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/param_grid_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/train_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/train_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/validation/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/validation/metrics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/validation/metrics_description.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/validation/metrics_description.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1hn0nLW6atjPKwHDH0lHkJtBn1d" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="38b01180-aefe-4e63-87f6-1abca4f2c936" name="Default Changelist" comment="" />
+      <created>1600631714586</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600631714586</updated>
+    </task>
+    <servers />
+  </component>
+</project>

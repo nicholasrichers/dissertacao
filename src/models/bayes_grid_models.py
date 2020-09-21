@@ -30,6 +30,7 @@ xgb_param_grid = {
         'xgb__reg_lambda' : Real(1e-2, 1, 'log-uniform'),
         'xgb__subsample' : Real(6e-1, 1, 'uniform'),
         'xgb__scale_pos_weight' : Integer(1, 10000, 'log-uniform')
+        'xgb__objective': ["reg:squarederror"]
         
 }
 
@@ -91,7 +92,7 @@ def tune_lgbm(params):
     
     print(roc_auc_score(yval, p))
     
-    return -average_precision_score(yval, p)
+    return -average_precision_score(yval, p) #forest minimize entao é -avg
 
 
 space = [(1e-3, 1e-1, 'log-uniform'), # lr

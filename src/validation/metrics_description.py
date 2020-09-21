@@ -1,5 +1,7 @@
 
 
+#Boa referencia
+#https://forum.numer.ai/t/model-diagnostics-risk-metrics/900
 
 def  get_metrics_dicts(values):
 
@@ -7,21 +9,21 @@ def  get_metrics_dicts(values):
     #OK
     dict_Model_Name = {"Metrica": "Model_Name", 
                         "Valor":  values['Model_Name'] ,
-                        "Categoria": "Submission", 
+                        "Categoria": "Performance", 
                         "Range_Aceitavel": "NA", 
                         "Descricao": "Nome do Modelo" }
 
     #OK 
     dict_Max_Drawdown = {"Metrica": 'Max_Drawdown', 
                          "Valor": values['Max_Drawdown'], 
-                         "Categoria": "Financeira", 
-                         "Range_Aceitavel": "[0%..2%]", 
+                         "Categoria": "Risk", 
+                         "Range_Aceitavel": "[0.004%..2%]", 
                          "Descricao": "Perda máxima em uma era" }
 
     #OK
-    dict_Avg_corr = {"Metrica": 'Validation_Corr', 
-                     "Valor": values['Validation_Corr'], 
-                     "Categoria": "Submission", 
+    dict_Avg_corr = {"Metrica": 'Validation_Mean', 
+                     "Valor": values['Validation_Mean'], 
+                     "Categoria": "Performance", 
                      "Range_Aceitavel": "[3.6%..4.4%] 4.8%, overfitting", 
                      "Descricao": "Média spearman corr por era" }
 
@@ -42,7 +44,7 @@ def  get_metrics_dicts(values):
     #OK
     dict_Std_Dev = {"Metrica": 'Std_Dev', 
                     "Valor": values['Std_Dev'], 
-                    "Categoria": "Estatistica", 
+                    "Categoria": "Risk", 
                     "Range_Aceitavel": "[0..] Próximo a zero", 
                     "Descricao": "Std spearman corr por era" }
 
@@ -78,8 +80,8 @@ def  get_metrics_dicts(values):
     #OK
     dict_Sharpe = {"Metrica": 'Validation_Sharpe', 
                   "Valor": values['Validation_Sharpe'], 
-                  "Categoria": "Submission", 
-                  "Range_Aceitavel": "[5..25] Iniciantes entre 1 e 2, competidores 14, 24", 
+                  "Categoria": "Performance", 
+                  "Range_Aceitavel": "Post[>1 good, >1.2 very good][5..25] Iniciantes entre 1 e 2, competidores 14, 24", 
                   "Descricao": "Média da correlacoa por era / std corr por era, anualizado" }
 
 
@@ -151,7 +153,7 @@ def  get_metrics_dicts(values):
     #OK
     dict_Feat_exp_max = {"Metrica": 'Feat_exp_max (val)', 
                        "Valor": values['Feat_exp_max'], 
-                       "Categoria": "Estatistica", 
+                       "Categoria": "Risk", 
                        "Range_Aceitavel": "[0.10..0.20] com neutralizacao cai pra .15", 
                        "Descricao": "feature com maior exp" }
 
