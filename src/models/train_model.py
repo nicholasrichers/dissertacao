@@ -12,7 +12,7 @@ def build_tuned_model(name, base_model, X_train, y_train, hparams, scorer, n_ite
   start = time()
   print('==> Starting K-fold cross validation for {} model, {} examples'.format(name, len(X_train)))
   model = TunedModel(hparams, name=name, model=base_model, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline)
-  model.train(X_train, y_train, scorer, n_iter, cv_folds, pipeline)
+  model.train(X_train, y_train, scorer, n_iter, cv_folds, n_jobs, pipeline)
   elapsed = time() - start
   print("==> Elapsed seconds: {:.3f}".format(elapsed))
   
@@ -30,7 +30,7 @@ def build_tuned_model_skopt(name, base_model, X_train, y_train, hparams, scorer,
   start = time()
   print('==> Starting K-fold cross validation for {} model, {} examples'.format(name, len(X_train)))
   model = TunedModel_Skopt(hparams, name=name, model=base_model, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline)
-  model.train(X_train, y_train, scorer, n_iter, cv_folds, pipeline)
+  model.train(X_train, y_train, scorer, n_iter, cv_folds, n_jobs, pipeline)
   elapsed = time() - start
   print("==> Elapsed seconds: {:.3f}".format(elapsed))
   
