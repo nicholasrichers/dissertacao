@@ -250,7 +250,7 @@ class TunedModel_Skopt(Model):
       Model.__init__(self, **kwargs)
       self.param_distributions = param_distributions
 
-  def train(self, X, y, scorer, n_iter, cv_folds, pipeline):
+  def train(self, X, y, scorer, n_iter, cv_folds, n_jobs, pipeline):
       """ Tunes a model using the parameter grid that this class was initialized with.
       
       Parameters
