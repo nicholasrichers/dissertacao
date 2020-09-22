@@ -26,7 +26,7 @@ def evaluate_model(features, target, model, name, param_grid, scorer, n_iter=10,
 
 def evaluate_model_skopt(features, target, model, name, param_grid, scorer, n_iter=10, cv_folds=5, n_jobs=-1, pipeline=None):
   #if pipeline is None: pipeline = make_pipeline('passthrough')
-  tuned_model = build_tuned_model_skopt(name, model, features, target, param_grid, scorer, n_iter=n_iter, cv_folds=cv_folds,n_jobs=n_jobs, pipeline=pipeline)
+  tuned_model = build_tuned_model_skopt(name, model, features, target, param_grid, scorer, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline)
   results = tuned_model.results
   best_result = results.query('rank_test_score == 1')
   test_mean = best_result['mean_test_score'].values[0]
