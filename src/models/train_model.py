@@ -274,9 +274,10 @@ class TunedModel_Skopt(Model):
             n_jobs=n_jobs,
             n_iter=n_iter,
             scoring=scorer, 
-            return_train_score=True)
+            return_train_score=True, 
+            verbose=1)
         
-        # Run it
+        # Run it 
         grid_search.fit(X, y)
         
         # Save the model
@@ -291,7 +292,8 @@ class TunedModel_Skopt(Model):
             n_jobs=n_jobs,
             n_iter=n_iter,
             scoring=scorer, 
-            return_train_score=True)
+            return_train_score=True,
+            verbose=1)
         
         # Run it
         grid_search.fit(X, y)

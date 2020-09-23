@@ -240,7 +240,7 @@ def plot_calibration_curve(model, X_train, X_test, y_train, y_test, plot_=True):
 def get_cv_scores(model):
   test_score_cols =[c for c in model.results.columns if c.endswith("_test_score")]
   test_scores = model.results.sort_values('mean_test_score', ascending=False).head(1)[test_score_cols].values[0]
-  return test_scores
+  return test_scores 
 
 
 
