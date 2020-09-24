@@ -4,15 +4,15 @@ from sklearn.base import clone
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.calibration import CalibratedClassifierCV
+import numpy as np
 
 
-
-def build_tuned_model(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_folds, n_jobs, pipeline):
+def build_tuned_model(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params):
   from time import time
   start = time()
   print('==> Starting K-fold cross validation for {} model, {} examples'.format(name, len(X_train)))
-  model = TunedModel(hparams, name=name, model=base_model, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline)
-  model.train(X_train, y_train, scorer, n_iter, cv_folds, n_jobs, pipeline)
+  model = TunedModel(hparams, name=name, model=base_model, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline, fit_params=fit_params)
+  model.train(X_train, y_train, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params)
   elapsed = time() - start
   print("==> Elapsed seconds: {:.3f}".format(elapsed))
   
@@ -25,11 +25,11 @@ def build_tuned_model(name, base_model, X_train, y_train, hparams, scorer, n_ite
 
 
 
-def build_tuned_model_skopt(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_folds, n_jobs, pipeline):
+def build_tuned_model_skopt(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params):
   from time import time
   start = time()
   print('==> Starting K-fold cross validation for {} model, {} examples'.format(name, len(X_train)))
-  model = TunedModel_Skopt(hparams, name=name, model=base_model, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline)
+  model = TunedModel_Skopt(hparams, name=name, model=base_model, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline, fit_params=fit_params)
   model.train(X_train, y_train, scorer, n_iter, cv_folds, n_jobs, pipeline)
   elapsed = time() - start
   print("==> Elapsed seconds: {:.3f}".format(elapsed))
@@ -46,13 +46,14 @@ def build_tuned_model_skopt(name, base_model, X_train, y_train, hparams, scorer,
 # Model
 # ============================================================================================================
 class Model(object):
-  def __init__(self, name, model, n_iter, cv_folds, n_jobs, pipeline):
+  def __init__(self, name, model, n_iter, cv_folds, n_jobs, pipeline, fit_params):
     self.name = name
     self.model = model
     self.pipeline = pipeline
     self.n_iter = n_iter
     self.cv_folds = cv_folds
     self.n_jobs = n_jobs
+    self.fit_params = fit_params 
 
   def train(self, X, y):
     """ Fits the model and builds the full pipeline """
@@ -173,7 +174,7 @@ class TunedModel(Model):
       Model.__init__(self, **kwargs)
       self.param_distributions = param_distributions
 
-  def train(self, X, y, scorer, n_iter, cv_folds, n_jobs, pipeline):
+  def train(self, X, y, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params):
       """ Tunes a model using the parameter grid that this class was initialized with.
       
       Parameters
@@ -197,10 +198,11 @@ class TunedModel(Model):
             n_iter=n_iter,
             scoring=scorer,
             return_train_score=True, 
-            verbose=5)
+            verbose=5,
+            error_score=23)
         
         # Run it
-        grid_search.fit(X, y)
+        grid_search.fit(X, y, **fit_params)
         
         # Save the model
         self.model = grid_search.best_estimator_
@@ -217,7 +219,7 @@ class TunedModel(Model):
             verbose=5)
         
         # Run it
-        grid_search.fit(X, y)
+        grid_search.fit(X, y, **fit_params)
         
         # Save the model and pipeline
         self.model = grid_search.best_estimator_.steps[-1][1]
@@ -250,7 +252,7 @@ class TunedModel_Skopt(Model):
       Model.__init__(self, **kwargs)
       self.param_distributions = param_distributions
 
-  def train(self, X, y, scorer, n_iter, cv_folds, n_jobs, pipeline):
+  def train(self, X, y, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params):
       """ Tunes a model using the parameter grid that this class was initialized with.
       
       Parameters
@@ -278,7 +280,7 @@ class TunedModel_Skopt(Model):
             verbose=1)
         
         # Run it 
-        grid_search.fit(X, y)
+        grid_search.fit(X, y, **fit_params)
         
         # Save the model
         self.model = grid_search.best_estimator_
@@ -296,7 +298,7 @@ class TunedModel_Skopt(Model):
             verbose=1)
         
         # Run it
-        grid_search.fit(X, y)
+        grid_search.fit(X, y, **fit_params)
         
         # Save the model and pipeline
         self.model = grid_search.best_estimator_.steps[-1][1]
