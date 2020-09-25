@@ -35,7 +35,7 @@ def evaluate_model_skopt(features, target, model, name, param_grid, scorer, n_it
 
 
 
-def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None, n_jobs=-1, train_sizes=np.linspace(.1, 1.0, 5), scoring=None):
+def plot_learning_curve(estimator, X, y, title='', ylim=None, cv=None, n_jobs=-1, train_sizes=np.linspace(.1, 1.0, 5), scoring=None):
   """
   Generate a simple plot of the test and training learning curve.
 
@@ -238,7 +238,7 @@ def plot_calibration_curve(model, X_train, X_test, y_train, y_test, plot_=True):
 
 
 def get_cv_scores(model):
-  test_score_cols =[c for c in model.results.columns if c.endswith("_test_score")]
+  test_score_cols =[c for c in model.results.columns if c.endswith("_test_score")][:-3]
   test_scores = model.results.sort_values('mean_test_score', ascending=False).head(1)[test_score_cols].values[0]
   return test_scores 
 

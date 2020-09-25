@@ -109,17 +109,18 @@ def submission_metrics(df_val, preds, model_name=''):
     #new_df['pred'] = new_df['target_kazutsugi']
     era_scores = pd.Series(index=new_df['era'].unique())
 
-    print("Qtde. eras:", len(new_df['era'].unique()))
-    
+        
     for era in new_df['era'].unique():
         era_df = new_df[new_df['era'] == era]
         era_scores[era] = spearmanr(era_df['pred'], era_df['target'])
 
     era_scores.sort_values(inplace=True)
     era_scores.sort_index(inplace=True)
-    era_scores.plot(kind="bar")
-    print("performance over time")
-    plt.show()
+    
+    #print("Qtde. eras:", len(new_df['era'].unique()))
+    #era_scores.plot(kind="bar")
+    #print("performance over time")
+    #plt.show()
 
 
     values = dict()
@@ -154,7 +155,7 @@ def submission_metrics(df_val, preds, model_name=''):
 
 
 
-    return era_scores, era_df, df_metrics, feat_corrs
+    return era_scores, df_metrics, feat_corrs
 
 
 ########################################################################################################################
