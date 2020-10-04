@@ -9,7 +9,7 @@ def  get_metrics_dicts(values):
     #OK
     dict_Model_Name = {"Metrica": "Model_Name", 
                         "Valor":  values['Model_Name'] ,
-                        "Categoria": "Performance", 
+                        "Categoria": "Name", 
                         "Range_Aceitavel": "NA", 
                         "Descricao": "Nome do Modelo" }
 
@@ -18,7 +18,7 @@ def  get_metrics_dicts(values):
                          "Valor": values['Max_Drawdown'], 
                          "Categoria": "Risk", 
                          "Range_Aceitavel": "[0.004%..2%]", 
-                         "Descricao": "Perda máxima em uma era" }
+                         "Descricao": "Perda máxima em uma era em relação a anterior" }
 
     #OK
     dict_Avg_corr = {"Metrica": 'Validation_Mean', 
@@ -105,7 +105,7 @@ def  get_metrics_dicts(values):
     #OK
     dict_Adj_Sharpe = {"Metrica": 'Adj_Sharpe', 
                        "Valor": values['Adj_Sharpe'], 
-                       "Categoria": "Financeira", 
+                       "Categoria": "Special", 
                        "Range_Aceitavel": "Prox ao sharpe [5..25]", 
                        "Descricao": "Adjusted Sharpe Ratio adjusts for skewness and kurtosis by incorporating a penalty factor for negative skewness and excess kurtosis" }
 
@@ -139,47 +139,106 @@ def  get_metrics_dicts(values):
     #OK
     dict_Payout = {"Metrica": 'Payout', 
                    "Valor": values['Payout'], 
-                   "Categoria": "Leaderboard", 
+                   "Categoria": "Special", 
                    "Range_Aceitavel": "[3.6%..4.4%] ", 
                    "Descricao": "Retira as 25% piores e melhores eras corr" }
 
     #OK
-    dict_Feat_exp_std = {"Metrica": 'Feat_exp_std (val)', 
+    dict_Feat_exp_std = {"Metrica": 'Feat_exp_std', 
                        "Valor": values['Feat_exp_std'], 
                        "Categoria": "Estatistica", 
                        "Range_Aceitavel": "[8%..x%]", 
                        "Descricao": "Std das features exposures, example_preds 0.0765" }
 
     #OK
-    dict_Feat_exp_max = {"Metrica": 'Feat_exp_max (val)', 
+    dict_Feat_exp_max = {"Metrica": 'Feat_exp_max', 
                        "Valor": values['Feat_exp_max'], 
                        "Categoria": "Risk", 
                        "Range_Aceitavel": "[0.10..0.20] com neutralizacao cai pra .15", 
                        "Descricao": "feature com maior exp" }
 
+    #OK
+    dict_Feat_neutral_mean = {"Metrica": 'Feat_neutral_mean', 
+                       "Valor": values['Feat_neutral_mean'], 
+                       "Categoria": "Performance", 
+                       "Range_Aceitavel": "[0.00027..0.027]", 
+                       "Descricao": "Score médio com feature neutral = 1.0" }
+
+
+
+    #
+    dict_val_mmc = {"Metrica": 'val_mmc_mean', 
+                       "Valor": values['val_mmc_mean'], 
+                       "Categoria": "MMC", 
+                       "Range_Aceitavel": "[..]", 
+                       "Descricao": ".." }
+
+
+
+
+    #
+    dict_corr_mmc = {"Metrica": 'corr_plus_mmc_sharpe', 
+                       "Valor": values['corr_plus_mmc_sharpe'], 
+                       "Categoria": "MMC", 
+                       "Range_Aceitavel": "[..]", 
+                       "Descricao": "" }
+
+
+
+    #
+    dict_corr_ex_preds = {"Metrica": 'corr_with_example_preds', 
+                       "Valor": values['corr_with_example_preds'], 
+                       "Categoria": "MMC", 
+                       "Range_Aceitavel": "[..]", 
+                       "Descricao": ".." }
+
+
 
 
     
     metrics_dicts_list = [dict_Model_Name
-                             ,dict_Max_Drawdown
+
+                              #Performance
+                             ,dict_Sharpe
                              ,dict_Avg_corr
+                             ,dict_Feat_neutral_mean
+
+                              #Risk
+                             ,dict_Std_Dev
+                             ,dict_Feat_exp_max
+                             ,dict_Max_Drawdown
+
+                             #MMC
+                             ,dict_val_mmc
+                             ,dict_corr_mmc
+                             ,dict_corr_ex_preds
+
+
+                             #Special
+                             ,dict_Adj_Sharpe
+                             ,dict_Payout
+
+
+
+                              #Financeira
+                             ,dict_Smart_Sharpe
+                             ,dict_Numerai_Sharpe
+                             ,dict_VaR_10
+                             ,dict_Sortino_Ratio
+                             ,dict_Smart_Sortino_Ratio
+                             
+
+                             #Estatistica
                              ,dict_Median_corr
                              ,dict_Variance
-                             ,dict_Std_Dev
                              ,dict_AR1
                              ,dict_Skewness
                              ,dict_Exc_Kurtosis
                              ,dict_Std_Error_Mean
-                             ,dict_Sharpe
-                             ,dict_Smart_Sharpe
-                             ,dict_Numerai_Sharpe
-                             ,dict_Adj_Sharpe
-                             ,dict_VaR_10
-                             ,dict_Sortino_Ratio
-                             ,dict_Smart_Sortino_Ratio
-                             ,dict_Payout
                              ,dict_Feat_exp_std
-                             ,dict_Feat_exp_max
+
+
+
                              ]
 
 

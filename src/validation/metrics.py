@@ -12,6 +12,11 @@ except:
   import metrics_description
 
 
+TOURNAMENT_NAME = "kazutsugi"
+TARGET_NAME = f"target_{TOURNAMENT_NAME}"
+PREDICTION_NAME = f"prediction_{TOURNAMENT_NAME}"
+
+
 #OK
 def spearmanr(target, pred):
     return np.corrcoef(target, pred.rank(pct=True, method="first"))[0, 1]
@@ -32,6 +37,16 @@ def autocorr_penalty(x):
 def validation_sharpe(x):
     return np.mean(x)/np.std(x) * np.sqrt(12)
 
+
+
+
+def max_drawdown(x):
+	#print("checking max drawdown...")
+    rolling_max = (x + 1).cumprod().rolling(window=100, min_periods=1).max()
+    daily_value = (x + 1).cumprod()
+    max_drawdown = -(rolling_max - daily_value).max()
+    #print(f"max drawdown: {max_drawdown}")
+    return max_drawdown
 
 
 ##ddof = delta degrees of freedom
@@ -97,14 +112,128 @@ def feature_exposure(df, pred):
 
 
 
+# to neutralize a column in a df by many other columns
+def neutralize(df, columns, by, proportion=1.0):
+    scores = df.loc[:, columns]
+    exposures = df[by].values
+
+    # constant column to make sure the series is completely neutral to exposures
+    exposures = np.hstack(
+        (exposures,
+         np.asarray(np.mean(scores)) * np.ones(len(exposures)).reshape(-1, 1)))
+
+    scores = scores - proportion * exposures.dot(np.linalg.pinv(exposures).dot(scores))
+
+    return scores / scores.std()
+
+
+def get_feature_neutral_mean(df, preds):
+    df["preds"] = preds
+    feature_cols = [c for c in df.columns if c.startswith("feature")]
+    df.loc[:, "neutral_sub"] = neutralize(df, ["preds"], feature_cols)["preds"]
+
+    scores = df.groupby("era").apply(lambda x: spearmanr(x["neutral_sub"], x[TARGET_NAME])).mean()
+    return np.mean(scores)
 
 
 
-def submission_metrics(df_val, preds, model_name=''):
+
+# to neutralize any series by any other series
+def neutralize_series(series, by, proportion=1.0):
+    scores = series.values.reshape(-1, 1)
+    exposures = by.values.reshape(-1, 1)
+
+    # this line makes series neutral to a constant column so that it's centered and for sure gets corr 0 with exposures
+    exposures = np.hstack(
+        (exposures,
+         np.array([np.mean(series)] * len(exposures)).reshape(-1, 1)))
+
+    correction = proportion * (exposures.dot(
+        np.linalg.lstsq(exposures, scores, rcond=None)[0]))
+    corrected_scores = scores - correction
+    neutralized = pd.Series(corrected_scores.ravel(), index=series.index)
+    return neutralized
+
+
+def unif(df):
+    x = (df.rank(method="first") - 0.5) / len(df)
+    return pd.Series(x, index=df.index)
+
+
+
+
+
+
+def mmc_metrics(df, preds):
+
+	validation_data = df.copy()
+
+	 # Load example preds to get MMC metrics
+	example_preds = pd.read_csv("../../data/interim/example_predictions_target_kazutsugi.csv").set_index("id")["prediction_kazutsugi"]
+	validation_data.set_index("id", inplace=True)
+
+
+	validation_example_preds = example_preds.loc[validation_data.index]
+	validation_data["ExamplePreds"] = validation_example_preds
+	validation_data["preds"] = preds
+
+	# MMC over validation
+	mmc_scores = []
+	corr_scores = []
+	for _, x in validation_data.groupby("era"):
+	    series = neutralize_series(pd.Series(unif(x["preds"])),
+	                               pd.Series(unif(x["ExamplePreds"])))
+
+	    mmc_scores.append(np.cov(series, x[TARGET_NAME])[0, 1] / (0.29 ** 2))
+	    corr_scores.append(spearmanr(unif(x["preds"]), x[TARGET_NAME]))
+
+	val_mmc_mean = np.mean(mmc_scores)
+	val_mmc_std = np.std(mmc_scores)
+	val_mmc_sharpe = val_mmc_mean / val_mmc_std
+	corr_plus_mmcs = [c + m for c, m in zip(corr_scores, mmc_scores)]
+	corr_plus_mmc_sharpe = np.mean(corr_plus_mmcs) / np.std(corr_plus_mmcs)
+	corr_plus_mmc_mean = np.mean(corr_plus_mmcs)
+	#corr_plus_mmc_sharpe_diff = corr_plus_mmc_sharpe - validation_sharpe
+
+	#print(
+	#    f"MMC Mean: {val_mmc_mean}\n"
+	#    f"Corr Plus MMC Sharpe:{corr_plus_mmc_sharpe}\n"
+	#    f"Corr Plus MMC Diff:{corr_plus_mmc_sharpe_diff}"
+	#)
+
+	# Check correlation with example predictions
+	corr_with_example_preds = np.corrcoef(validation_example_preds.rank(pct=True, method="first"),
+	                                      validation_data["preds"].rank(pct=True, method="first"))[0, 1]
+
+	#print(f"Corr with example preds: {corr_with_example_preds}")
+
+
+	return val_mmc_mean, corr_plus_mmc_sharpe, corr_with_example_preds, validation_data["ExamplePreds"]
+
+
+#############
+def metrics_consolidated(df):
+    
+    df_cons = dict()
+    for model in df.keys():
+        
+        #adicionando as colunas de valor
+        df_cons[model] = df[model]["Valor"]
+        
+        
+    #adicionando as colunas de descricao
+    df_cons["Categoria"] = df[model]["Categoria"]
+    df_cons["Range_Aceitavel"] = df[model]["Range_Aceitavel"]
+    df_cons["Descricao"] = df[model]["Descricao"]
+    df_cons = pd.DataFrame.from_dict(df_cons)
+    return df_cons
+
+
+def submission_metrics(df_val, preds, model_name='',  mmc=True):
 
 
     new_df = df_val.copy()
-    new_df['target'] = new_df['target_kazutsugi']
+    new_df['target'] = new_df['target_' + TOURNAMENT_NAME]
     new_df["pred"] = minmax_scale(preds) #caso seja classificacao (1..4)
     #new_df['pred'] = new_df['target_kazutsugi']
     era_scores = pd.Series(index=new_df['era'].unique())
@@ -125,7 +254,7 @@ def submission_metrics(df_val, preds, model_name=''):
 
     values = dict()
     values['Model_Name'] = model_name
-    values['Max_Drawdown'] = np.min(era_scores)
+    values['Max_Drawdown'] = max_drawdown(era_scores)
     values['Validation_Mean'] = np.mean(era_scores)
     values['Median_corr'] = np.median(era_scores)
     values['Variance'] = np.var(era_scores)
@@ -148,6 +277,16 @@ def submission_metrics(df_val, preds, model_name=''):
     #by feature metrics
     values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
 
+    if mmc==True:
+	    values['Feat_neutral_mean'] = get_feature_neutral_mean(df_val, preds)
+	    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = mmc_metrics(df_val, preds)
+
+
+    else:
+	    values['Feat_neutral_mean'] = 0
+	    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = 0,0,1 ,preds
+
+
 
     metrics = metrics_description.get_metrics_dicts(values)
     df_metrics = pd.DataFrame.from_dict(metrics)
@@ -155,7 +294,7 @@ def submission_metrics(df_val, preds, model_name=''):
 
 
 
-    return era_scores, df_metrics, feat_corrs
+    return era_scores, df_metrics, feat_corrs, example_predicts
 
 
 ########################################################################################################################
