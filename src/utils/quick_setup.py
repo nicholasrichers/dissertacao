@@ -15,10 +15,12 @@ def get_libs():
     load_library('make_dataset', 'src/data/make_dataset.py')
 
 
-    #folder src.data
+    #folder src.models
     load_library('train_model', 'src/models/train_model.py')
     load_library('evaluation', 'src/models/evaluation.py')
 
-    #folder src.data
-    load_library('metrics_description', 'src/validation/metrics_description.py')
+    #folder src.validation
+    load_library('group_ts_split', 'src/validation/group_ts_split.py')
     load_library('metrics', 'src/validation/metrics.py')
+    load_library('metrics_description', 'src/validation/metrics_description.py')
+    
