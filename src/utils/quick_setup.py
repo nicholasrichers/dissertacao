@@ -19,8 +19,7 @@ def get_libs():
     load_library('train_model', 'src/models/train_model.py')
     load_library('evaluation', 'src/models/evaluation.py')
 
-    #folder src.validation
+    #folder src.validation (MANTER A ORDEM)
     load_library('group_ts_split', 'src/validation/group_ts_split.py')
-    load_library('metrics', 'src/validation/metrics.py')
     load_library('metrics_description', 'src/validation/metrics_description.py')
-    
+    load_library('metrics', 'src/validation/metrics.py')
