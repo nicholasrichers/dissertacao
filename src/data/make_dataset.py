@@ -39,6 +39,48 @@ def get_data(nrows=None, low_memory=False, dataset="training", feather=False):
     return df, X, y
 
 
+def get_data_nomi(nrows=None, low_memory=False, dataset="nomi", feather=False):
+
+
+    #DOWNLOAD DATAFRAME
+    if feather==True:
+        df = pd.read_feather('../../Data/Interim/'+dataset+'_compressed.feather').iloc[:nrows,:]
+
+
+    elif dataset == "nomi_colab":
+        data_path = "/content/drive/My Drive/Numerai/numerai_training_validation_target_nomi.csv"
+        df = pd.read_csv(data_path, nrows=nrows)
+
+    else:
+        data_path = '../../Data/Interim/'+dataset+'_data.csv'
+        df = pd.read_csv(data_path, nrows=nrows)
+
+
+
+    #Low memory
+    if low_memory == True:
+        print("low memory activated")
+        df = reduce_mem_usage(df, verbose=True)
+
+    
+    #COLUMN NAMES
+    X = [c for c in df if c.startswith("feature")]
+    y = "target_nomi"
+
+    if dataset != "tournament":
+        df['era'] = df.loc[:, 'era'].str[3:].astype('int32')
+
+    #PRINT MEMORY USAGE
+    print(df.info())
+
+    #split train val APENAS NOMI
+    df_training = df[df.data_type=='train']
+    df_validation = df[df.data_type=='validation']
+
+
+    return df_training, df_validation, X, y
+
+
 
 
 
