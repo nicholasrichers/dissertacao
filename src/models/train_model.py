@@ -225,7 +225,8 @@ class TunedModel(Model):
         self.model = grid_search.best_estimator_.steps[-1][1]
         self.pipeline = Pipeline(grid_search.best_estimator_.steps[:-1])
 
-      self.results = pd.DataFrame(grid_search.cv_results_)
+      #self.results = pd.DataFrame(grid_search.cv_results_)
+      self.results = grid_search.cv_results_
 
 
 # ============================================================================================================
@@ -304,6 +305,7 @@ class TunedModel_Skopt(Model):
         self.model = grid_search.best_estimator_.steps[-1][1]
         self.pipeline = Pipeline(grid_search.best_estimator_.steps[:-1])
 
-      self.results = pd.DataFrame(grid_search.cv_results_)
+      #self.results = pd.DataFrame(grid_search.cv_results_)
+      self.results = grid_search.cv_results_
 
 
