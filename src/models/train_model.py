@@ -16,10 +16,11 @@ def build_tuned_model(name, base_model, X_train, y_train, hparams, scorer, n_ite
   elapsed = time() - start
   print("==> Elapsed seconds: {:.3f}".format(elapsed))
   
+  res_df = pd.DataFrame(model.results)
   print('Best {} model: {}'.format(model.name, model.model))
   print('Best {} score (val): {:.3f}'.format(
     model.name,
-    model.results.sort_values('mean_test_score', ascending=False).head(1).mean_test_score.values[0]))
+    res_df.sort_values('mean_test_score', ascending=False).head(1).mean_test_score.values[0]))
 
   return model
 
@@ -34,10 +35,11 @@ def build_tuned_model_skopt(name, base_model, X_train, y_train, hparams, scorer,
   elapsed = time() - start
   print("==> Elapsed seconds: {:.3f}".format(elapsed))
   
+  res_df = pd.DataFrame(model.results)
   print('Best {} model: {}'.format(model.name, model.model))
   print('Best {} score (val): {:.3f}'.format(
     model.name,
-    model.results.sort_values('mean_test_score', ascending=False).head(1).mean_test_score.values[0]))
+    res_df.sort_values('mean_test_score', ascending=False).head(1).mean_test_score.values[0]))
 
   return model
 

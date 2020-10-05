@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.pipeline import make_pipeline
+import pandas as pd
 
 #to use in google colab
 try:
@@ -16,7 +17,7 @@ except:
 def evaluate_model(features, target, model, name, param_grid, scorer, n_iter=10, cv_folds=5, n_jobs=-1, pipeline=None, fit_params={}):
   #if pipeline is None: pipeline = make_pipeline('passthrough')
   tuned_model = build_tuned_model(name, model, features, target, param_grid, scorer, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline, fit_params=fit_params)
-  results = tuned_model.results
+  results = pd.DataFrame(tuned_model.results)
   best_result = results.query('rank_test_score == 1')
   test_mean = best_result['mean_test_score'].values[0]
   test_std = best_result['std_test_score'].values[0]
@@ -27,7 +28,7 @@ def evaluate_model(features, target, model, name, param_grid, scorer, n_iter=10,
 def evaluate_model_skopt(features, target, model, name, param_grid, scorer, n_iter=10, cv_folds=5, n_jobs=-1, pipeline=None, fit_params={}):
   #if pipeline is None: pipeline = make_pipeline('passthrough')
   tuned_model = build_tuned_model_skopt(name, model, features, target, param_grid, scorer, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline, fit_params=fit_params)
-  results = tuned_model.results
+  results = pd.DataFrame(tuned_model.results)
   best_result = results.query('rank_test_score == 1')
   test_mean = best_result['mean_test_score'].values[0]
   test_std = best_result['std_test_score'].values[0]
@@ -238,8 +239,9 @@ def plot_calibration_curve(model, X_train, X_test, y_train, y_test, plot_=True):
 
 
 def get_cv_scores(model):
-  test_score_cols =[c for c in model.results.columns if c.endswith("_test_score")][:-3]
-  test_scores = model.results.sort_values('mean_test_score', ascending=False).head(1)[test_score_cols].values[0]
+  res_df = pd.DataFrame(model.results)
+  test_score_cols =[c for c in res_df.columns if c.endswith("_test_score")][:-3]
+  test_scores = res_df.sort_values('mean_test_score', ascending=False).head(1)[test_score_cols].values[0]
   return test_scores 
 
 
