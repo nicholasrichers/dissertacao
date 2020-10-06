@@ -231,7 +231,7 @@ def plot_feat_cors(df, model_names):
         # Gerando gráficos para cada status de pgto.
         trace = go.Box(y = df[model],
                        name = model,
-                       boxpoints="all",
+                       #boxpoints="all",
                        marker = {'color': cores[cor]})
 
         data.append(trace)
@@ -284,10 +284,20 @@ def plot_era_scores(df, model_names):
 
 
 def highlight_max(s):
-    # Get 5 largest values of the column
-    is_large = s.nlargest(1).values
-    # Apply style is the current value is among the 5 biggest values
-    return ['background-color: yellow' if v in is_large else '' for v in s]
+    min_cols = ["Feat_exp_max", 'Std_Dev', 'corr_with_example_preds']    
+    if s.name in min_cols:
+        # Get the smallest values of the column
+        is_large = s.nsmallest(1).values
+        # Apply style is the current value is among the biggest values
+        return ['background-color: yellow' if v in is_large else '' for v in s]
+    
+    else:
+        # Get the largest values of the column
+        is_large = s.nlargest(1).values
+        # Apply style is the current value is among the smallest values
+        return ['background-color: yellow' if v in is_large else '' for v in s]
+
+
 
 
 
