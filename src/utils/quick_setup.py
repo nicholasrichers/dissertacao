@@ -27,6 +27,7 @@ def get_libs(local=False):
     #folder src.models
     load_library('train_model', 'src/models/train_model.py', local=local)
     load_library('evaluation', 'src/models/evaluation.py', local=local)
+    load_library('rank_cv', 'src/models/rank_cv.py', local=local)
 
     #folder src.validation (MANTER A ORDEM)
     load_library('group_ts_split', 'src/validation/group_ts_split.py', local=local)
