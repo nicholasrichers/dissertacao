@@ -81,7 +81,7 @@ def  get_metrics_dicts(values):
     dict_Sharpe = {"Metrica": 'Validation_Sharpe', 
                   "Valor": values['Validation_Sharpe'], 
                   "Categoria": "Performance", 
-                  "Range_Aceitavel": "Post[>1 good, >1.2 very good][5..25] Iniciantes entre 1 e 2, competidores 14, 24", 
+                  "Range_Aceitavel": "Post[>1 good, >1.2 very good] > 1.5 Overfit", 
                   "Descricao": "Média da correlacoa por era / std corr por era, anualizado" }
 
 
@@ -106,7 +106,7 @@ def  get_metrics_dicts(values):
     dict_Adj_Sharpe = {"Metrica": 'Adj_Sharpe', 
                        "Valor": values['Adj_Sharpe'], 
                        "Categoria": "Special", 
-                       "Range_Aceitavel": "Prox ao sharpe [5..25]", 
+                       "Range_Aceitavel": "Prox ao sharpe", 
                        "Descricao": "Adjusted Sharpe Ratio adjusts for skewness and kurtosis by incorporating a penalty factor for negative skewness and excess kurtosis" }
 
     #ok
@@ -154,7 +154,7 @@ def  get_metrics_dicts(values):
     dict_Feat_exp_max = {"Metrica": 'Feat_exp_max', 
                        "Valor": values['Feat_exp_max'], 
                        "Categoria": "Risk", 
-                       "Range_Aceitavel": "[0.10..0.20] com neutralizacao cai pra .15", 
+                       "Range_Aceitavel": "[0.08..0.15]", 
                        "Descricao": "feature com maior exp" }
 
     #OK
