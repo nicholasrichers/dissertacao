@@ -126,7 +126,7 @@ class Model(object):
   def save(self, file_path):
     from joblib import dump
     #dump(self, file_path)
-    dump(self, open(file_name, "wb"))
+    dump(self, open(file_path, "wb"))
   
   @staticmethod
   def load(file_path):
