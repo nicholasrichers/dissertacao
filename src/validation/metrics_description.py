@@ -24,7 +24,7 @@ def  get_metrics_dicts(values):
     dict_Avg_corr = {"Metrica": 'Validation_Mean', 
                      "Valor": values['Validation_Mean'], 
                      "Categoria": "Performance", 
-                     "Range_Aceitavel": "[3.6%..4.4%] 4.8%, overfitting", 
+                     "Range_Aceitavel": "[3.6%..4.4%] >4.8%, overfitting", 
                      "Descricao": "Média spearman corr por era" }
 
     #OK

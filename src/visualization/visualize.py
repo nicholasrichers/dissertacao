@@ -242,8 +242,8 @@ def plot_feat_cors(df, model_names):
                        titlefont = {'family': 'Arial',
                                     'size': 22,
                                     'color': '#7f7f7f'},
-                       xaxis = {'title': 'Status'},
-                       yaxis = {'title': 'Taxa de Juros'},
+                       xaxis = {'title': 'Models'},
+                       yaxis = {'title': 'Feat_corr w/ target'},
                        paper_bgcolor = 'rgb(243, 243, 243)', #também podemos usar RGB na imagem
                        plot_bgcolor = 'rgb(243, 243, 243)')
 
