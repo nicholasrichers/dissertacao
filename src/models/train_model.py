@@ -201,7 +201,7 @@ class TunedModel(Model):
             scoring=scorer,
             return_train_score=True, 
             verbose=5,
-            error_score=23)
+            error_score=123)
         
         # Run it
         grid_search.fit(X, y, **fit_params)
