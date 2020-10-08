@@ -213,8 +213,8 @@ def plot_corr_matrix(df):
 
     ax.set_title('Spearman Corr Matrix', fontsize=18)
     # Draw the heatmap with the mask and correct aspect ratio
-    sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.7, center=0.5, 
-                square=True, linewidths=.75, cbar_kws={"shrink": .5},  annot=True)
+    sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.99, center=0.75, 
+                square=True, linewidths=.75, cbar_kws={"shrink": .8},  annot=True)
 
 
 
