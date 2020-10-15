@@ -151,7 +151,7 @@ def create_preds_meta_light(models, df, splits=3):
 
 
 
-
+import pandas as pd
 def get_stacked_data(meta_model="Sao_Paulo", kind="full", local="colab"):
 
   if local=='colab':
