@@ -144,17 +144,53 @@ def create_preds_meta_light(models, df, splits=3):
 
 
 
-def get_preds_meta(meta_model="Sao_Paulo", type="full", local="colab"):
+######################################################################
+######################################################################
+######################################################################
+######################################################################
 
 
 
 
-	return 
+def get_stacked_data(meta_model="Sao_Paulo", kind="full", local="colab"):
+
+  if local=='colab':
+    file_path = '/content/drive/My Drive/Numerai/'+meta_model+'/stacked_data_'+kind+'.pickle'
+
+  else:
+    file_path = '../../Data/processed/meta_model/'+meta_model+'/stacked_data_'+kind+'.pickle'
+
+
+  import pickle
+  with open(file_path, 'rb') as handle: #load
+      stacked_data = pickle.load(handle)  
+
+
+  return stacked_data
 
 
 
+#only accpets light data
+def mount_stacked_data_light(data, model_names, train):
 
+  df = pd.DataFrame()
+  for fold in data.keys():
+    df_X = pd.DataFrame(data[fold]['Xtest'])
+    df_y = pd.DataFrame(data[fold]['ytest'])
+    target_name = data[fold]['ytest'].name
+    
+    #concat both dataframes with right index
+    df_fold = pd.concat([df_X.set_index(df_y.index), df_y], axis=1)
+    df_fold['ind'] = df_fold.index
+    df=df.append(df_fold)
 
+  df = df.sort_values('ind')
+  df.drop(['ind'], axis=1, inplace=True)
+  df.set_axis(model_names+[target_name], axis=1, inplace=True)
+  df['era'] = train.era
+  df['id'] = train.id
+
+  return df, model_names
 
 
 
