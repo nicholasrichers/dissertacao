@@ -1,7 +1,7 @@
 
 from sklearn.model_selection import  cross_val_predict, GroupKFold
 
-def get_preds_meta_vanilla(models, df, splits=3):
+def get_preds_meta_cv(models, df, splits=3):
 
 
   features = [c for c in df if c.startswith("feature")]
@@ -20,24 +20,32 @@ def get_preds_meta_vanilla(models, df, splits=3):
       print("fitting fold:", fold)
       X_train, X_test = X.iloc[tr], X.iloc[ts]
       y_train, y_test = y.iloc[tr], y.iloc[ts]
-      
+      X_train_rank = X_train.copy()
+      X_train_rank['era'] = df.iloc[tr].era
+
 
 
       predictions_cv, predictions_test = [], []
       for name, model_pipe in models.items():
+          print("creating predictions to:", name)
+          model = model_pipe.model
 
           #grp k-fold interno
-          eras_in = df.iloc[tr].era.values
+          eras_in = df.iloc[tr].era
           CV_in = GroupKFold(n_splits = splits)
-          grp_in = CV_in.split(X_train ,y_train, eras_in)
+          grp_in = CV_in.split(X_train, y_train, eras_in.values)
+          
+          if name.startswith('xgb_ranker'):
+            predictions_cv.append(cross_val_predict(model, X_train_rank, y_train, cv=grp_in).reshape(-1,1))
+            model.fit(X_train_rank, y_train)
 
+          else:
+            predictions_cv.append(cross_val_predict(model, X_train, y_train, cv=grp_in).reshape(-1,1))
+            model.fit(X_train, y_train)
 
-          model = model_pipe.model
-          print("creating predictions to:", name)
-          predictions_cv.append(cross_val_predict(model, X_train, y_train, cv=grp_in).reshape(-1,1))
-          model.fit(X_train, y_train)
           ptest = model.predict(X_test)
           predictions_test.append(ptest.reshape(-1,1))
+      
       
       #out loop
       predictions_cv = np.concatenate(predictions_cv, axis=1)
@@ -59,6 +67,5 @@ def get_preds_meta_vanilla(models, df, splits=3):
   return stack_data
     
 
-
-
-#stack_data = get_preds_meta(models_meta, df_training, splits=3)
+#stack_data, era_series = get_preds_meta_cv(models_meta, df_training, splits=3)
+#stack_data
