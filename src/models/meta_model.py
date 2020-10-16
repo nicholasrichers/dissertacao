@@ -150,28 +150,32 @@ def create_preds_meta_light(models, df, splits=3):
 ######################################################################
 
 
-
+import pickle
 import pandas as pd
 def get_stacked_data(meta_model="Sao_Paulo", kind="full", local="colab"):
 
   if local=='colab':
-    file_path = '/content/drive/My Drive/Numerai/'+meta_model+'/stacked_data_'+kind+'.pickle'
+    file_path = '/content/drive/My Drive/Numerai/'+meta_model+'/stacked_data_'+kind+'.csv'
 
   else:
-    file_path = '../../Data/processed/meta_model/'+meta_model+'/stacked_data_'+kind+'.pickle'
+
+    file_path = '../../Data/processed/meta_model/'+meta_model+'/stacked_data_'+kind+'.csv'
+
+  stacked_data= pd.read_csv(file_path)
 
 
-  import pickle
-  with open(file_path, 'rb') as handle: #load
-      stacked_data = pickle.load(handle)  
 
+  #with open(file_path, 'rb') as handle: #load
+  #    stacked_data = pickle.load(handle)  
 
+  #print(stacked_data)
   return stacked_data
 
 
 
 #only accpets light data
 def mount_stacked_data_light(data, model_names, train):
+	#Ainda precisa incluir o target kaz e nomear as features no padrao feature_<Model
 
   df = pd.DataFrame()
   for fold in data.keys():
