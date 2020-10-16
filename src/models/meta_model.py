@@ -169,7 +169,7 @@ def get_stacked_data_full(meta_model="Sao_Paulo",  local="colab"):
       stacked_data = pickle.load(handle)  
 
   #print(stacked_data)
-  return stacked_data, l1_features
+  return stacked_data
 
 
 
