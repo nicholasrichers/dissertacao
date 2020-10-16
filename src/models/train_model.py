@@ -154,8 +154,8 @@ class Model(object):
       
     return (score.mean(), score.std())
 
-  def save_cv_scores(self, scores):
-    #"store cv scoresto use later"
+  def save_cv_scores(self, scores): 
+    #"store cv scores to use later"
     self.results = scores
 
 # ============================================================================================================
