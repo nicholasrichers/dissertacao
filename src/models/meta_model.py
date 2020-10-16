@@ -152,24 +152,42 @@ def create_preds_meta_light(models, df, splits=3):
 
 import pickle
 import pandas as pd
-def get_stacked_data(meta_model="Sao_Paulo", kind="full", local="colab"):
 
+
+
+def get_stacked_data_full(meta_model="Sao_Paulo",  local="colab"):
+
+  ext='.csv'
   if local=='colab':
-    file_path = '/content/drive/My Drive/Numerai/'+meta_model+'/stacked_data_'+kind+'.csv'
+    file_path = '/content/drive/My Drive/Numerai/'+meta_model+'/stacked_data_full.pickle'
 
   else:
-
-    file_path = '../../Data/processed/meta_model/'+meta_model+'/stacked_data_'+kind+'.csv'
-
-  stacked_data= pd.read_csv(file_path)
+    file_path = '../../Data/processed/meta_model/'+meta_model+'/stacked_data_full.pickle'
 
 
-
-  #with open(file_path, 'rb') as handle: #load
-  #    stacked_data = pickle.load(handle)  
+  with open(file_path, 'rb') as handle: #load
+      stacked_data = pickle.load(handle)  
 
   #print(stacked_data)
-  return stacked_data
+  return stacked_data, l1_features
+
+
+
+
+
+
+
+def get_stacked_data_light(meta_model="Sao_Paulo", local="colab"):
+
+  if local=='colab':
+    file_path = '/content/drive/My Drive/Numerai/'+meta_model+'/stacked_data_light.csv'
+
+  else:
+    file_path = '../../Data/processed/meta_model/'+meta_model+'/stacked_data_'+kind+ext
+
+  stacked_data= pd.read_csv(file_path)
+  l1_features = [c for c in stacked_data if c.startswith("feature")]
+  return stacked_data, l1_features
 
 
 
@@ -191,8 +209,10 @@ def mount_stacked_data_light(data, model_names, train):
   df = df.sort_values('ind')
   df.drop(['ind'], axis=1, inplace=True)
   df.set_axis(model_names+[target_name], axis=1, inplace=True)
+  df['target_kazutsugi'] = train.target_kazutsugi
   df['era'] = train.era
   df['id'] = train.id
+
 
   return df, model_names
 
