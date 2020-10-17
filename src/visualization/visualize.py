@@ -299,7 +299,26 @@ def highlight_max(s):
 
 
 
+#compare metrics
+def highlight_top3(s):
+    # Get 3 largest values of the column
+    is_large = s.nlargest(3).values
+    # Apply style is the current value is among the 5 biggest values
+    return ['background-color: lightgreen' if v in is_large else '' for v in s]
 
+def leaderboard_test_val(metrics_test, metrics_val, model_names, cols):
+    
+    leaderboard_val = metrics_val.loc[:,model_names].loc[cols, :].T
+    leaderboard_test = metrics_test.loc[:,model_names].loc[cols, :].T
+    
+    test_cols = [str(c)+'_on_Test' for c in cols]
+    leaderboard_test.set_axis(test_cols, axis=1, inplace=True)
+    leaderboard = pd.concat([leaderboard_val, leaderboard_test], axis=1)
+    
+    
+    l=leaderboard.sort_values(cols[0], ascending=False).astype(float).style.apply(highlight_top3, axis = 0)
+    
+    return l
 
 
 

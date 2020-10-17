@@ -183,7 +183,7 @@ def get_stacked_data_light(meta_model="Sao_Paulo", local="colab"):
     file_path = '/content/drive/My Drive/Numerai/'+meta_model+'/stacked_data_light.csv'
 
   else:
-    file_path = '../../Data/processed/meta_model/'+meta_model+'/stacked_data_'+kind+ext
+    file_path = '../../Data/processed/meta_model/'+meta_model+'/stacked_data_light.csv'
 
   stacked_data= pd.read_csv(file_path)
   l1_features = [c for c in stacked_data if c.startswith("feature")]

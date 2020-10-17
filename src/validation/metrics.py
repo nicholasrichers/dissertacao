@@ -277,13 +277,20 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
     #by feature metrics
     values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
 
-    if mmc==True:
-	    values['Feat_neutral_mean'] = get_feature_neutral_mean(df_val, preds)
-	    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = mmc_metrics(df_val, preds)
 
+
+    if model_name=="ex_preds": 
+        values['Feat_neutral_mean'] = 0
 
     else:
-	    values['Feat_neutral_mean'] = 0
+        values['Feat_neutral_mean'] = get_feature_neutral_mean(df_val, preds)
+
+
+
+    if mmc==True:
+	    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = mmc_metrics(df_val, preds)
+
+    else:
 	    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = 0,0,1 ,preds
 
 
