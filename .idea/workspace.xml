@@ -2,24 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="38b01180-aefe-4e63-87f6-1abca4f2c936" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/models/GBM_model_python_1597566247245_1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/GBM_model_python_1597645189701_1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/nick_richers_trained_kazutsugi.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/nrichers_trained_kazutsugi.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/pycaret-teste.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/rf-baseline-pipeline.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/rf-baseline.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/sao_paulo-baseline.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/sao_paulo-pipeline.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/Baseline/0.2-Baseline_Pycaret.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Baseline/0.2-Baseline_Pycaret.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/Baseline/logs.log" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Baseline/logs.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebooks/Sao_Paulo/1.0-Sao_Paulo-Tipo_Modelo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Sao_Paulo/1.0-Sao_Paulo-Tipo_Modelo.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reports/pycaret_compare_results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/reports/pycaret_compare_results.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/bayes_grid_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/bayes_grid_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/param_grid_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/param_grid_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/train_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/train_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/validation/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/validation/metrics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/validation/metrics_description.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/validation/metrics_description.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/train_sao_paulo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/train_sao_paulo.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
