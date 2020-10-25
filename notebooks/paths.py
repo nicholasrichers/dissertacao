@@ -5,7 +5,6 @@ path = os.getcwd()
 # parent directory 
 parent = os.path.dirname(path)
 gr_parent = os.path.dirname(parent)
-print("ooo")
 
 sys.path.insert(1, parent) 
 sys.path.insert(1, gr_parent)

@@ -13242,7 +13242,8 @@ $(document).ready(function(){
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Apresenta&#231;&#227;o-do-problema">Apresenta&#231;&#227;o do problema<a class="anchor-link" href="#Apresenta&#231;&#227;o-do-problema">&#182;</a></h2><p>O problema de predição de preços de ações é <strong>muito difícil</strong>, há anos fundos quantitativos tentam abordar esse problema, porém <strong>nem sempre com sucesso</strong>.</p>
-<p><img src="../../reports/figures/cap1/quant_funds_struggle.png" /></p>
+<p><img src="https://github.com/nicholasrichers/dissertacao/blob/master/reports/figures/cap1/quant_funds_struggle.png?raw=true" /></p>
+<p><em>Fonte: <a href="https://www.barrons.com/articles/quant-funds-struggled-in-2019-the-outlook-for-this-year-is-more-of-the-same-51579782601">https://www.barrons.com/articles/quant-funds-struggled-in-2019-the-outlook-for-this-year-is-more-of-the-same-51579782601</a></em></p>
 
 </div>
 </div>
@@ -13487,7 +13488,8 @@ Name: ticker, Length: 4833, dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Esses-Valores-se-referem-ao-bloomberg-ticker">Esses Valores se referem ao bloomberg ticker<a class="anchor-link" href="#Esses-Valores-se-referem-ao-bloomberg-ticker">&#182;</a></h3><p><img src="../../reports/figures/cap1/immx_bloom.png" widht=200 /></p>
+<h3 id="Esses-Valores-se-referem-ao-bloomberg-ticker">Esses Valores se referem ao bloomberg ticker<a class="anchor-link" href="#Esses-Valores-se-referem-ao-bloomberg-ticker">&#182;</a></h3><p><img src="https://github.com/nicholasrichers/dissertacao/blob/master/reports/figures/cap1/immx_bloom.png?raw=true" widht=200 /></p>
+<p><em>Fonte: <a href="https://www.bloomberg.com/quote/IMUX:US">https://www.bloomberg.com/quote/IMUX:US</a></em></p>
 
 </div>
 </div>
@@ -13672,6 +13674,7 @@ Name: ticker, Length: 4833, dtype: object</pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="&#205;ndice-de-For&#231;a-Relativa-(RSI):">&#205;ndice de For&#231;a Relativa (RSI):<a class="anchor-link" href="#&#205;ndice-de-For&#231;a-Relativa-(RSI):">&#182;</a></h4><p>O RSI é um indicadorde <strong>análise técnica</strong> que busca medir se o ativo está <strong>excessivamente vendido (RSI&gt;70)</strong> ou <strong>excessivamente comprado (RSI&lt;30)</strong>.</p>
 $$RSI = 100 - (100/(1 + RS))$$<p><em>RS = Média dos retornos nos períodos de alta / Média dos retornos nos períodos de baixa</em></p>
+<p><em>Fonte:  WILDER, J.New Concepts in Technical Trading Systems. Trend Research, 1978</em></p>
 
 </div>
 </div>
@@ -14684,6 +14687,22 @@ Number of eras in data: 851
 <h2 id="Agora-podemos-treinar-um-modelo-de-apredizado-supervisionado-com-esses-dados-e-gerar-previs&#245;es">Agora podemos treinar um modelo de apredizado supervisionado com esses dados e gerar previs&#245;es<a class="anchor-link" href="#Agora-podemos-treinar-um-modelo-de-apredizado-supervisionado-com-esses-dados-e-gerar-previs&#245;es">&#182;</a></h2>
 </div>
 </div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Como-s&#227;o-as-predi&#231;&#245;es">Como s&#227;o as predi&#231;&#245;es<a class="anchor-link" href="#Como-s&#227;o-as-predi&#231;&#245;es">&#182;</a></h3>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="https://github.com/nicholasrichers/dissertacao/blob/master/reports/figures/cap1/prediction.png?raw=true![image.png](attachment:image.png)" width=500/></p>
+<p><em>Fonte: <a href="https://docs.numer.ai/numerai-signals/signals-overview">https://docs.numer.ai/numerai-signals/signals-overview</a></em></p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input_hidden">
@@ -14706,29 +14725,42 @@ Number of eras in data: 851
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Suggestions-for-improvement">Suggestions for improvement<a class="anchor-link" href="#Suggestions-for-improvement">&#182;</a></h2><p>This example script isn't perfect, but it's a great framework to build off of.</p>
+<h2 id="Como-podemos-melhorar">Como podemos melhorar<a class="anchor-link" href="#Como-podemos-melhorar">&#182;</a></h2>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li><p>Try different features or other technical indicators derived from price data. RSI is used as an example here, but there are many others like it (MACD, EWMA, etc.). We used a short-term window of time. Try to use longer time windows and intervals.</p>
-</li>
-<li><p>Additional feature engineering may go a long way. We took RSI quintiles and their lags and differences, but the number of possible combinations is much larger. See <a href="https://github.com/blue-yonder/tsfresh/blob/main/tsfresh/feature_extraction/feature_calculators.py">https://github.com/blue-yonder/tsfresh/blob/main/tsfresh/feature_extraction/feature_calculators.py</a> for other ideas (h/t objectscience). Think about how to turn time series price data into a cross-sectional machine learning problem.</p>
-</li>
-<li><p>Neutralize your features with respect to time. Taking relative rankings within each era and differencing can help like we did here, but more attention to stationarity will likely improve performance.</p>
-</li>
-<li><p>Find non-price data to layer into your feature set. Pricing data and its derivatives will be the most common and therefore likely the most correlated with other submissions.</p>
-</li>
-<li><p>Neutralize your features to country, sector, industry, or other fields/metadata that may be specific to a group of securities.</p>
-</li>
-<li><p>Try other types of algorithms/models and tune your hyper-parameters with time-series cross-validation. <a href="https://forum.numer.ai/t/era-wise-time-series-cross-validation/791">https://forum.numer.ai/t/era-wise-time-series-cross-validation/791</a></p>
-</li>
-<li><p>Make your own targets. It's possible your alpha from other timeframes and strategies will do well on Numerai Signals. Submit and check your diagnostics.</p>
-</li>
-<li><p>Lean on the community. This script already has many suggestions and implementations from other community members baked in. Share your thoughts at <a href="https://community.numer.ai/channel/signals">https://community.numer.ai/channel/signals</a></p>
+<li>Como aprimorar o conjunto de dados:<ul>
+<li>Análise Técnica (MACD, EWMA, MFI)</li>
+<li>Análise Fundamentalista (P/E ratio, dividend yield, analyst ratings)</li>
+<li>Indicadores mistos (Barra risk factors, Fama French factors)</li>
+<li>Dados Alternativos(Transações de cartões, imagens de satélite, análise de rede social)</li>
+</ul>
 </li>
 </ul>
 
 </div>
 </div>
-</div></section></section><section><section>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Como-conseguir-dados-de-boa-qualidade?">Como conseguir dados de boa qualidade?<a class="anchor-link" href="#Como-conseguir-dados-de-boa-qualidade?">&#182;</a></h4>
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="https://github.com/nicholasrichers/dissertacao/blob/master/reports/figures/cap1/ds_with_no_data.png?raw=true" width=1000/></p>
+<p><em>Fonte: <a href="https://docs.numer.ai/numerai-signals/signals-overview">https://docs.numer.ai/numerai-signals/signals-overview</a></em></p>
+
+</div>
+</div>
+</div></div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -14758,7 +14790,8 @@ Number of eras in data: 851
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Distribui&#231;&#227;o-das-a&#231;&#245;es-por-pa&#237;s">Distribui&#231;&#227;o das a&#231;&#245;es por pa&#237;s<a class="anchor-link" href="#Distribui&#231;&#227;o-das-a&#231;&#245;es-por-pa&#237;s">&#182;</a></h4><p><img src="../../reports/figures/cap1/flavio.png" /></p>
+<h4 id="Como-o-mercado-trabalha">Como o mercado trabalha<a class="anchor-link" href="#Como-o-mercado-trabalha">&#182;</a></h4><p><img src="https://github.com/nicholasrichers/dissertacao/blob/master/reports/figures/cap1/flavio.png?raw=true" width=800/></p>
+<p><em>Fonte: <a href="https://www.linkedin.com/">https://www.linkedin.com/</a></em></p>
 
 </div>
 </div>
@@ -14776,7 +14809,7 @@ Number of eras in data: 851
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input_hidden">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>jupyter nbconvert Cap1_intro.ipynb --to slides --template output_toggle  --SlidesExporter.reveal_scroll<span class="o">=</span>True --SlidesExporter.reveal_theme<span class="o">=</span>white #--post serve
@@ -14799,7 +14832,7 @@ Number of eras in data: 851
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook Cap1_intro.ipynb to slides
-[NbConvertApp] Writing 377883 bytes to Cap1_intro.slides.html
+[NbConvertApp] Writing 381676 bytes to Cap1_intro.slides.html
 </pre>
 </div>
 </div>
