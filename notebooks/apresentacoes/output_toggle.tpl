@@ -25,7 +25,7 @@
 
 <script>
 $(document).ready(function(){
-  $(".output_wrapper").click(function(){
+  $(".output_wrapper").dblclick(function(){
       $(this).prev('.input_hidden').slideToggle();
   });
 })
