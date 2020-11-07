@@ -42,8 +42,8 @@ def  get_metrics_dicts(values):
                      "Descricao": "Variancia spearman corr por era" }
 
     #OK
-    dict_Std_Dev = {"Metrica": 'Std_Dev', 
-                    "Valor": values['Std_Dev'], 
+    dict_Std_Dev = {"Metrica": 'Validation_SD', 
+                    "Valor": values['Validation_SD'], 
                     "Categoria": "Risk", 
                     "Range_Aceitavel": "[0..] Próximo a zero", 
                     "Descricao": "Std spearman corr por era" }
@@ -100,6 +100,14 @@ def  get_metrics_dicts(values):
                           "Categoria": "Financeira", 
                           "Range_Aceitavel": "Pouco menor que o sharpe", 
                           "Descricao": "sharpe menos transaction costs" }
+
+      #OK
+    dict_ann_Sharpe = {"Metrica": "Annual_Sharpe", 
+                          "Valor": values['Ann_Sharpe'], 
+                          "Categoria": "Financeira", 
+                          "Range_Aceitavel": "Pouco menor que o sharpe", 
+                          "Descricao": "sharpe menos transaction costs * sqrt 12" }
+
 
 
     #OK
@@ -209,9 +217,9 @@ def  get_metrics_dicts(values):
                              ,dict_Max_Drawdown
 
                              #MMC
-                             ,dict_val_mmc
                              ,dict_corr_mmc
-                             ,dict_corr_ex_preds
+                             ,dict_val_mmc #OK
+                             ,dict_corr_ex_preds #OK
 
 
                              #Special
@@ -223,6 +231,7 @@ def  get_metrics_dicts(values):
                               #Financeira
                              ,dict_Smart_Sharpe
                              ,dict_Numerai_Sharpe
+                             ,dict_ann_Sharpe
                              ,dict_VaR_10
                              ,dict_Sortino_Ratio
                              ,dict_Smart_Sortino_Ratio

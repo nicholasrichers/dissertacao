@@ -18,7 +18,8 @@ PREDICTION_NAME = f"prediction_{TOURNAMENT_NAME}"
 
 
 #OK
-def spearmanr(target, pred):
+def spearman(pred, target):
+    #print("ooo")
     return np.corrcoef(target, pred.rank(pct=True, method="first"))[0, 1]
 
 #Pearson corr
@@ -35,7 +36,7 @@ def autocorr_penalty(x):
 #https://quant.stackexchange.com/questions/22397/sharpe-ratio-why-the-normalization-factor?noredirect=1&lq=1
 #https://quant.stackexchange.com/questions/2260/how-to-annualize-sharpe-ratio
 def validation_sharpe(x):
-    return np.mean(x)/np.std(x) * np.sqrt(12)
+    return np.mean(x)/np.std(x) #* np.sqrt(12)
 
 
 
@@ -52,16 +53,16 @@ def max_drawdown(x):
 ##ddof = delta degrees of freedom
 ## https://www.statsdirect.com/help/basics/degrees_of_freedom.htm
 def smart_sharpe(x):
-    return (np.mean(x)/(np.std(x, ddof=1) * autocorr_penalty(x)) * np.sqrt(12)) 
+    return (np.mean(x)/(np.std(x, ddof=1) * autocorr_penalty(x)) #* np.sqrt(12)) 
 
 
 ##approximated their average trading costs
 def numerai_sharpe(x):
-    return ((np.mean(x) - 0.010415154) / np.std(x, ddof=1)) * np.sqrt(12)
+    return ((np.mean(x) - 0.010415154) / np.std(x, ddof=1)) #* np.sqrt(12)
 
 ## usado embaixo
 def annual_sharpe(x):
-    return ((np.mean(x) -0.010415154) /np.std(x, ddof=1)) * np.sqrt(12) 
+    return ((np.mean(x) -0.010415154) /np.std(x, ddof=1)) #* np.sqrt(12) 
 
 
 
@@ -103,12 +104,23 @@ def payout(scores):
 #OK
 def feature_exposure(df, pred):
     #df = df[df.data_type == 'validation']
+    pred = pd.Series(pred, index=df.index)
+
     feature_columns = [x for x in df.columns if x.startswith('feature_')]
     correlations = []
     for col in feature_columns:
-        correlations.append(np.corrcoef(pred, df[col])[0, 1])
+        correlations.append(np.corrcoef(pred.rank(pct=True, method="first"), df[col])[0, 1])
     corr_series = pd.Series(correlations, index=feature_columns)
     return np.std(correlations), max(np.abs(correlations)), corr_series
+
+
+
+# Submissions are scored by spearman correlation
+def correlation(predictions, targets):
+    ranked_preds = predictions.rank(pct=True, method="first")
+    return np.corrcoef(ranked_preds, targets)[0, 1]
+
+
 
 
 
@@ -132,7 +144,7 @@ def get_feature_neutral_mean(df, preds):
     feature_cols = [c for c in df.columns if c.startswith("feature")]
     df.loc[:, "neutral_sub"] = neutralize(df, ["preds"], feature_cols)["preds"]
 
-    scores = df.groupby("era").apply(lambda x: spearmanr(x["neutral_sub"], x[TARGET_NAME])).mean()
+    scores = df.groupby("era").apply(lambda x: spearman(x["neutral_sub"], x[TARGET_NAME])).mean()
     return np.mean(scores)
 
 
@@ -185,7 +197,7 @@ def mmc_metrics(df, preds):
 	                               pd.Series(unif(x["ExamplePreds"])))
 
 	    mmc_scores.append(np.cov(series, x[TARGET_NAME])[0, 1] / (0.29 ** 2))
-	    corr_scores.append(spearmanr(unif(x["preds"]), x[TARGET_NAME]))
+	    corr_scores.append(spearman(unif(x["preds"]), x[TARGET_NAME]))
 
 	val_mmc_mean = np.mean(mmc_scores)
 	val_mmc_std = np.std(mmc_scores)
@@ -241,7 +253,7 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
         
     for era in new_df['era'].unique():
         era_df = new_df[new_df['era'] == era]
-        era_scores[era] = spearmanr(era_df['pred'], era_df['target'])
+        era_scores[era] = spearman(era_df['pred'], era_df['target'])
 
     era_scores.sort_values(inplace=True)
     era_scores.sort_index(inplace=True)
@@ -258,7 +270,7 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
     values['Validation_Mean'] = np.mean(era_scores)
     values['Median_corr'] = np.median(era_scores)
     values['Variance'] = np.var(era_scores)
-    values['Std_Dev'] = np.std(era_scores)
+    values['Validation_SD'] = np.std(era_scores)
     values['AR(1)'] = ar1(era_scores)
     values['Skewness'] = skew(era_scores)
     values['Exc_Kurtosis'] = kurtosis(era_scores)
