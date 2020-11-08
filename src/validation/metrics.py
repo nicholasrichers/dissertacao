@@ -53,7 +53,7 @@ def max_drawdown(x):
 ##ddof = delta degrees of freedom
 ## https://www.statsdirect.com/help/basics/degrees_of_freedom.htm
 def smart_sharpe(x):
-    return (np.mean(x)/(np.std(x, ddof=1) * autocorr_penalty(x)) #* np.sqrt(12)) 
+    return (np.mean(x)/(np.std(x, ddof=1) * autocorr_penalty(x))) #* np.sqrt(12)) 
 
 
 ##approximated their average trading costs
@@ -278,7 +278,7 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
     values['Validation_Sharpe'] = validation_sharpe(era_scores)
     values['Smart_Sharpe'] = smart_sharpe(era_scores)
     values['Numerai_Sharpe'] = numerai_sharpe(era_scores)
-    #values['Ann_Sharpe'] = annual_sharpe(era_scores)
+    values['Ann_Sharpe'] = annual_sharpe(era_scores)
     values['Adj_Sharpe'] = adj_sharpe(era_scores)
     values['VaR_10%'] = VaR(era_scores)
     values['Sortino_Ratio'] = sortino_ratio(era_scores)
