@@ -284,7 +284,7 @@ def plot_era_scores(df, model_names):
 
 
 def highlight_max(s):
-    min_cols = ["Feat_exp_max", 'Std_Dev', 'corr_with_example_preds']    
+    min_cols = ["Feat_exp_max", 'Validation_SD', 'corr_with_example_preds']    
     if s.name in min_cols:
         # Get the smallest values of the column
         is_large = s.nsmallest(1).values
