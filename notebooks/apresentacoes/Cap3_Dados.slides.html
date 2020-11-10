@@ -14654,7 +14654,7 @@ TimeSeriesSplit(max_train_size=None, n_splits=5)
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Dataset-de-valida&#231;&#227;o">Dataset de valida&#231;&#227;o<a class="anchor-link" href="#Dataset-de-valida&#231;&#227;o">&#182;</a></h3><ul>
 <li>Usaremos o dataset de "validação"</li>
-<li>Eras 121 a 206 (dados do futuro)</li>
+<li>Eras 121-132 e 198-206 (dados do futuro)</li>
 <li>Dados referentes a rodadas anteriores já resolvidas (atualização semestral)</li>
 </ul>
 
@@ -14864,7 +14864,7 @@ TimeSeriesSplit(max_train_size=None, n_splits=5)
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Dataset-de-Treino">Dataset de Treino<a class="anchor-link" href="#Dataset-de-Treino">&#182;</a></h2><ul>
+<h2 id="Dataset-de-Teste">Dataset de Teste<a class="anchor-link" href="#Dataset-de-Teste">&#182;</a></h2><ul>
 <li>São utilizados para a Numerai avaliar as predições dos participantes</li>
 <li>Contém dados de rodadas já resolvidas</li>
 <li>A variável alvo nao está disponível</li>
@@ -15078,12 +15078,12 @@ TimeSeriesSplit(max_train_size=None, n_splits=5)
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Dataset-Valida&#231;&#227;o">Dataset Valida&#231;&#227;o<a class="anchor-link" href="#Dataset-Valida&#231;&#227;o">&#182;</a></h3><p><img src="https://github.com/nicholasrichers/dissertacao/blob/master/references/figures/cap2/df_validation.png?raw=true" alt="Drawing" style="width: 350px;"/></p>
+<h4 id="Datasets-Treino,-Valida&#231;&#227;o-e-Teste">Datasets Treino, Valida&#231;&#227;o e Teste<a class="anchor-link" href="#Datasets-Treino,-Valida&#231;&#227;o-e-Teste">&#182;</a></h4><p><img src="https://github.com/nicholasrichers/dissertacao/blob/master/references/figures/cap2/df_validation.png?raw=true" alt="Drawing" style="width: 350px;"/></p>
 <p><em>Fonte: Documentação Numerai</em></p>
 
 </div>
 </div>
-</div></section><section>
+</div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -15091,7 +15091,100 @@ TimeSeriesSplit(max_train_size=None, n_splits=5)
 
 </div>
 </div>
-</div></section></section><section><section>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Metricas-de-performance">Metricas de performance<a class="anchor-link" href="#Metricas-de-performance">&#182;</a></h3><p>Medem de maneira direta o retorno financeiro das predições</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Sharpe-Ratio">Sharpe Ratio<a class="anchor-link" href="#Sharpe-Ratio">&#182;</a></h4>$$Sharpe\_Ratio =  \frac{\mu}{\sigma}$$
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Validation-Mean">Validation Mean<a class="anchor-link" href="#Validation-Mean">&#182;</a></h4><p>Média da correlação de spearman por era</p>
+$${\displaystyle r_{s}=\rho _{\operatorname {rg} _{X},\operatorname {rg} _{Y}}={\frac {\operatorname {cov} (\operatorname {rg} _{X},\operatorname {rg} _{Y})}{\sigma _{\operatorname {rg} _{X}}\sigma _{\operatorname {rg} _{Y}}}},}$$
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Feature-neutral-mean-(REVER)">Feature neutral mean (REVER)<a class="anchor-link" href="#Feature-neutral-mean-(REVER)">&#182;</a></h4>$$Sharpe\_Ratio =  \frac{\mu}{\sigma}$$
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Metricas-de-risco">Metricas de risco<a class="anchor-link" href="#Metricas-de-risco">&#182;</a></h3><p>Medem a estabilidade dos modelos</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Validation-SD">Validation SD<a class="anchor-link" href="#Validation-SD">&#182;</a></h4><ul>
+<li>Desvio padrão dos retornos por era.</li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Feature-exposure-(REVER)">Feature exposure (REVER)<a class="anchor-link" href="#Feature-exposure-(REVER)">&#182;</a></h4>$$Drawdown(T) = max \left \{0, \underset{t \in(0,T)}{max} X(t) - X(T)  \right \}$$
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Max-Drawdown">Max Drawdown<a class="anchor-link" href="#Max-Drawdown">&#182;</a></h4>$$Drawdown(T) = max \left \{0, \underset{t \in(0,T)}{max} X(t) - X(T)  \right \}$$
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Metricas-de-originalidade">Metricas de originalidade<a class="anchor-link" href="#Metricas-de-originalidade">&#182;</a></h3>
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="MMC-Mean">MMC Mean<a class="anchor-link" href="#MMC-Mean">&#182;</a></h4>$$Sharpe\_Ratio =  \frac{\mu}{\sigma}$$
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Corr-+-MMC-Sharpe">Corr + MMC Sharpe<a class="anchor-link" href="#Corr-+-MMC-Sharpe">&#182;</a></h4>$$Sharpe\_Ratio(Retornos + MMC) =  \frac{\mu}{\sigma}$$
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Corr-w/-Example-Preds">Corr w/ Example Preds<a class="anchor-link" href="#Corr-w/-Example-Preds">&#182;</a></h4><ul>
+<li>É a correlação de spearman das predições, com as predições do modelo de referencia</li>
+</ul>
+
+</div>
+</div>
+</div></div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -15154,11 +15247,18 @@ TimeSeriesSplit(max_train_size=None, n_splits=5)
 </div>
 </div>
 
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Ser&#225;-o-nosso-primeiro-modelo-a-participar-do-torneiro">Ser&#225; o nosso primeiro modelo a participar do torneiro<a class="anchor-link" href="#Ser&#225;-o-nosso-primeiro-modelo-a-participar-do-torneiro">&#182;</a></h3>
+</div>
+</div>
 </div></div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Avaliando-nos-dados-de-valida&#231;&#227;o">Avaliando nos dados de valida&#231;&#227;o<a class="anchor-link" href="#Avaliando-nos-dados-de-valida&#231;&#227;o">&#182;</a></h3>
+<h3 id="Testando-os-modelos-nos-dados-de-valida&#231;&#227;o">Testando os modelos nos dados de valida&#231;&#227;o<a class="anchor-link" href="#Testando-os-modelos-nos-dados-de-valida&#231;&#227;o">&#182;</a></h3>
 </div>
 </div>
 </div><div class="fragment">
@@ -15221,6 +15321,14 @@ if (outputEl) {{
 </div>
 
 </div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Diagn&#243;stico-NR__RIo">Diagn&#243;stico NR__RIo<a class="anchor-link" href="#Diagn&#243;stico-NR__RIo">&#182;</a></h2><p><img src="https://github.com/nicholasrichers/dissertacao/blob/master/references/figures/cap3/diag_rio.png?raw=true" alt="Drawing" style="width: 200px;"/></p>
+
+</div>
+</div>
+</div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -15361,7 +15469,7 @@ if (outputEl) {{
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input_hidden">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[88]:</div>
+<div class="prompt input_prompt">In&nbsp;[97]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>jupyter nbconvert Cap3_Dados.ipynb --to slides  --template output_toggle  --SlidesExporter.reveal_scroll<span class="o">=</span>True --SlidesExporter.reveal_theme<span class="o">=</span>white  #--reveal-prefix<span class="o">=</span>reveal.js --post serve
@@ -15384,7 +15492,7 @@ if (outputEl) {{
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook Cap3_Dados.ipynb to slides
-[NbConvertApp] Writing 666506 bytes to Cap3_Dados.slides.html
+[NbConvertApp] Writing 672608 bytes to Cap3_Dados.slides.html
 </pre>
 </div>
 </div>
