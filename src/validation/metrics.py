@@ -291,8 +291,8 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
 
 
 
-    if model_name=="ex_preds": 
-        values['Feat_neutral_mean'] = 0
+    if model_name=="ex_preds":
+        values['Feat_neutral_mean'] = get_feature_neutral_mean(df_val, preds)
 
     else:
         values['Feat_neutral_mean'] = get_feature_neutral_mean(df_val, preds)
@@ -303,7 +303,7 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
 	    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = mmc_metrics(df_val, preds)
 
     else:
-	    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = 0,0,1 ,preds
+	    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = 0,validation_sharpe(era_scores),1 ,preds
 
 
 
