@@ -4,12 +4,12 @@
 import pandas as pd
 import numpy as np
 
-def get_data(nrows=None, low_memory=False, dataset="training", feather=False):
+def get_data(nrows=None, low_memory=False, dataset="training", feather=True):
 
 
     #DOWNLOAD DATAFRAME
     if feather==True:
-    	df = pd.read_feather('../../Data/Interim/'+dataset+'_compressed.feather').iloc[:nrows,:]
+    	df = pd.read_feather('../../Data/Interim/'+dataset+'_val3.feather').iloc[:nrows,:]
 
     elif dataset == "validation":
         data_path = '../../Data/Interim/'+dataset+'_data.csv'
@@ -29,9 +29,9 @@ def get_data(nrows=None, low_memory=False, dataset="training", feather=False):
     
     #COLUMN NAMES
     X = [c for c in df if c.startswith("feature")]
-    y = "target_kazutsugi"
+    y = "target"
 
-    if dataset != "tournament":
+    if dataset == "training":
         df['era'] = df.loc[:, 'era'].str[3:].astype('int32')
 
     #PRINT MEMORY USAGE
@@ -39,49 +39,8 @@ def get_data(nrows=None, low_memory=False, dataset="training", feather=False):
     return df, X, y
 
 
-def get_data_nomi(nrows=None, low_memory=False, dataset="nomi", feather=False):
-
-
-    #DOWNLOAD DATAFRAME
-    if feather==True:
-        df = pd.read_feather('../../Data/Interim/'+dataset+'_compressed.feather').iloc[:nrows,:]
-
-
-    elif dataset == "nomi_colab":
-        #data_path = "/content/drive/My Drive/Numerai/numerai_training_validation_target_nomi.csv"
-        data_path = "/content/drive/My Drive/Numerai/training_and_val3.csv"
-        df = pd.read_csv(data_path, nrows=nrows)
-
-    else:
-        data_path = '../../Data/Interim/'+dataset+'_data.csv'
-        df = pd.read_csv(data_path, nrows=nrows)
-
-
-
-    #Low memory
-    if low_memory == True:
-        print("low memory activated")
-        df = reduce_mem_usage(df, verbose=True)
-
-    
-    #COLUMN NAMES
-    X = [c for c in df if c.startswith("feature")]
-    y = "target_nomi"
-
-    if dataset != "tournament":
-        df['era'] = df.loc[:, 'era'].str[3:].astype('int32')
-
-    #PRINT MEMORY USAGE
-    print(df.info())
-
-    #split train val APENAS NOMI
-    df_training = df[df.data_type=='train']
-    df_validation = df[df.data_type=='validation']
-
-
-    return df_training, df_validation, X, y
-
-
+def new_func():
+    print('122333444221')
 
 
 
@@ -141,7 +100,7 @@ def create_dtype():
 
 	#create a list of the column names
 	col_list = ["id", "era", "data_type"]
-	col_list = col_list + features + ["target_kazutsugi"]
+	col_list = col_list + features + ["target"]
 
 	#create a list of corresponding data types to match the column name list
 	dtype_list_back = [np.float32] * 311

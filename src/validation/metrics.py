@@ -13,8 +13,8 @@ except:
 
 
 TOURNAMENT_NAME = "kazutsugi"
-TARGET_NAME = f"target_{TOURNAMENT_NAME}"
-PREDICTION_NAME = f"prediction_{TOURNAMENT_NAME}"
+TARGET_NAME = "target"#_{TOURNAMENT_NAME}"
+PREDICTION_NAME = "prediction"#_{TOURNAMENT_NAME}"
 
 
 #OK
@@ -181,7 +181,7 @@ def mmc_metrics(df, preds):
 	validation_data = df.copy()
 
 	 # Load example preds to get MMC metrics
-	example_preds = pd.read_csv("../../data/interim/example_predictions_target_kazutsugi.csv").set_index("id")["prediction_kazutsugi"]
+	example_preds = pd.read_csv("../../data/interim/example_predictions.csv").set_index("id")["prediction"]
 	validation_data.set_index("id", inplace=True)
 
 
@@ -245,9 +245,8 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
 
 
     new_df = df_val.copy()
-    new_df['target'] = new_df['target_' + TOURNAMENT_NAME]
+    new_df['target'] = new_df['target']
     new_df["pred"] = minmax_scale(preds) #caso seja classificacao (1..4)
-    #new_df['pred'] = new_df['target_kazutsugi']
     era_scores = pd.Series(index=new_df['era'].unique())
 
         
