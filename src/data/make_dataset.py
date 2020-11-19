@@ -48,7 +48,8 @@ def get_data_nomi(nrows=None, low_memory=False, dataset="nomi", feather=False):
 
 
     elif dataset == "nomi_colab":
-        data_path = "/content/drive/My Drive/Numerai/numerai_training_validation_target_nomi.csv"
+        #data_path = "/content/drive/My Drive/Numerai/numerai_training_validation_target_nomi.csv"
+        data_path = "/content/drive/My Drive/Numerai/training_and_val3.csv"
         df = pd.read_csv(data_path, nrows=nrows)
 
     else:
