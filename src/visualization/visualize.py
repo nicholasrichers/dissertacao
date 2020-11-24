@@ -321,4 +321,30 @@ def leaderboard_test_val(metrics_test, metrics_val, model_names, cols):
     return l
 
 
+def highlight_max(s):
+    min_cols = ["Feat_exp_max", 'Validation_SD', 'corr_with_example_preds']    
+    if s.name in min_cols:
+        # Get the smallest values of the column
+        is_large = s.nsmallest(1).values
+        # Apply style is the current value is among the biggest values
+        return ['background-color: yellow' if v in is_large else '' for v in s]
+    
+    else:
+        # Get the largest values of the column
+        is_large = s.nlargest(1).values
+        # Apply style is the current value is among the smallest values
+        return ['background-color: yellow' if v in is_large else '' for v in s]
+
+
+
+def highlight_top10(s):
+    
+    if s.dtype == 'object':
+        return ['background-color: lightblue' if v in [''] else '' for v in s]       
+        
+    else:
+        # Get the largest values of the column
+        is_large = s.nlargest(10).values
+        # Apply style is the current value is among the smallest values
+        return ['background-color: lightblue' if v in is_large else '' for v in s]
 

@@ -19,7 +19,6 @@ PREDICTION_NAME = "prediction"#_{TOURNAMENT_NAME}"
 
 #OK
 def spearman(pred, target):
-    #print("ooo")
     return np.corrcoef(target, pred.rank(pct=True, method="first"))[0, 1]
 
 #Pearson corr
@@ -245,7 +244,7 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
 
 
     new_df = df_val.copy()
-    new_df['target'] = new_df['target']
+    #new_df['target'] = new_df['target']
     new_df["pred"] = minmax_scale(preds) #caso seja classificacao (1..4)
     era_scores = pd.Series(index=new_df['era'].unique())
 
