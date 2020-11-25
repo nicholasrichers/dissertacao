@@ -23,7 +23,7 @@ class TimeSeriesSplitGroups(_BaseKFold):
         test_size = (n_groups // n_folds)
         test_starts = range(test_size + n_groups % n_folds,
                             n_groups, test_size)
-        test_starts = list(test_starts)[::-1]
+        test_starts = list(test_starts)[::1]
         for test_start in test_starts:
             
             yield (indices[groups.isin(group_list[:test_start])],
@@ -84,7 +84,7 @@ class TimeSeriesSplitGroups_old(_BaseKFold):
         test_size = (n_groups // n_folds)
         test_starts = range(test_size + n_groups % n_folds,
                             n_groups, test_size)
-        test_starts = list(test_starts)[::-1]
+        test_starts = list(test_starts)[::1]
         for test_start in test_starts:
             
             yield (indices[groups.isin(group_list[:test_start])],
