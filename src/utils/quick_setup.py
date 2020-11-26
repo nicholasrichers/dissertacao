@@ -33,6 +33,7 @@ def get_libs(local=False):
     #folder src.validation (MANTER A ORDEM)
     load_library('group_ts_split', 'src/validation/group_ts_split.py', local=local)
     load_library('combinatorial_split', 'src/validation/combinatorial_split.py', local=local)
+    load_library('metrics_era', 'src/validation/metrics_era.py', local=local)
     load_library('metrics_description', 'src/validation/metrics_description.py', local=local)
     load_library('metrics', 'src/validation/metrics.py', local=local)
 
