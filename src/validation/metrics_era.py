@@ -70,7 +70,8 @@ def smart_sharpe(y_true, y_pred, df):
 ##############################################################################
 ##############################################################################
 
-
+path = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_training_data.csv.xz'
+df_training = pd.read_csv(path)
 
 
 def spearman_(target, pred):
