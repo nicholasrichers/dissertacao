@@ -7,7 +7,7 @@ import pandas as pd
 def results_df_cols(grp):
   ts_ix = []
   for i in grp:
-    ts_ix = np.concatenate((d,i[1]),axis=0)
+    ts_ix = np.concatenate((ts_ix,i[1]),axis=0)
 
   train_eras = df_training.era[ts_ix].unique().tolist()
   val_eras = df_validation.era.unique().tolist()
