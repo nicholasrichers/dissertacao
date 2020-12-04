@@ -804,7 +804,7 @@ def cross_val_predict(estimator, X, y=None, *, groups=None, cv=None,
         return [p[inv_test_indices] for p in predictions], estimator
     else:
         print('2')
-        return predictions[inv_test_indices], , estimator
+        return predictions[inv_test_indices], estimator
 
 
 def _fit_and_predict(estimator, X, y, train, test, verbose, fit_params,
