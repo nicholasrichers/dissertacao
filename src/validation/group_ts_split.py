@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 
-def results_df_cols(grp):
+def results_df_cols(grp, df_training, df_validation):
   ts_ix = []
   for i in grp:
     ts_ix = np.concatenate((ts_ix,i[1]),axis=0)
