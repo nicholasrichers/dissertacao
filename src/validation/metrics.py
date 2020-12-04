@@ -1,9 +1,10 @@
 import scipy
-from scipy.stats import skew, kurtosis, sem, gmean
+from scipy.stats import skew, kurtosis, sem, gmean, norm
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import minmax_scale
 import pandas as pd
 import numpy as np
+#from scipy import stats as scipy_stats
 
 #to use in google colab
 try:
@@ -57,7 +58,8 @@ def smart_sharpe(x):
 
 ##approximated their average trading costs
 def numerai_sharpe(x):
-    return ((np.mean(x) - 0.010415154) / np.std(x, ddof=1)) #* np.sqrt(12)
+    return ((np.mean(x) -0.010415154) /np.std(x, ddof=1)) #* np.sqrt(12)
+
 
 ## usado embaixo
 def annual_sharpe(x):
@@ -72,6 +74,17 @@ def annual_sharpe(x):
 #https://quantdare.com/probabilistic-sharpe-ratio/
 def adj_sharpe(x):
     return annual_sharpe(x) * (1 + ((skew(x) / 6) * annual_sharpe(x)) - ((kurtosis(x) - 0) / 24) * (annual_sharpe(x) ** 2)) #(kurtosis(x) - 3)
+
+
+
+
+def probabilistic_sharpe_ratio(x=None, sr_benchmark=0.0):
+    n = len(x)
+    sr = np.mean(x) / np.std(x, ddof=1)
+    sr_std = np.sqrt((1 + (0.5 * sr ** 2) - (skew(x) * sr) + (((kurtosis(x) - 3) / 4) * sr ** 2)) / (n - 1))
+
+    return scipy.stats.norm.cdf((sr - sr_benchmark) / sr_std)
+
 
 
 #https://www.investopedia.com/ask/answers/033115/how-can-you-calculate-value-risk-var-excel.asp
@@ -98,6 +111,9 @@ def smart_sortino_ratio(x, target=0.010415154): ##approximated their average tra
 # Payout is just the score cliped at +/-25%
 def payout(scores):
     return scores.clip(lower=-0.25, upper=0.25).mean()
+
+
+
 
 
 #OK
@@ -278,6 +294,7 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
     values['Numerai_Sharpe'] = numerai_sharpe(era_scores)
     values['Ann_Sharpe'] = annual_sharpe(era_scores)
     values['Adj_Sharpe'] = adj_sharpe(era_scores)
+    values['Prob_Sharpe'] = probabilistic_sharpe_ratio(era_scores)
     values['VaR_10%'] = VaR(era_scores)
     values['Sortino_Ratio'] = sortino_ratio(era_scores)
     values['Smart_Sortino_Ratio'] = smart_sortino_ratio(era_scores)

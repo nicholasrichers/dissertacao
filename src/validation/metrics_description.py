@@ -117,6 +117,15 @@ def  get_metrics_dicts(values):
                        "Range_Aceitavel": "Prox ao sharpe", 
                        "Descricao": "Adjusted Sharpe Ratio adjusts for skewness and kurtosis by incorporating a penalty factor for negative skewness and excess kurtosis" }
 
+ #OK
+    dict_Prob_Sharpe = {"Metrica": 'Prob_Sharpe', 
+                       "Valor": values['Prob_Sharpe'], 
+                       "Categoria": "Special", 
+                       "Range_Aceitavel": ">90%", 
+                       "Descricao": "Prob so sharpe real ser maior que 0 (benchmark)" }
+
+
+
     #ok
     dict_VaR_10 = {"Metrica": 'VaR_10', 
                     "Valor": values['VaR_10%'], 
@@ -224,7 +233,8 @@ def  get_metrics_dicts(values):
 
                              #Special
                              ,dict_Adj_Sharpe
-                             ,dict_Payout
+                             ,dict_Prob_Sharpe
+                             
 
 
 
@@ -232,6 +242,7 @@ def  get_metrics_dicts(values):
                              ,dict_Smart_Sharpe
                              ,dict_Numerai_Sharpe
                              ,dict_ann_Sharpe
+                             ,dict_Payout
                              ,dict_VaR_10
                              ,dict_Sortino_Ratio
                              ,dict_Smart_Sortino_Ratio
