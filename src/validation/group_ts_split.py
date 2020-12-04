@@ -1,6 +1,22 @@
 from sklearn.model_selection._split import _BaseKFold, indexable, _num_samples
 from sklearn import model_selection, metrics 
 import numpy as np
+import pandas as pd
+
+
+def results_df_cols(grp):
+  ts_ix = []
+  for i in grp:
+    ts_ix = np.concatenate((d,i[1]),axis=0)
+
+  train_eras = df_training.era[ts_ix].unique().tolist()
+  val_eras = df_validation.era.unique().tolist()
+
+  train_eras = ['train_'+str(score) for score in train_eras]
+  val_eras = ['val_'+str(score) for score in val_eras]
+  cols = train_eras+val_eras+['hparam']
+  return cols
+
 
 
 class TimeSeriesSplitGroups(_BaseKFold):
@@ -89,4 +105,5 @@ class TimeSeriesSplitGroups_old(_BaseKFold):
             
             yield (indices[groups.isin(group_list[:test_start])],
                    indices[groups.isin(group_list[test_start:test_start + test_size])])
+
 
