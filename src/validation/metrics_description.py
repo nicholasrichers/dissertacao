@@ -156,7 +156,7 @@ def  get_metrics_dicts(values):
     #OK
     dict_Payout = {"Metrica": 'Payout', 
                    "Valor": values['Payout'], 
-                   "Categoria": "Special", 
+                   "Categoria": "Financeira", 
                    "Range_Aceitavel": "[3.6%..4.4%] ", 
                    "Descricao": "Retira as 25% piores e melhores eras corr" }
 
@@ -234,6 +234,7 @@ def  get_metrics_dicts(values):
                              #Special
                              ,dict_Adj_Sharpe
                              ,dict_Prob_Sharpe
+                             #dict_dsr por fora
                              
 
 

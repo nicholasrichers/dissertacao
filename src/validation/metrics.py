@@ -13,6 +13,13 @@ except:
   import metrics_description
 
 
+#to use in google colab
+try:
+  from src.validation import dsr
+except:
+  import dsr
+
+
 TOURNAMENT_NAME = "kazutsugi"
 TARGET_NAME = "target"#_{TOURNAMENT_NAME}"
 PREDICTION_NAME = "prediction"#_{TOURNAMENT_NAME}"
@@ -256,7 +263,7 @@ def metrics_consolidated(df):
     return df_cons
 
 
-def submission_metrics(df_val, preds, model_name='',  mmc=True):
+def submission_metrics(df_val, preds, model_name='',  mmc=True, meta_model=''):
 
 
     new_df = df_val.copy()
@@ -323,6 +330,22 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
 
 
     metrics = metrics_description.get_metrics_dicts(values)
+
+    #get DSR
+    try:
+        
+        dict_dsr = dsr.dsr_summary(meta_model+'/era_scores_'+model_name+'.csv')
+        
+
+    except:
+        dict_dsr = {"Metrica": 'deflated_sharpe_ratio', 
+                 "Valor": 0, 
+                 "Categoria": "Special", 
+                 "Range_Aceitavel": "[0.5..1]", 
+                 "Descricao": "Sharpe Descontado pelas tentativas" }
+
+
+    metrics.append(dict_dsr)
     df_metrics = pd.DataFrame.from_dict(metrics)
     df_metrics = df_metrics.set_index('Metrica')
 
@@ -337,11 +360,28 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
 
 
 
+def sharpe_metrics(era_scores):
+     
 
+    values = dict()
+    model_name = era_scores['hparam']
+    era_scores = era_scores[:-1]
+    
+    cv_scores = era_scores.filter(like='train_', axis=0)
+    val_scores = era_scores.filter(like='val_', axis=0)
+    folds = ['_on_cv', '_on_test', '_full']
+    scores = [cv_scores, val_scores, era_scores]
+    
+    for fold, data_score in zip(folds, scores):
+    
+        values['Mean_Corr'+fold] = np.mean(data_score)
+        values['Sharpe_Ratio'+fold] = validation_sharpe(data_score)
+        values['Adj_Sharpe'+fold] = adj_sharpe(data_score)
+        values['Prob_Sharpe'+fold] = probabilistic_sharpe_ratio(data_score)
 
-
-
-
+    
+    values['hparam'] = model_name
+    return values
 
 
 

@@ -277,3 +277,32 @@ def deflated_sharpe_ratio(trials_returns=None, returns_selected=None, expected_m
     dsr = probabilistic_sharpe_ratio(returns=returns_selected, sr_benchmark=expected_max_sr)
 
     return dsr
+
+
+def dsr_summary(file_path, prints=False):
+    
+    era_scores = pd.read_csv('../../Data/processed/era_scores/'+file_path)
+    returns = era_scores.filter(like='val_', axis=1).T
+    
+    
+    best_psr_pf_name = probabilistic_sharpe_ratio(returns=returns, sr_benchmark=0).sort_values(ascending=False).index[0]
+    best_psr_pf_returns = returns[best_psr_pf_name]
+    independent_trials = num_independent_trials(trials_returns=returns)
+    exp_max_sr = expected_maximum_sr(trials_returns=returns, independent_trials=independent_trials)   
+    mtr = min_track_record_length(returns)
+    dsr = deflated_sharpe_ratio(returns_selected=best_psr_pf_returns, expected_max_sr=exp_max_sr)
+    
+    if prints==True:
+        print('best_psr_pf_name: ', best_psr_pf_name)
+        print('independent_trials: ', independent_trials)
+        print('exp_max_sr: ', exp_max_sr)
+        print('Min Track Lenght: ', mtr[best_psr_pf_name])
+        print('DSR: ',dsr)
+
+    dict_dsr = {"Metrica": 'deflated_sharpe_ratio', 
+                 "Valor": dsr, 
+                 "Categoria": "Special", 
+                 "Range_Aceitavel": "[0.5..1]", 
+                 "Descricao": "Sharpe Descontado pelas tentativas" }
+    
+    return dict_dsr
