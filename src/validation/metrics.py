@@ -8,11 +8,13 @@ import numpy as np
 
 #to use in google colab
 try:
-  from src.validation import metrics_description
   from src.validation import dsr
+  from src.validation import metrics_description
+  
 except:
-  import metrics_description
   import dsr
+  import metrics_description
+
 
 
 #to use in google colab
