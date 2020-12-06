@@ -9,15 +9,17 @@ import numpy as np
 #to use in google colab
 try:
   from src.validation import metrics_description
+  from src.validation import dsr
 except:
   import metrics_description
+  import dsr
 
 
 #to use in google colab
-try:
-  from src.validation import dsr
-except:
-  import dsr
+#try:
+#  from src.validation import dsr
+#except:
+#  import dsr
 
 
 TOURNAMENT_NAME = "kazutsugi"
@@ -338,7 +340,7 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True, meta_model=''):
         
 
     except:
-        dict_dsr = {"Metrica": 'deflated_sharpe_ratio', 
+        dict_dsr = {"Metrica": 'Deflated_sharpe_ratio', 
                  "Valor": 0, 
                  "Categoria": "Special", 
                  "Range_Aceitavel": "[0.5..1]", 
