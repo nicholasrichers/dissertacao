@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import numpy as np
 import pandas as pd
 from scipy import stats as scipy_stats
@@ -299,7 +298,7 @@ def dsr_summary(file_path, prints=False):
         print('Min Track Lenght: ', mtr[best_psr_pf_name])
         print('DSR: ',dsr)
 
-    dict_dsr = {"Metrica": 'deflated_sharpe_ratio', 
+    dict_dsr = {"Metrica": 'Deflated_sharpe_ratio', 
                  "Valor": dsr, 
                  "Categoria": "Special", 
                  "Range_Aceitavel": "[0.5..1]", 
