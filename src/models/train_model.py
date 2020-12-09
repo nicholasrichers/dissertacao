@@ -386,7 +386,7 @@ class BuildModel(Model):
 
 
       #self.results = pd.DataFrame(grid_search.cv_results_)
-      self.results = res_dict.res_dict['test_score']
+      self.results = res_dict['test_score']
 
 
 
