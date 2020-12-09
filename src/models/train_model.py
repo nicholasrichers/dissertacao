@@ -358,7 +358,7 @@ class BuildModel(Model):
           The number of cross-validation folds to use in the optimization process.
       """
       if not self.pipeline:
-        res_dict = cross_validate(model, X, y, scoring = scorer, n_jobs=-1,cv=cv_folds, return_train_score=True)
+        res_dict = cross_validate(model, X, y, scoring = scorer, n_jobs=-1,cv=cv_folds, return_train_score=True, return_estimator=True)
 
         
         # Save the model
