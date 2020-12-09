@@ -7,9 +7,9 @@ import pandas as pd
 
 #to use in google colab
 try:
-  from src.models.train_model import build_tuned_model, build_tuned_model_skopt
+  from src.models.train_model import build_tuned_model, build_tuned_model_skopt, build_model
 except:
-  from train_model import build_tuned_model, build_tuned_model_skopt
+  from train_model import build_tuned_model, build_tuned_model_skopt, build_model
 
 
 
