@@ -7,6 +7,24 @@ from sklearn.calibration import CalibratedClassifierCV
 import numpy as np
 
 
+
+def build_model(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params):
+  from time import time
+  start = time()
+  print('==> Starting K-fold cross validation for {} model, {} examples'.format(name, len(X_train)))
+  model = TunedModel(hparams, name=name, model=base_model, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline, fit_params=fit_params)
+  model.train(X_train, y_train, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params)
+  elapsed = time() - start
+  print("==> Elapsed seconds: {:.3f}".format(elapsed))
+  
+  res = model.results
+  print('Best {} model: {}'.format(model.name, model.model))
+  print('Best {} score (val): {:.4f}'.format(model.name, res.mean()))
+
+  return model
+
+
+
 def build_tuned_model(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params):
   from time import time
   start = time()
@@ -313,5 +331,62 @@ class TunedModel_Skopt(Model):
 
       #self.results = pd.DataFrame(grid_search.cv_results_)
       self.results = grid_search.cv_results_
+
+
+# ============================================================================================================
+# TunedModel
+# ============================================================================================================
+class BuildModel(Model):
+
+
+  def __init__(self, param_distributions, **kwargs):
+      Model.__init__(self, **kwargs)
+      self.param_distributions = param_distributions
+
+  def train(self, X, y, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params):
+      """ Tunes a model using the parameter grid that this class was initialized with.
+      
+      Parameters
+      ----------
+      X : array-like, matrix
+          Input data
+          
+      y : array-like
+          Targets for input data
+          
+      cv_folds : int, optional, default: 5
+          The number of cross-validation folds to use in the optimization process.
+      """
+      if not self.pipeline:
+        res_dict = cross_validate(model, X, y, scoring = scorer, n_jobs=-1,cv=cv_folds)
+
+        
+        # Save the model
+        self.model = res_dict['estimator'][-1]
+
+      #Precisa arrumar
+      else:
+        # Setup
+        grid_search = RandomizedSearchCV(
+            self.get_model_pipeline(), 
+            self.param_distributions, 
+            cv=cv_folds,
+            n_jobs=n_jobs,
+            n_iter=n_iter,
+            scoring=scorer,
+            return_train_score=True, 
+            verbose=5)
+        
+        # Run it
+        grid_search.fit(X, y, **fit_params)
+        
+        # Save the model and pipeline
+        self.model = grid_search.best_estimator_.steps[-1][1]
+        self.pipeline = Pipeline(grid_search.best_estimator_.steps[:-1])
+
+
+      #self.results = pd.DataFrame(grid_search.cv_results_)
+      self.results = res_dict.res_dict['test_score']
+
 
 
