@@ -12,7 +12,7 @@ def build_model(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_
   from time import time
   start = time()
   print('==> Starting K-fold cross validation for {} model, {} examples'.format(name, len(X_train)))
-  model = TunedModel(hparams, name=name, model=base_model, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline, fit_params=fit_params)
+  model = BuildModel(hparams, name=name, model=base_model, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline, fit_params=fit_params)
   model.train(X_train, y_train, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params)
   elapsed = time() - start
   res = model.results
@@ -358,7 +358,8 @@ class BuildModel(Model):
           The number of cross-validation folds to use in the optimization process.
       """
       if not self.pipeline:
-        res_dict = cross_validate(model, X, y, scoring = scorer, n_jobs=-1,cv=cv_folds, return_train_score=True, return_estimator=True)
+        model.set_params(**self.param_distributions)
+        res_dict = cross_validate(model, X, y, scoring = scorer, n_jobs=-1, cv=cv_folds, return_train_score=True, return_estimator=True)
 
         
         # Save the model
