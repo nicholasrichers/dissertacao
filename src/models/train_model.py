@@ -16,7 +16,7 @@ def build_model(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_
   model.train(X_train, y_train, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params)
   elapsed = time() - start
   res = model.results
-  print(res)
+  #print(res)
   print("==> Elapsed seconds: {:.3f}".format(elapsed))
   print('Best {} model: {}'.format(model.name, model.model))
   print('Best {} score (val): {:.4f}'.format(model.name, model.results.mean()))
@@ -386,6 +386,7 @@ class BuildModel(Model):
 
 
       #self.results = pd.DataFrame(grid_search.cv_results_)
+      print(res_dict)
       self.results = res_dict['test_score']
 
 
