@@ -15,9 +15,9 @@ except:
 
 def create_model(features, target, model, name, param_grid, scorer, n_iter=1, cv_folds=5, n_jobs=-1, pipeline=None, fit_params={}):
   model = build_model(name, model, features, target, param_grid, scorer, n_iter=n_iter, cv_folds=cv_folds, n_jobs=n_jobs, pipeline=pipeline, fit_params=fit_params)
-  #test_mean = model.results['test_score'].mean()
-  #test_std = model.results['test_score'].std()
-  return (model, name, 0, 0)
+  test_mean = model.results.mean()
+  test_std = model.results.std()
+  return (model, name, test_mean, test_std)
 
 
 

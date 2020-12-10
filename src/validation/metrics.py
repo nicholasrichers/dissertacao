@@ -342,7 +342,7 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True, meta_model=''):
         
 
     except:
-        dict_dsr = {"Metrica": 'Deflated_sharpe_ratio', 
+        dict_dsr = {"Metrica": 'Deflated_Sharpe', 
                  "Valor": 0, 
                  "Categoria": "Special", 
                  "Range_Aceitavel": "[0.5..1]", 
