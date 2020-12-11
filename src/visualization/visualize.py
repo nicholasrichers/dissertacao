@@ -10,6 +10,7 @@ from matplotlib import pyplot
 import seaborn as sns
 import pandas as pd
 import numpy as np
+from scipy import stats
 
 
 
@@ -347,4 +348,49 @@ def highlight_top10(s):
         is_large = s.nlargest(10).values
         # Apply style is the current value is among the smallest values
         return ['background-color: lightblue' if v in is_large else '' for v in s]
+
+
+
+
+
+VALIDATION_METRIC_INTERVALS = {
+    "Validation_Mean": (0.013, 0.028),
+    "Validation_Sharpe": (0.53, 1.24),
+    "Validation_SD": (0.0303, 0.0168),
+    "Feat_exp_max": (0.4, 0.0661),
+    "val_mmc_mean": (-0.008, 0.008),
+    "corr_plus_mmc_sharpe": (0.41, 1.34),
+    "Max_Drawdown": (-0.115, -0.025),
+    "Feat_neutral_mean": (0.006, 0.022),
+    "corr_with_example_preds": (1, 0.4)
+}
+
+
+def color_metric(metric):
+    
+    #get interval and percentiles
+    low, high = VALIDATION_METRIC_INTERVALS[metric.name]
+    pct = stats.percentileofscore(np.linspace(low, high, 100), metric.values)
+    
+    #to min is best
+    if high <= low: pct = 100 - pct
+        
+    if pct > 95: return "lime"
+    elif pct > 75: return "darkgreen"
+    elif pct > 35: return "black"
+    else: return "red"
+
+    
+
+
+def diagnostic_colors(col):
+    
+    #get colors list
+    colors = col.to_frame().apply(color_metric, axis=1)
+    return ['color: '+str(c) for c in colors]
+  
+
+
+
+
 
