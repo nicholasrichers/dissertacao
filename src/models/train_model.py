@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.pipeline import make_pipeline
 from sklearn.base import clone
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV, cross_validate, RandomizedSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.calibration import CalibratedClassifierCV
 import numpy as np
@@ -16,10 +16,10 @@ def build_model(name, base_model, X_train, y_train, hparams, scorer, n_iter, cv_
   model.train(X_train, y_train, scorer, n_iter, cv_folds, n_jobs, pipeline, fit_params)
   elapsed = time() - start
   res = model.results
-  #print(res)
+  print(res)
   print("==> Elapsed seconds: {:.3f}".format(elapsed))
   print('Best {} model: {}'.format(model.name, model.model))
-  #print('Best {} score (val): {:.4f}'.format(model.name, model.results.mean()))
+  print('Best {} score (val): {:.4f}'.format(model.name, model.results.mean()))
 
   return model
 
@@ -358,10 +358,12 @@ class BuildModel(Model):
           The number of cross-validation folds to use in the optimization process.
       """
       if not self.pipeline:
-        model.set_params(**self.param_distributions)
-        res_dict = cross_validate(model, X, y, scoring = scorer, n_jobs=-1, cv=cv_folds, return_train_score=True, return_estimator=True)
+        #print(scorer)
+        self.model.set_params(**self.param_distributions)
+        #print(cv_folds)
+        res_dict = cross_validate(self.model, X, y, scoring = scorer, n_jobs=-1, cv=cv_folds, return_estimator=True)
 
-        
+
         # Save the model
         self.model = res_dict['estimator'][-1]
 
@@ -388,6 +390,6 @@ class BuildModel(Model):
 
       #self.results = pd.DataFrame(grid_search.cv_results_)
 
-      self.results = res_dict
+      self.results = res_dict['test_score']
 
 

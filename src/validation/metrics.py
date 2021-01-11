@@ -26,12 +26,20 @@ except:
 
 TOURNAMENT_NAME = "kazutsugi"
 TARGET_NAME = "target"#_{TOURNAMENT_NAME}"
-PREDICTION_NAME = "prediction"#_{TOURNAMENT_NAME}"
+PREDICTION_NAME = 'preds'#_{TOURNAMENT_NAME}"
 
 
 #OK
 def spearman(pred, target):
     return np.corrcoef(target, pred.rank(pct=True, method="first"))[0, 1]
+
+
+
+#by era basis
+def correlation(predictions, targets):
+    ranked_preds = predictions.rank(pct=True, method="first")
+    return np.corrcoef(ranked_preds, targets)[0, 1]
+
 
 #Pearson corr
 def ar1(x):
@@ -127,8 +135,28 @@ def payout(scores):
 
 
 
+
 #OK
 def feature_exposure(df, pred):
+
+
+    #df = df[df.data_type == 'validation']
+    pred = pd.Series(pred, index=df.index)
+    feature_columns = [x for x in df.columns if x.startswith('feature_')]
+
+
+    # Check the feature exposure of your validation predictions
+    feature_exposures = df[feature_columns].apply(lambda d: correlation(pred, d), axis=0)
+    max_per_era = df.groupby("era").apply(lambda d: d[feature_columns].corrwith(pred).abs().max())
+
+
+    return max_per_era.std(), max_per_era.mean(), max_per_era
+
+
+
+
+#OK
+def feature_exposure_old(df, pred):
     #df = df[df.data_type == 'validation']
     pred = pd.Series(pred, index=df.index)
 
@@ -151,8 +179,8 @@ def correlation(predictions, targets):
 
 
 # to neutralize a column in a df by many other columns
-def neutralize(df, columns, by, proportion=1.0):
-    scores = df.loc[:, columns]
+def neutralize_old(df, columns, by, proportion=1.0):
+    scores = df.loc[:, columns] #preds
     exposures = df[by].values
 
     # constant column to make sure the series is completely neutral to exposures
@@ -160,15 +188,60 @@ def neutralize(df, columns, by, proportion=1.0):
         (exposures,
          np.asarray(np.mean(scores)) * np.ones(len(exposures)).reshape(-1, 1)))
 
+    exposures = np.hstack(
+    	(exposures, 
+    	np.array([np.mean(scores)] * len(exposures)).reshape(-1, 1)))
+
+
     scores = scores - proportion * exposures.dot(np.linalg.pinv(exposures).dot(scores))
 
     return scores / scores.std()
 
 
+
+
+def neutralize(df, columns, extra_neutralizers=None, proportion=1.0, normalize=True, era_col="era"):
+    # need to do this for lint to be happy bc [] is a "dangerous argument"
+    if extra_neutralizers is None:
+        extra_neutralizers = []
+    unique_eras = df[era_col].unique()
+    computed = []
+    for u in unique_eras:
+        #print(u, end="\r")
+        df_era = df[df[era_col] == u]
+        scores = df_era[columns].values
+        if normalize:
+            scores2 = []
+            for x in scores.T:
+                x = (pd.Series(x).rank(method="first").values - .5) / len(x)
+                scores2.append(x)
+            scores = np.array(scores2).T
+            extra = df_era[extra_neutralizers].values
+            exposures = np.concatenate([extra], axis=1)
+        else:
+            exposures = df_era[extra_neutralizers].values
+
+        scores -= proportion * exposures.dot(
+            np.linalg.pinv(exposures.astype(np.float32)).dot(scores.astype(np.float32)))
+
+        scores /= scores.std()
+
+        computed.append(scores)
+
+    #print(pd.DataFrame(np.concatenate(computed), columns=columns, index=df.index))
+    return pd.DataFrame(np.concatenate(computed), columns=columns, index=df.index)
+
+
+
+
+
+
+
+
 def get_feature_neutral_mean(df, preds):
-    df["preds"] = preds
+    df[PREDICTION_NAME] = preds
     feature_cols = [c for c in df.columns if c.startswith("feature")]
-    df.loc[:, "neutral_sub"] = neutralize(df, ["preds"], feature_cols)["preds"]
+    df.loc[:, "neutral_sub"] = neutralize(df, [PREDICTION_NAME], feature_cols)[PREDICTION_NAME]
 
     scores = df.groupby("era").apply(lambda x: spearman(x["neutral_sub"], x[TARGET_NAME])).mean()
     return np.mean(scores)
@@ -213,17 +286,17 @@ def mmc_metrics(df, preds):
 
 	validation_example_preds = example_preds.loc[validation_data.index]
 	validation_data["ExamplePreds"] = validation_example_preds
-	validation_data["preds"] = preds
+	validation_data[PREDICTION_NAME] = preds
 
 	# MMC over validation
 	mmc_scores = []
 	corr_scores = []
 	for _, x in validation_data.groupby("era"):
-	    series = neutralize_series(pd.Series(unif(x["preds"])),
+	    series = neutralize_series(pd.Series(unif(x[PREDICTION_NAME])),
 	                               pd.Series(unif(x["ExamplePreds"])))
 
 	    mmc_scores.append(np.cov(series, x[TARGET_NAME])[0, 1] / (0.29 ** 2))
-	    corr_scores.append(spearman(unif(x["preds"]), x[TARGET_NAME]))
+	    corr_scores.append(spearman(unif(x[PREDICTION_NAME]), x[TARGET_NAME]))
 
 	val_mmc_mean = np.mean(mmc_scores)
 	val_mmc_std = np.std(mmc_scores)
@@ -241,7 +314,7 @@ def mmc_metrics(df, preds):
 
 	# Check correlation with example predictions
 	corr_with_example_preds = np.corrcoef(validation_example_preds.rank(pct=True, method="first"),
-	                                      validation_data["preds"].rank(pct=True, method="first"))[0, 1]
+	                                      validation_data[PREDICTION_NAME].rank(pct=True, method="first"))[0, 1]
 
 	#print(f"Corr with example preds: {corr_with_example_preds}")
 
@@ -272,13 +345,13 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True, meta_model=''):
 
     new_df = df_val.copy()
     #new_df['target'] = new_df['target']
-    new_df["pred"] = minmax_scale(preds) #caso seja classificacao (1..4)
+    new_df[PREDICTION_NAME] = minmax_scale(preds) #caso seja classificacao (1..4)
     era_scores = pd.Series(index=new_df['era'].unique())
 
         
     for era in new_df['era'].unique():
         era_df = new_df[new_df['era'] == era]
-        era_scores[era] = spearman(era_df['pred'], era_df['target'])
+        era_scores[era] = spearman(era_df[PREDICTION_NAME], era_df['target'])
 
     era_scores.sort_values(inplace=True)
     era_scores.sort_index(inplace=True)

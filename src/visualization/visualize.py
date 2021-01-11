@@ -261,7 +261,7 @@ def plot_era_scores(df, model_names):
 
 
   #lista com as eras
-  eras = eras = ["era_"+era for era in df.index.astype('str')]
+  eras =  ["era_"+era for era in df.index.astype('str')]
 
   #note que usamos a lista de status do gráfico de boxplot
   for cor, model in enumerate(model_names):
@@ -282,6 +282,74 @@ def plot_era_scores(df, model_names):
                      barmode = 'stack') #Atenção a opção "stack"
   fig = go.Figure(data=data, layout=layout)
   py.iplot(fig)
+
+
+
+
+
+import datetime
+def live_eras_perfomance(models_dict, first_round):
+    import numerapi
+    api = numerapi.NumerAPI()
+    last_closed_round = api.get_current_round()-4
+    rounds = np.arange(first_round, last_closed_round+1)
+    df_models_rounds = pd.DataFrame()
+    
+    
+    for model_name, model_alias in models_dict.items():
+        df = pd.DataFrame(api.daily_submissions_performances(model_name))
+        df_model = pd.DataFrame(df[df['roundNumber']==first_round-1].head(20).tail(1))
+        df_model['correlation'], df_model['correlationWithMetamodel'], df_model['mmc'] = 0,0,0
+        
+        for round_ in rounds:
+            last_day_round = df[df['roundNumber']==round_].head(20).tail(1)
+            df_model = pd.concat([df_model,last_day_round], axis=0)
+
+        
+        df_model['model_name'] = model_alias
+        df_models_rounds = pd.concat([df_models_rounds,df_model], axis=0)
+    
+
+    return df_models_rounds
+
+
+
+def plot_live_scores(models_dict, first_round, base="acum"):
+
+    data=[]
+    cores = px.colors.cyclical.HSV
+    df = live_eras_perfomance(models_dict, first_round)
+
+
+
+    #note que usamos a lista de status do gráfico de boxplot
+    for cor, model in enumerate(df['model_name'].unique()):
+        
+        returns = df[df['model_name']==model].correlation*100
+        acumulated = [sum(returns[:i+1]) for i in range(len(returns))]
+
+        if base=="acum": line_values = acumulated
+        else: line_values = returns
+
+      # Gerando gráficos para cada modelo
+        trace =  go.Scatter(y = line_values,
+                      x = df['date'].unique(),
+                      name = model,
+                      line_shape='linear',
+                      marker = {'color': cores[cor]})
+      
+        data.append(trace)
+
+
+    layout = go.Layout(title = 'Live Scores por Modelo',
+                       xaxis = {'title': 'Rounds'},
+                       yaxis = {'title': 'Retorno (%)'})
+                       #barmode = 'stack') #Atenção a opção "stack"
+    fig = go.Figure(data=data, layout=layout)
+    py.iplot(fig)
+
+
+
 
 
 def highlight_max(s):
