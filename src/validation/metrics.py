@@ -276,52 +276,53 @@ def unif(df):
 
 
 
-def mmc_metrics(df, preds):
+def mmc_metrics(df, preds, model):
 
-	validation_data = df.copy()
+    validation_data = df.copy()
 
-	 # Load example preds to get MMC metrics
-	example_preds = pd.read_csv("../../data/interim/example_predictions.csv").set_index("id")["prediction"]
-	validation_data.set_index("id", inplace=True)
-
-
-	validation_example_preds = example_preds.loc[validation_data.index]
-	validation_data["ExamplePreds"] = validation_example_preds
-	validation_data[PREDICTION_NAME] = preds
-
-	# MMC over validation
-	mmc_scores = []
-	corr_scores = []
-	for _, x in validation_data.groupby("era"):
-	    series = neutralize_series(pd.Series(unif(x[PREDICTION_NAME])),
-	                               pd.Series(unif(x["ExamplePreds"])))
-
-	    mmc_scores.append(np.cov(series, x[TARGET_NAME])[0, 1] / (0.29 ** 2)) #standard deviation of a uniform distribution is 0.29 (MM2 annoucement)
-
-	    corr_scores.append(spearman(unif(x[PREDICTION_NAME]), x[TARGET_NAME]))
-
-	val_mmc_mean = np.mean(mmc_scores)
-	val_mmc_std = np.std(mmc_scores)
-	val_mmc_sharpe = val_mmc_mean / val_mmc_std
-	corr_plus_mmcs = [c + m for c, m in zip(corr_scores, mmc_scores)]
-	corr_plus_mmc_sharpe = np.mean(corr_plus_mmcs) / np.std(corr_plus_mmcs)
-	corr_plus_mmc_mean = np.mean(corr_plus_mmcs)
-	#corr_plus_mmc_sharpe_diff = corr_plus_mmc_sharpe - validation_sharpe
-
-	#print(
-	#    f"MMC Mean: {val_mmc_mean}\n"
-	#    f"Corr Plus MMC Sharpe:{corr_plus_mmc_sharpe}\n"
-	#    f"Corr Plus MMC Diff:{corr_plus_mmc_sharpe_diff}"
-	#)
-
-	# Check correlation with example predictions
-	corr_with_example_preds = np.corrcoef(validation_example_preds.rank(pct=True, method="first"),
-	                                      validation_data[PREDICTION_NAME].rank(pct=True, method="first"))[0, 1]
-
-	#print(f"Corr with example preds: {corr_with_example_preds}")
+    # Load example preds to get MMC metrics
+    file_path = 'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/predicoes_validacao/'+model+'_preds_test.csv'
+    example_preds = pd.read_csv(file_path).set_index("id")[model]
+    validation_data.set_index("id", inplace=True)
 
 
-	return val_mmc_mean, corr_plus_mmc_sharpe, corr_with_example_preds, validation_data["ExamplePreds"]
+    validation_example_preds = example_preds.loc[validation_data.index]
+    validation_data["ExamplePreds"] = validation_example_preds
+    validation_data[PREDICTION_NAME] = preds
+
+    # MMC over validation
+    mmc_scores = []
+    corr_scores = []
+    for _, x in validation_data.groupby("era"):
+        series = neutralize_series(pd.Series(unif(x[PREDICTION_NAME])),
+                                   pd.Series(unif(x["ExamplePreds"])))
+
+        mmc_scores.append(np.cov(series, x[TARGET_NAME])[0, 1] / (0.29 ** 2)) #standard deviation of a uniform distribution is 0.29 (MM2 annoucement)
+
+        corr_scores.append(spearman(unif(x[PREDICTION_NAME]), x[TARGET_NAME]))
+
+    val_mmc_mean = np.mean(mmc_scores)
+    val_mmc_std = np.std(mmc_scores)
+    val_mmc_sharpe = val_mmc_mean / val_mmc_std
+    corr_plus_mmcs = [c + m for c, m in zip(corr_scores, mmc_scores)]
+    corr_plus_mmc_sharpe = np.mean(corr_plus_mmcs) / np.std(corr_plus_mmcs)
+    corr_plus_mmc_mean = np.mean(corr_plus_mmcs)
+    #corr_plus_mmc_sharpe_diff = corr_plus_mmc_sharpe - validation_sharpe
+
+    #print(
+    #    f"MMC Mean: {val_mmc_mean}\n"
+    #    f"Corr Plus MMC Sharpe:{corr_plus_mmc_sharpe}\n"
+    #    f"Corr Plus MMC Diff:{corr_plus_mmc_sharpe_diff}"
+    #)
+
+    # Check correlation with example predictions
+    corr_with_example_preds = np.corrcoef(validation_example_preds.rank(pct=True, method="first"),
+                                          validation_data[PREDICTION_NAME].rank(pct=True, method="first"))[0, 1]
+
+    #print(f"Corr with example preds: {corr_with_example_preds}")
+
+
+    return val_mmc_mean, corr_plus_mmc_sharpe, corr_with_example_preds, validation_data["ExamplePreds"]
 
 
 #############
@@ -342,7 +343,7 @@ def metrics_consolidated(df):
     return df_cons
 
 
-def submission_metrics(df_val, preds, model_name='',  mmc=True, meta_model=''):
+def submission_metrics(df_val, preds, model_name='',  mmc=True):
 
 
     new_df = df_val.copy()
@@ -389,22 +390,19 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True, meta_model=''):
 
     #by feature metrics
     values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
+    values['Feat_neutral_mean'] = get_feature_neutral_mean(df_val, preds)
 
 
 
-    if model_name=="ex_preds":
-        values['Feat_neutral_mean'] = get_feature_neutral_mean(df_val, preds)
-
-    else:
-        values['Feat_neutral_mean'] = get_feature_neutral_mean(df_val, preds)
-
-
-
+    if model_name=="ex_preds" or model_name=="ex_FN100": mmc=False
+        
     if mmc==True:
-	    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = mmc_metrics(df_val, preds)
+        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = mmc_metrics(df_val, preds, 'ex_preds')
+        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], example_predicts = mmc_metrics(df_val, preds, 'ex_FN100')
 
     else:
-	    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = 0,validation_sharpe(era_scores),1 ,preds
+        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = 0,validation_sharpe(era_scores),1 ,preds
+        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], example_predicts =  0,validation_sharpe(era_scores),1 ,preds
 
 
 
@@ -413,7 +411,7 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True, meta_model=''):
     #get DSR
     try:
         
-        dict_dsr = dsr.dsr_summary(meta_model+'/era_scores_'+model_name+'.csv')
+        dict_dsr = dsr.dsr_summary(model_name[4:]+'/era_scores_'+model_name+'.csv')
         
 
     except:

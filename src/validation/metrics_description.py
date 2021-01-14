@@ -210,6 +210,30 @@ def  get_metrics_dicts(values):
                        "Descricao": ".." }
 
 
+    dict_val_mmc_FN = {"Metrica": 'val_mmc_mean_FN', 
+                       "Valor": values['val_mmc_mean_FN'], 
+                       "Categoria": "MMC_FN", 
+                       "Range_Aceitavel": "[..]", 
+                       "Descricao": ".." }
+
+
+
+
+    #
+    dict_corr_mmc_FN = {"Metrica": 'corr_plus_mmc_sharpe_FN', 
+                       "Valor": values['corr_plus_mmc_sharpe_FN'], 
+                       "Categoria": "MMC_FN", 
+                       "Range_Aceitavel": "[..]", 
+                       "Descricao": "" }
+
+
+
+    #
+    dict_corr_ex_FN100 = {"Metrica": 'corr_with_ex_FN100', 
+                       "Valor": values['corr_with_ex_FN100'], 
+                       "Categoria": "MMC_FN", 
+                       "Range_Aceitavel": "[..]", 
+                       "Descricao": ".." }
 
 
     
@@ -229,6 +253,11 @@ def  get_metrics_dicts(values):
                              ,dict_corr_mmc
                              ,dict_val_mmc #OK
                              ,dict_corr_ex_preds #OK
+
+                             #MMC_FN
+                             ,dict_val_mmc_FN
+                             ,dict_corr_mmc_FN
+                             ,dict_corr_ex_FN100
 
 
                              #Special
