@@ -146,11 +146,12 @@ def feature_exposure(df, pred):
 
 
     # Check the feature exposure of your validation predictions
-    feature_exposures = df[feature_columns].apply(lambda d: correlation(pred, d), axis=0)
+    #feature_exposures = df[feature_columns].apply(lambda d: correlation(pred, d), axis=0)
     max_per_era = df.groupby("era").apply(lambda d: d[feature_columns].corrwith(pred).abs().max())
+    mean_per_era = df.groupby("era").apply(lambda d: np.sqrt(np.mean(np.square(d[feature_columns].corrwith(pred))))) 
 
 
-    return max_per_era.std(), max_per_era.mean(), max_per_era
+    return max_per_era.std(), max_per_era.mean(), mean_per_era
 
 
 
@@ -295,7 +296,8 @@ def mmc_metrics(df, preds):
 	    series = neutralize_series(pd.Series(unif(x[PREDICTION_NAME])),
 	                               pd.Series(unif(x["ExamplePreds"])))
 
-	    mmc_scores.append(np.cov(series, x[TARGET_NAME])[0, 1] / (0.29 ** 2))
+	    mmc_scores.append(np.cov(series, x[TARGET_NAME])[0, 1] / (0.29 ** 2)) #standard deviation of a uniform distribution is 0.29 (MM2 annoucement)
+
 	    corr_scores.append(spearman(unif(x[PREDICTION_NAME]), x[TARGET_NAME]))
 
 	val_mmc_mean = np.mean(mmc_scores)
