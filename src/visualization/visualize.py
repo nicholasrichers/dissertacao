@@ -353,12 +353,13 @@ def plot_live_scores(models_dict, first_round, base="acum"):
 
 
 def highlight_max(s):
-    min_cols = ["Feat_exp_max", 'Validation_SD', 'corr_with_example_preds']    
+    min_cols = ["Feat_exp_max", 'Validation_SD', 'corr_with_example_preds', 'corr_with_ex_FN100']    
     if s.name in min_cols:
+        print(s.name)
         # Get the smallest values of the column
-        is_large = s.nsmallest(1).values
+        is_small = s.nsmallest(1).values
         # Apply style is the current value is among the biggest values
-        return ['background-color: yellow' if v in is_large else '' for v in s]
+        return ['background-color: yellow' if v in is_small else '' for v in s]
     
     else:
         # Get the largest values of the column
