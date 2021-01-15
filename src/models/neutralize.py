@@ -1,12 +1,10 @@
 
 
 import numpy as np
-import scipy
-from sklearn.preprocessing import MinMaxScaler   
 import pandas as pd
+import scipy  
 
-
-
+from sklearn.preprocessing import MinMaxScaler 
 from sklearn.linear_model import SGDRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Ridge
