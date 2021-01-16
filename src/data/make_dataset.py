@@ -39,9 +39,6 @@ def get_data(nrows=None, low_memory=False, dataset="training", feather=True):
     return df, X, y
 
 
-def new_func():
-    print('122333444221')
-
 
 
 def reduce_mem_usage(df, verbose=True):
