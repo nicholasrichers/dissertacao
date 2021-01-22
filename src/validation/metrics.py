@@ -397,12 +397,13 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True, meta=''):
     if model_name=="ex_preds" or model_name=="ex_FN100": mmc=False
         
     if mmc==True:
-        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = mmc_metrics(df_val, preds, 'ex_preds')
         values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], example_predicts = mmc_metrics(df_val, preds, 'ex_FN100')
+        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = mmc_metrics(df_val, preds, 'ex_preds')
+        
 
     else:
-        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = 0,validation_sharpe(era_scores),1 ,preds
         values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], example_predicts =  0,validation_sharpe(era_scores),1 ,preds
+        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = 0,validation_sharpe(era_scores),1 ,preds
 
 
 

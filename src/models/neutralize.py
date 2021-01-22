@@ -164,7 +164,16 @@ def preds_neutralized(df, columns, by, ml_model, proportion=1.0):
 
     return preds_neutr
 
+def preds_neutralized_by(df, columns, by, ml_model, proportion=1.0):
 
+    for group_by in by:
+      feat_by = [c for c in df if c.startswith('feature_'+group_by)]
+      #print(feat_by)
+      preds_neutr = df.groupby("era").apply( lambda x: normalize_and_neutralize(x, columns, feat_by, ml_model, proportion))
+      df[columns] = MinMaxScaler().fit_transform(preds_neutr).reshape(1,-1)[0]
+      preds_neutr_after = df[columns].values
+
+    return preds_neutr_after
 
 
 
