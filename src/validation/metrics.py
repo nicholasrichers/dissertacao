@@ -343,7 +343,7 @@ def metrics_consolidated(df):
     return df_cons
 
 
-def submission_metrics(df_val, preds, model_name='',  mmc=True):
+def submission_metrics(df_val, preds, model_name='',  mmc=True, meta=''):
 
 
     new_df = df_val.copy()
@@ -410,8 +410,8 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True):
 
     #get DSR
     try:
-        
-        dict_dsr = dsr.dsr_summary(model_name[4:]+'/era_scores_'+model_name+'.csv')
+        if meta=='': meta=model_name[4:]
+        dict_dsr = dsr.dsr_summary(meta+'/era_scores_'+model_name+'.csv')
         
 
     except:

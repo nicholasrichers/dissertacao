@@ -172,20 +172,126 @@ def preds_neutralized(df, columns, by, ml_model, proportion=1.0):
 
 fn_strategy_dict = {
 
-'ex_preds':     {'strategy':'after', 'func': preds_neutralized,  'columns': ['preds'], 'by':'' ,             'model': [LinearRegression(fit_intercept=False), None            ], 'factor':0.0},
-'ex_FN100':     {'strategy':'after', 'func': preds_neutralized,  'columns': ['preds'], 'by':'' ,             'model': [LinearRegression(fit_intercept=False), None            ], 'factor':1.0},
+'ex_preds': {'strategy': 'after', 
+             'func': preds_neutralized,  
+             'columns': ['preds'], 
+             'by': [''] ,      
+             'model': [LinearRegression(fit_intercept=False), None], 
+             'factor': 0.0
+            },
 
-'lgbm_exp20':   {'strategy':'after', 'func': preds_neutralized,  'columns': ['preds'], 'by':'' ,             'model': [SGDRegressor(), None                                   ], 'factor':0.0},
-'lgbm_slider20':{'strategy':'after', 'func': preds_neutralized,  'columns': ['preds'], 'by':'' ,             'model': [SGDRegressor(), None                                   ], 'factor':0.0},
 
-'nrichers':       {'strategy': None,   'func': None,              'columns': ['preds'], 'by':'' ,             'model': [None                                                   ], 'factor':None},
-'nick_richers':   {'strategy':'after', 'func': preds_neutralized, 'columns': ['preds'], 'by':'' ,             'model': [SGDRegressor(), None                                   ], 'factor':1.0},
-'nr_rio':         {'strategy':'after', 'func': preds_neutralized, 'columns': ['preds'], 'by':'' ,             'model': [SGDRegressor(), None                                   ], 'factor':0.4}, #R1
+'ex_FN100': {'strategy': 'after', 
+             'func': preds_neutralized, 
+             'columns': ['preds'], 
+             'by': [''] ,
+             'model': [LinearRegression(fit_intercept=False), None], 
+             'factor':1.0
+            },
 
-'nr__rio':        {'strategy':'after', 'func': preds_neutralized, 'columns': ['preds'], 'by':'' ,             'model': [SGDRegressor(), Ridge(alpha=0.5)                       ], 'factor':0.75},
-'nr__sao_paulo':  {'strategy':'after', 'func': preds_neutralized, 'columns': ['preds'], 'by':'' ,             'model': [SGDRegressor(), None                                   ], 'factor':0.9},
-'nr__medellin':   {'strategy':'after', 'func': preds_neutralized, 'columns': ['preds'], 'by':'' ,             'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 'factor':0.75},
-'nr__guadalajara':{'strategy':'after', 'func': preds_neutralized, 'columns': ['preds'], 'by':'constitution' , 'model': [LinearRegression(fit_intercept=False), None            ], 'factor':0.75},
+
+
+'lgbm_exp20': {'strategy': 'after', 
+               'func': preds_neutralized,  
+               'columns': ['preds'], 
+               'by': [''] ,
+               'model': [SGDRegressor(tol=0.001), None], 
+               'factor': 0.0
+              },
+
+
+'lgbm_slider20': {'strategy': 'after', 
+                  'func': preds_neutralized,  
+                  'columns': ['preds'], 
+                  'by': [''] ,
+                  'model': [SGDRegressor(tol=0.001), None], 
+                  'factor':0.0
+                 },
+
+
+
+
+
+
+'nrichers': {'strategy':  None, 
+             'func': None, 
+             'columns': ['preds'], 
+             'by': [''] , 
+             'model': [None, None], 
+             'factor': None
+            },
+
+
+
+
+'nick_richers': {'strategy': 'after', 
+                 'func': preds_neutralized, 
+                 'columns': ['preds'], 
+                 'by': [''], 
+                 'model': [SGDRegressor(tol=0.001), None],
+                 'factor': 1.0
+                },
+
+
+
+
+#R1
+'nr_rio': {'strategy': 'after', 
+           'func': preds_neutralized, 
+           'columns': ['preds'], 
+           'by': [''] , 
+           'model': [SGDRegressor(tol=0.001), None ], 
+           'factor':0.4
+          },
+ 
+
+
+
+
+
+'nr__rio': {'strategy': 'after', 
+            'func': preds_neutralized, 
+            'columns': ['preds'], 
+            'by': [''] ,
+            'model': [SGDRegressor(tol=0.001), Ridge(alpha=0.5)], 
+            'factor':0.75
+           },
+
+
+
+
+
+'nr__sao_paulo':  {'strategy': 'after', 
+                   'func': preds_neutralized, 
+                   'columns': ['preds'], 
+                   'by': [''] , 
+                   'model': [SGDRegressor(tol=0.001), None], 
+                   'factor': 0.9
+                  },
+
+
+
+
+'nr__medellin': {'strategy': 'after', 
+                 'func': preds_neutralized, 
+                 'columns': ['preds'], 
+                 'by': [''] , 
+                 'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
+                 'factor': 0.75
+                 },
+
+
+
+
+'nr__guadalajara':{'strategy': 'after', 
+                   'func': preds_neutralized, 
+                   'columns': ['preds'], 
+                   'by': ['intelligence', 'dexterity', 'strength', 'constitution'] , 
+                   'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
+                   'factor': 0.75
+                  },
+
+
 }
 
 
