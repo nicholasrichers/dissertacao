@@ -255,8 +255,8 @@ def  get_metrics_dicts(values):
                              ,dict_corr_ex_preds #OK
 
                              #MMC_FN
-                             ,dict_val_mmc_FN
                              ,dict_corr_mmc_FN
+                             ,dict_val_mmc_FN
                              ,dict_corr_ex_FN100
 
 

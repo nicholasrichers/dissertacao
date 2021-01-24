@@ -23,7 +23,7 @@ def plot_corr_matrix(df):
     mask = np.triu(np.ones_like(corr, dtype=np.bool))
 
     # Set up the matplotlib figure
-    f, ax = pyplot.subplots(figsize=(11, 9) )
+    f, ax = pyplot.subplots(figsize=(8, 8) )
 
 
     # Generate a custom diverging colormap
@@ -53,6 +53,7 @@ def wilconxon(df, s1, s2): #use era_scores
 
 
 def friedman(df): #use era_scores
+    print("Friedman Test")
     scores = [i for i in df.T.values]
     stat, p = friedmanchisquare(*scores)
 
@@ -67,9 +68,10 @@ def friedman(df): #use era_scores
 
 
 
-def diversity_test(df_scores, df_preds):
+def diversity_test(df_scores, df_preds, plot=False):
     
-    plot_corr_matrix(df_preds)
+    if plot==True: plot_corr_matrix(df_preds)
+    
     friedman(df_scores)
 
     colums = combinations(df_scores.columns, 2)

@@ -343,7 +343,7 @@ def metrics_consolidated(df):
     return df_cons
 
 
-def submission_metrics(df_val, preds, model_name='',  mmc=True, meta=''):
+def submission_metrics(df_val, preds, model_name, full=True, meta=''):
 
 
     new_df = df_val.copy()
@@ -367,43 +367,63 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True, meta=''):
 
     values = dict()
     values['Model_Name'] = model_name
-    values['Max_Drawdown'] = max_drawdown(era_scores)
-    values['Validation_Mean'] = np.mean(era_scores)
-    values['Median_corr'] = np.median(era_scores)
-    values['Variance'] = np.var(era_scores)
-    values['Validation_SD'] = np.std(era_scores)
-    values['AR(1)'] = ar1(era_scores)
-    values['Skewness'] = skew(era_scores)
-    values['Exc_Kurtosis'] = kurtosis(era_scores)
-    values['Std_Error_Mean'] = sem(era_scores)   # fonte: https://www.investopedia.com/ask/answers/042415/what-difference-between-standard-error-means-and-standard-deviation.asp
+    
+    #performance
     values['Validation_Sharpe'] = validation_sharpe(era_scores)
-    values['Smart_Sharpe'] = smart_sharpe(era_scores)
-    values['Numerai_Sharpe'] = numerai_sharpe(era_scores)
-    values['Ann_Sharpe'] = annual_sharpe(era_scores)
-    values['Adj_Sharpe'] = adj_sharpe(era_scores)
-    values['Prob_Sharpe'] = probabilistic_sharpe_ratio(era_scores)
-    values['VaR_10%'] = VaR(era_scores)
-    values['Sortino_Ratio'] = sortino_ratio(era_scores)
-    values['Smart_Sortino_Ratio'] = smart_sortino_ratio(era_scores)
-    values['Payout'] = payout(era_scores)
-
-
-    #by feature metrics
-    values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
+    values['Validation_Mean'] = np.mean(era_scores)
     values['Feat_neutral_mean'] = get_feature_neutral_mean(df_val, preds)
 
+    #risk
+    values['Validation_SD'] = np.std(era_scores)
+    values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
+    values['Max_Drawdown'] = max_drawdown(era_scores)
+
+    #mmc
+    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], _ = mmc_metrics(df_val, preds, 'ex_preds')
 
 
-    if model_name=="ex_preds" or model_name=="ex_FN100": mmc=False
-        
-    if mmc==True:
-        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], example_predicts = mmc_metrics(df_val, preds, 'ex_FN100')
-        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = mmc_metrics(df_val, preds, 'ex_preds')
-        
+    if full:
+        #print("Calculating all metrics")
+        values['Median_corr'] = np.median(era_scores)
+        values['Variance'] = np.var(era_scores)
+        values['AR(1)'] = ar1(era_scores)
+        values['Skewness'] = skew(era_scores)
+        values['Exc_Kurtosis'] = kurtosis(era_scores)
+        values['Std_Error_Mean'] = sem(era_scores)   # fonte: https://www.investopedia.com/ask/answers/042415/what-difference-between-standard-error-means-and-standard-deviation.asp
+        values['Smart_Sharpe'] = smart_sharpe(era_scores)
+        values['Numerai_Sharpe'] = numerai_sharpe(era_scores)
+        values['Ann_Sharpe'] = annual_sharpe(era_scores)
+        values['Adj_Sharpe'] = adj_sharpe(era_scores)
+        values['Prob_Sharpe'] = probabilistic_sharpe_ratio(era_scores)
+        values['VaR_10%'] = VaR(era_scores)
+        values['Sortino_Ratio'] = sortino_ratio(era_scores)
+        values['Smart_Sortino_Ratio'] = smart_sortino_ratio(era_scores)
+        values['Payout'] = payout(era_scores)
+        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], _  = mmc_metrics(df_val, preds, 'ex_FN100')
+
 
     else:
-        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], example_predicts =  0,validation_sharpe(era_scores),1 ,preds
-        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], example_predicts = 0,validation_sharpe(era_scores),1 ,preds
+        #print("Summary all metrics")
+        values['Median_corr'] = 0
+        values['Variance'] = 0
+        values['AR(1)'] = 0
+        values['Skewness'] = 0
+        values['Exc_Kurtosis'] = 0
+        values['Std_Error_Mean'] = 0
+        values['Smart_Sharpe'] = 0
+        values['Numerai_Sharpe'] = 0
+        values['Ann_Sharpe'] = 0
+        values['Adj_Sharpe'] = 0
+        values['Prob_Sharpe'] = 0
+        values['VaR_10%'] = 0
+        values['Sortino_Ratio'] = 0
+        values['Smart_Sortino_Ratio'] =0
+        values['Payout'] = 0
+        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], _  = 0,0,0,0
+
+
+        
+        
 
 
 
@@ -429,7 +449,7 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True, meta=''):
 
 
 
-    return era_scores, df_metrics, feat_corrs, example_predicts
+    return era_scores, df_metrics, feat_corrs
 
 
 ########################################################################################################################
