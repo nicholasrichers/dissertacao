@@ -348,7 +348,7 @@ def submission_metrics(df_val, preds, model_name='',  mmc=True, meta=''):
 
     new_df = df_val.copy()
     #new_df['target'] = new_df['target']
-    new_df[PREDICTION_NAME] = minmax_scale(preds) #caso seja classificacao (1..4)
+    new_df[PREDICTION_NAME] = preds #caso seja classificacao (1..4)
     era_scores = pd.Series(index=new_df['era'].unique())
 
         

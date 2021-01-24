@@ -11,12 +11,13 @@ def get_data(nrows=None, low_memory=False, dataset="training", feather=True):
     if feather==True:
     	df = pd.read_feather('../../Data/Interim/'+dataset+'_val3.feather').iloc[:nrows,:]
 
-    elif dataset == "validation":
-        data_path = '../../Data/Interim/'+dataset+'_data.csv'
-        df = pd.read_csv(data_path, nrows=nrows)
+    #elif dataset == "validation":
+        #data_path = '../../Data/Interim/'+dataset+'_data.csv'
+        #df = pd.read_csv(data_path, nrows=nrows)
 
     else:
-    	data_path = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_'+dataset+'_data.csv.xz'
+    	data_path = 'https://numerai-public-datasets.s3-us-west-2.amazonaws.com/latest_numerai_'+dataset+'_data.csv'
+
     	df = pd.read_csv(data_path, nrows=nrows)
 
 
