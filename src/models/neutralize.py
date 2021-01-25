@@ -156,7 +156,7 @@ def normalize_and_neutralize(df, columns, by, ml_model, proportion=1.0):
    
 
 
-def preds_neutralized(df, columns, by, ml_model, proportion=1.0):
+def preds_neutralized_old(df, columns, by, ml_model, proportion=1.0):
 
     preds_neutr = df.groupby("era").apply( lambda x: normalize_and_neutralize(x, columns, by, ml_model, proportion))
 
@@ -164,7 +164,7 @@ def preds_neutralized(df, columns, by, ml_model, proportion=1.0):
 
     return preds_neutr
 
-def preds_neutralized_by(df, columns, by, ml_model, proportion=1.0):
+def preds_neutralized(df, columns, by, ml_model, proportion=1.0):
 
     for group_by in by:
       feat_by = [c for c in df if c.startswith('feature_'+group_by)]
