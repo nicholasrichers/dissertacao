@@ -134,7 +134,7 @@ def _neutralize(df, columns, by, ml_model, proportion=1.0): #['preds'], features
     else: neutr_preds2 = 0# np.zeros(len(scores))
 
 
-    scores = scores - ((proportion * neutr_preds) + ((1-proportion) * neutr_preds2))
+    scores = scores - ((proportion[0] * neutr_preds) + ((proportion[1]) * neutr_preds2))
 
 
 
@@ -186,7 +186,15 @@ fn_strategy_dict = {
              'columns': ['preds'], 
              'by': [''] ,      
              'model': [LinearRegression(fit_intercept=False), None], 
-             'factor': 0.0
+             'factor': [0.0, 0.0]
+            },
+
+'ex_preds1': {'strategy': 'after', 
+             'func': preds_neutralized,  
+             'columns': ['preds'], 
+             'by': [''] ,      
+             'model': [LinearRegression(fit_intercept=False), None], 
+             'factor': [0.0, 0.0]
             },
 
 
@@ -195,7 +203,7 @@ fn_strategy_dict = {
              'columns': ['preds'], 
              'by': [''] ,
              'model': [LinearRegression(fit_intercept=False), None], 
-             'factor':1.0
+             'factor': [1.0, 0.0]
             },
 
 
@@ -205,7 +213,7 @@ fn_strategy_dict = {
                'columns': ['preds'], 
                'by': [''] ,
                'model': [SGDRegressor(tol=0.001), None], 
-               'factor': 0.0
+               'factor': [0.0, 0.0]
               },
 
 
@@ -214,7 +222,7 @@ fn_strategy_dict = {
                   'columns': ['preds'], 
                   'by': [''] ,
                   'model': [SGDRegressor(tol=0.001), None], 
-                  'factor':0.0
+                  'factor': [0.0, 0.0]
                  },
 
 
@@ -227,7 +235,7 @@ fn_strategy_dict = {
              'columns': ['preds'], 
              'by': [''] , 
              'model': [None, None], 
-             'factor': None
+             'factor': [0, 0]
             },
 
 
@@ -238,7 +246,7 @@ fn_strategy_dict = {
                  'columns': ['preds'], 
                  'by': [''], 
                  'model': [SGDRegressor(tol=0.001), None],
-                 'factor': 1.0
+                 'factor': [1.0, 0.0]
                 },
 
 
@@ -250,7 +258,7 @@ fn_strategy_dict = {
            'columns': ['preds'], 
            'by': [''] , 
            'model': [SGDRegressor(tol=0.001), None ], 
-           'factor':0.4
+           'factor': [0.4, 0.0]
           },
  
 
@@ -263,7 +271,7 @@ fn_strategy_dict = {
             'columns': ['preds'], 
             'by': [''] ,
             'model': [SGDRegressor(tol=0.001), Ridge(alpha=0.5)], 
-            'factor':0.75
+            'factor': [0.75, 0.25]
            },
 
 
@@ -275,7 +283,7 @@ fn_strategy_dict = {
                    'columns': ['preds'], 
                    'by': [''] , 
                    'model': [SGDRegressor(tol=0.001), None], 
-                   'factor': 0.9
+                   'factor': [0.9, 0.1]
                   },
 
 
@@ -286,7 +294,7 @@ fn_strategy_dict = {
                  'columns': ['preds'], 
                  'by': [''] , 
                  'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
-                 'factor': 0.75
+                 'factor': [0.75, 0.25]
                  },
 
 
@@ -297,12 +305,11 @@ fn_strategy_dict = {
                    'columns': ['preds'], 
                    'by': ['intelligence', 'dexterity', 'strength', 'constitution'] , 
                    'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
-                   'factor': 0.75
+                   'factor': [0.75, 0.25]
                   },
 
 
 }
-
 
 
 
