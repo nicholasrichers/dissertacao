@@ -19,7 +19,7 @@
 
 # exclude data from source control by default
 /data/
-/notebooks/
+notebooks/
 
  
 # Mac OS-specific storage files
