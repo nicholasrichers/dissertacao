@@ -375,15 +375,18 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
 
     #risk
     values['Validation_SD'] = np.std(era_scores)
-    values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
+    #values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
     values['Max_Drawdown'] = max_drawdown(era_scores)
 
     #mmc
-    values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], _ = mmc_metrics(df_val, preds, 'ex_preds')
+    #values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], _ = mmc_metrics(df_val, preds, 'ex_preds')
 
 
     if full:
         #print("Calculating all metrics")
+        values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
+        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], _ = mmc_metrics(df_val, preds, 'ex_preds')
+
         values['Median_corr'] = np.median(era_scores)
         values['Variance'] = np.var(era_scores)
         values['AR(1)'] = ar1(era_scores)
@@ -404,6 +407,10 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
 
     else:
         #print("Summary all metrics")
+        values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = 0,0,0 #feature_exposure(df_val, preds)
+        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], _ = 0,0,0,0 #mmc_metrics(df_val, preds, 'ex_preds')
+
+
         values['Median_corr'] = 0
         values['Variance'] = 0
         values['AR(1)'] = 0
