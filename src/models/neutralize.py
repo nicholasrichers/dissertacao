@@ -303,7 +303,7 @@ fn_strategy_dict = {
 'nr__guadalajara':{'strategy': 'after', 
                    'func': preds_neutralized, 
                    'columns': ['preds'], 
-                   'by': ['intelligence', 'dexterity', 'strength', 'constitution'] , 
+                   'by': ['constitution', 'strength', 'dexterity', 'intelligence'], 
                    'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
                    'factor': [0.75, 0.25]
                   },
