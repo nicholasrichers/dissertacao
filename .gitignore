@@ -24,7 +24,7 @@ notebooks/
  
 # Mac OS-specific storage files
 .DS_Store
-
+.ipynb
 
 
 # Used by dotenv library to load environment variables.
