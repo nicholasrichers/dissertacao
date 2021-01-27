@@ -46,7 +46,8 @@ def wilconxon(df, s1, s2): #use era_scores
         print('\nTesting: {} & {}'.format(s1, s2))
         print('Statistics=%.3f, p=%.3f' % (stat, p))
         print('Different distribution (reject H0)')
-
+        return True
+    return False  
     #else: print('Same distribution (fail to reject H0)')
     
     
@@ -75,12 +76,23 @@ def diversity_test(df_scores, df_preds, plot=False):
     friedman(df_scores)
 
     colums = combinations(df_scores.columns, 2)
-
+    rejected_cols = []
     for cols in colums:
-        wilconxon(df_scores, cols[0], cols[1])
+        test = wilconxon(df_scores, cols[0], cols[1])
+        if test:
+            rejected_cols.append(cols[0])
+            rejected_cols.append(cols[1])
+
     print('Todas as Combinações de colunas testadas para Wilcoxon signed-rank test')
-    
+    return rejected_cols
     
 
     
 #diversity_test(df_era_scores_nr, df_preds_nr)
+
+
+
+
+
+
+

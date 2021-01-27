@@ -119,7 +119,7 @@ def neutralize_by_threshold(df, column, neutralizers=[],
 
 
 
-def _neutralize(df, columns, by, ml_model, proportion=1.0): #['preds'], features,
+def _neutralize(df, columns, by, ml_model, proportion): #['preds'], features,
     scores = df[columns] #preds
     exposures = df[by].values #features
     ml_model[0].fit(exposures, scores.values.reshape(1,-1)[0])
@@ -148,7 +148,7 @@ def _normalize(df):
     return scipy.stats.norm.ppf(X)
 
 
-def normalize_and_neutralize(df, columns, by, ml_model, proportion=1.0):
+def normalize_and_neutralize(df, columns, by, ml_model, proportion):
     # Convert the scores to a normal distribution
     df[columns] = _normalize(df[columns])
     df[columns] = _neutralize(df, columns, by, ml_model, proportion)
@@ -156,7 +156,7 @@ def normalize_and_neutralize(df, columns, by, ml_model, proportion=1.0):
    
 
 
-def preds_neutralized_old(df, columns, by, ml_model, proportion=1.0):
+def preds_neutralized_old(df, columns, by, ml_model, proportion):
 
     preds_neutr = df.groupby("era").apply( lambda x: normalize_and_neutralize(x, columns, by, ml_model, proportion))
 
@@ -164,14 +164,13 @@ def preds_neutralized_old(df, columns, by, ml_model, proportion=1.0):
 
     return preds_neutr
 
-def preds_neutralized(df, columns, by, ml_model, proportion=1.0):
+def preds_neutralized(df, columns, by, ml_model, proportion):
 
     for group_by in by:
       feat_by = [c for c in df if c.startswith('feature_'+group_by)]
       #print(feat_by)
       preds_neutr = df.groupby("era").apply( lambda x: normalize_and_neutralize(x, columns, feat_by, ml_model, proportion))
-      df[columns] = MinMaxScaler().fit_transform(preds_neutr).reshape(1,-1)[0]
-      preds_neutr_after = df[columns].values
+      preds_neutr_after = MinMaxScaler().fit_transform(preds_neutr).reshape(1,-1)[0]
 
     return preds_neutr_after
 

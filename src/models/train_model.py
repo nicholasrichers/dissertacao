@@ -336,7 +336,7 @@ class TunedModel_Skopt(Model):
 # ============================================================================================================
 # TunedModel
 # ============================================================================================================
-class BuildModel(Model):
+class BuildModel(Model): #DEPRECATED
 
 
   def __init__(self, param_distributions, **kwargs):

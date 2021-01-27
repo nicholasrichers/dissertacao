@@ -206,7 +206,7 @@ def plot_corr_matrix(df):
     mask = np.triu(np.ones_like(corr, dtype=np.bool))
 
     # Set up the matplotlib figure
-    f, ax = pyplot.subplots(figsize=(11, 9) )
+    f, ax = pyplot.subplots(figsize=(8, 8) )
 
 
     # Generate a custom diverging colormap

@@ -262,14 +262,13 @@ def  get_metrics_dicts(values):
 
                              #Special
                              ,dict_Adj_Sharpe
-                             ,dict_Sortino_Ratio
+                             ,dict_Prob_Sharpe
                              #dict_dsr por fora
                              
 
 
 
                               #Financeira
-                             ,dict_Prob_Sharpe
                              ,dict_Smart_Sharpe
                              ,dict_Numerai_Sharpe
                              ,dict_ann_Sharpe
