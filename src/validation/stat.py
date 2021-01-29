@@ -69,11 +69,11 @@ def friedman(df): #use era_scores
 
 
 
-def diversity_test(df_scores, df_preds, plot=False, friedman=True):
+def diversity_test(df_scores, df_preds, plot=False, f_test=True):
     
     if plot==True: plot_corr_matrix(df_preds)
     
-    if friedman==True: friedman(df_scores)
+    if f_test==True: friedman(df_scores)
 
     colums = combinations(df_scores.columns, 2)
     rejected_cols = []

@@ -239,7 +239,8 @@ def neutralize(df, columns, extra_neutralizers=None, proportion=1.0, normalize=T
 
 
 
-def get_feature_neutral_mean(df, preds):
+def get_feature_neutral_mean(ddf, preds):
+    df = ddf.copy()
     df[PREDICTION_NAME] = preds
     feature_cols = [c for c in df.columns if c.startswith("feature")]
     df.loc[:, "neutral_sub"] = neutralize(df, [PREDICTION_NAME], feature_cols)[PREDICTION_NAME]
