@@ -62,25 +62,33 @@ def preds_neutralized_old(ddf, columns, by, ml_model, proportion):
     return preds_neutr
 
 
+
+
 def preds_neutralized(ddf, columns, by, ml_model, proportion):
 
     df = ddf.copy()  
     preds_neutr = dict()
-    #proportion = [[2,-0],
-                  #[2,-0],
-                  #[2,-0],
-                  #[0,0],
-                  #[-1,0],
-                  #[2,-0]]
-
-
-    for group_by, p in zip(by, proportion):
+    for group_by in by:
         feat_by = [c for c in df if c.startswith('feature_'+group_by)]
-        #print(p)
-        #print(feat_by)
+        
         
         df[columns]=df.groupby("era").apply(
-            lambda x:normalize_and_neutralize(x,columns,feat_by,ml_model, [p,0]  ))
+            lambda x:normalize_and_neutralize(x,columns,feat_by,ml_model, proportion))
+        
+        preds_neutr_after = MinMaxScaler().fit_transform(df[columns]).reshape(1,-1)[0]
+
+    return preds_neutr_after
+
+
+def preds_neutralized_groups(ddf, columns, by, ml_model, proportion):
+
+    df = ddf.copy()  
+
+    for group_by, p in by.items():
+        feat_by = [c for c in df if c.startswith('feature_'+group_by)]
+        
+        df[columns]=df.groupby("era").apply(
+            lambda x:normalize_and_neutralize(x,columns,feat_by,ml_model,[p[0], p[1]]))
         
         preds_neutr_after = MinMaxScaler().fit_transform(df[columns]).reshape(1,-1)[0]
 
@@ -221,12 +229,16 @@ fn_strategy_dict = {
                   },
 
 
+
 'nr__san_francisco':{'strategy': 'after', 
-                   'func': preds_neutralized, 
+                   'func': preds_neutralized_groups, 
                    'columns': ['preds'], 
-                   'by': ['constitution', 'strength', 'dexterity', 'intelligence'], 
+                   'by': {'constitution':[2.0,0], 'strength':[2.0,0], 
+                          'dexterity':[2.0,0], 'charisma':[-1.0,0], 
+                          'wisdom':[-1.0,0], 'intelligence':[2.0,0]},
+                      
                    'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
-                   'factor': [2.0, -0.5]
+                   'factor': []
                   },
 
 
