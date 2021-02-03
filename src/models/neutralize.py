@@ -66,12 +66,21 @@ def preds_neutralized(ddf, columns, by, ml_model, proportion):
 
     df = ddf.copy()  
     preds_neutr = dict()
-    for group_by in by:
+    #proportion = [[2,-0],
+                  #[2,-0],
+                  #[2,-0],
+                  #[0,0],
+                  #[-1,0],
+                  #[2,-0]]
+
+
+    for group_by, p in zip(by, proportion):
         feat_by = [c for c in df if c.startswith('feature_'+group_by)]
-        
+        #print(p)
+        #print(feat_by)
         
         df[columns]=df.groupby("era").apply(
-            lambda x:normalize_and_neutralize(x,columns,feat_by,ml_model, proportion))
+            lambda x:normalize_and_neutralize(x,columns,feat_by,ml_model, [p,0]  ))
         
         preds_neutr_after = MinMaxScaler().fit_transform(df[columns]).reshape(1,-1)[0]
 
@@ -143,14 +152,15 @@ fn_strategy_dict = {
 
 
 
-'nick_richers': {'strategy': None, #troquei para None rdd 249
-                 'func': preds_neutralized, 
-                 'columns': ['preds'], 
-                 'by': [''], 
-                 'model': [SGDRegressor(tol=0.001), None],
-                 'factor': [1.0, 0.0]
-                },
 
+
+'nick_richers':{'strategy': 'after', 
+                   'func': preds_neutralized, 
+                   'columns': ['preds'], 
+                   'by': ['constitution', 'strength', 'dexterity', 'intelligence'], 
+                   'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
+                   'factor': [2.0, -0.5]
+                  },
 
 
 
@@ -214,9 +224,9 @@ fn_strategy_dict = {
 'nr__san_francisco':{'strategy': 'after', 
                    'func': preds_neutralized, 
                    'columns': ['preds'], 
-                   'by': ['constitution', 'strength', 'intelligence'], 
+                   'by': ['constitution', 'strength', 'dexterity', 'intelligence'], 
                    'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
-                   'factor': [0.75, 0.25]
+                   'factor': [2.0, -0.5]
                   },
 
 

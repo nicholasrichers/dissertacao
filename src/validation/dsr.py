@@ -279,7 +279,7 @@ def deflated_sharpe_ratio(trials_returns=None, returns_selected=None, expected_m
 
 
 def dsr_summary(file_path, prints=False):
-    
+
     era_scores = pd.read_csv('../../Data/processed/era_scores/'+file_path)
     returns = era_scores.filter(like='val_', axis=1).T
     

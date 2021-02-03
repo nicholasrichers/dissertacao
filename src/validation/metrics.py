@@ -15,7 +15,8 @@ except:
   #import dsr
   import metrics_description
 
-
+import warnings
+warnings.filterwarnings("ignore")
 
 #to use in google colab
 #try:
