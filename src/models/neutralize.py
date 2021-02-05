@@ -161,13 +161,17 @@ fn_strategy_dict = {
 
 
 
-
 'nick_richers':{'strategy': 'after', 
-                   'func': preds_neutralized, 
-                   'columns': ['preds'], 
-                   'by': ['constitution', 'strength', 'dexterity', 'intelligence'], 
+                   'func': preds_neutralized_groups, 
+                   'columns': ['preds'],
+
+                    'by': {'constitution':[2.0,-0.5], 'strength':    [2.0,-0.5], 
+                           'dexterity':   [2.0,-0.5], 'charisma':    [0.0,0], 
+                           'wisdom':      [0.0,0], 'intelligence':[2.0,-0.5]},
+            
+                      
                    'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
-                   'factor': [2.0, -0.5]
+                   'factor': []
                   },
 
 
@@ -232,10 +236,12 @@ fn_strategy_dict = {
 
 'nr__san_francisco':{'strategy': 'after', 
                    'func': preds_neutralized_groups, 
-                   'columns': ['preds'], 
-                   'by': {'constitution':[2.0,0], 'strength':[2.0,0], 
-                          'dexterity':[2.0,0], 'charisma':[-1.0,0], 
-                          'wisdom':[-1.0,0], 'intelligence':[2.0,0]},
+                   'columns': ['preds'],
+
+                    'by': {'constitution':[2.0,0.15], 'strength':   [2.0,0.25], 
+                           'dexterity':   [2.0,0.0], 'charisma':   [-1.0,0.25], 
+                           'wisdom':     [-1.0,0.5], 'intelligence':[2.0,0.0]},
+            
                       
                    'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
                    'factor': []

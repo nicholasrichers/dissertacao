@@ -1,4 +1,5 @@
 import scipy
+import math
 from scipy.stats import skew, kurtosis, sem, gmean, norm
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import minmax_scale
@@ -102,8 +103,9 @@ def probabilistic_sharpe_ratio(x=None, sr_benchmark=0.0):
     n = len(x)
     sr = np.mean(x) / np.std(x, ddof=1)
     sr_std = np.sqrt((1 + (0.5 * sr ** 2) - (skew(x) * sr) + (((kurtosis(x) - 3) / 4) * sr ** 2)) / (n - 1))
-
-    return scipy.stats.norm.cdf((sr - sr_benchmark) / sr_std)
+    psr = scipy.stats.norm.cdf((sr - sr_benchmark) / sr_std)
+    if math.isnan(psr): psr=1.0000
+    return psr
 
 
 
