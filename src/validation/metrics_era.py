@@ -30,6 +30,41 @@ def numerai_score(y_true, y_pred, df):
     return era_scores
 
 
+
+
+
+def pearson_score(y_true, y_pred, df):
+
+    #create y_true as df
+    y_true = y_true.to_frame(name='target')
+    y_true = y_true.join(df['era'])
+
+    #create y_pred as df
+    preds_df = pd.DataFrame(y_pred, index = y_true.index, columns=['preds'])
+    preds_df = preds_df.join(df['era'])
+
+    #print(y_true['era'].unique())
+
+    era_scores = pd.Series(index=y_true['era'].unique())
+    era_scores_pearson = pd.Series(index=y_true['era'].unique())
+    era_scores_diff = pd.Series(index=y_true['era'].unique())
+    
+    for era in y_true['era'].unique():
+        era_df = y_true[y_true['era'] == era]
+        era_preds = preds_df[preds_df['era'] == era]
+        era_scores[era] = np.corrcoef(era_df['target'], 
+                                      era_preds['preds'].rank(pct=True, method="first"))[0,1]
+        
+        era_scores_pearson[era] = np.corrcoef(era_df['target'], era_preds['preds'])[0,1]
+        era_scores_diff[era] = era_scores[era] - era_scores_pearson[era]
+    
+    df_scores = pd.DataFrame()
+    df_scores['spearman'], df_scores['pearson'], df_scores['diff']=era_scores,era_scores_pearson,era_scores_diff
+    return df_scores, df_scores.columns
+
+
+
+
 def sharpe_ratio(y_true, y_pred, df):
 
   era_scores = numerai_score(y_true, y_pred, df)

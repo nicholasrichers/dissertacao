@@ -354,11 +354,15 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
     #new_df['target'] = new_df['target']
     new_df[PREDICTION_NAME] = preds #caso seja classificacao (1..4)
     era_scores = pd.Series(index=new_df['era'].unique())
+    era_scores_pearson = pd.Series(index=new_df['era'].unique())
+    era_scores_diff = pd.Series(index=new_df['era'].unique())
 
         
     for era in new_df['era'].unique():
         era_df = new_df[new_df['era'] == era]
         era_scores[era] = spearman(era_df[PREDICTION_NAME], era_df['target'])
+        era_scores_pearson[era] = np.corrcoef(era_df[PREDICTION_NAME], era_df['target'])[0,1]
+        era_scores_diff[era] = era_scores[era] - era_scores_pearson[era]
 
     era_scores.sort_values(inplace=True)
     era_scores.sort_index(inplace=True)
@@ -457,10 +461,13 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
     metrics.append(dict_dsr)
     df_metrics = pd.DataFrame.from_dict(metrics)
     df_metrics = df_metrics.set_index('Metrica')
+    scores = {'spearman': era_scores, 
+              'pearson':  era_scores_pearson, 
+              'diff':     era_scores_diff}
 
 
 
-    return era_scores, df_metrics, feat_corrs
+    return scores['spearman'], df_metrics, feat_corrs
 
 
 ########################################################################################################################

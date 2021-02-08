@@ -279,7 +279,7 @@ def plot_era_scores(df, model_names):
   layout = go.Layout(title = 'Era Scores por Modelo',
                      xaxis = {'title': 'Eras'},
                      yaxis = {'title': 'Spearman Score'},
-                     barmode = 'stack') #Atenção a opção "stack"
+                     barmode = 'relative') #Atenção a opção "stack"
   fig = go.Figure(data=data, layout=layout)
   py.iplot(fig)
 
