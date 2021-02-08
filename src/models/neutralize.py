@@ -12,8 +12,6 @@ from sklearn.linear_model import Ridge
 
 
 
-
-
 def _neutralize(df, columns, by, ml_model, proportion): #['preds'], features,
     scores = df[columns] #preds
     exposures = df[by].values #features
@@ -80,7 +78,7 @@ def preds_neutralized(ddf, columns, by, ml_model, proportion):
     return preds_neutr_after
 
 
-def preds_neutralized_groups(ddf, columns, by, ml_model, proportion):
+def preds_neutralized_groups(ddf, columns, by, ml_model, _):
 
     df = ddf.copy()  
 
@@ -93,6 +91,77 @@ def preds_neutralized_groups(ddf, columns, by, ml_model, proportion):
         preds_neutr_after = MinMaxScaler().fit_transform(df[columns]).reshape(1,-1)[0]
 
     return preds_neutr_after
+
+
+
+def feature_exposure_old(df, pred):
+    #df = df[df.data_type == 'validation']
+    pred = pd.Series(pred, index=df.index)
+
+    feature_columns = [x for x in df.columns if x.startswith('feature_')]
+    correlations = []
+    for col in feature_columns:
+        correlations.append(np.corrcoef(pred.rank(pct=True, method="first"), df[col])[0, 1])
+    corr_series = pd.Series(correlations, index=feature_columns)
+    return np.std(correlations), max(np.abs(correlations)), corr_series
+
+
+
+def neutralize_topk_era(df, preds, k, ml_model, proportion):
+    
+    _, _, feat_exp = feature_exposure_old(df, preds)
+    k_exposed = feat_exp[feat_exp.abs() > feat_exp.abs().quantile(1-k)].index
+
+    preds_era = preds_neutralized_old(df, ['preds_fn'], k_exposed, ml_model, proportion)
+
+    return preds_era
+
+
+def neutralize_topk(ddf, preds, k, ml_model, proportion):
+    df = ddf.copy()
+    df['preds_fn'] = df[preds]
+
+    preds_neutr_topk_era = df.groupby("era",sort=False).apply(lambda x: neutralize_topk_era(x, x['preds_fn'], k, ml_model, proportion))
+
+    return np.hstack(preds_neutr_topk_era)
+
+
+
+
+#####################################################################################################################
+#####################################################################################################################
+#####################################################################################################################
+
+def get_topk(df, preds, k):
+    _, _, feat_exp = feature_exposure_old(df, preds)
+    k_exposed = feat_exp[feat_exp.abs() > feat_exp.abs().quantile(1-k)].index
+    return k_exposed
+
+
+def neutralize_topk_era2(ddf, preds, k, ml_model, proportion):
+    df = ddf.copy()
+    k_exposed = get_topk(df, preds, k)
+    df['preds_fn'] = preds
+
+    return preds_neutralized_old(df, ['preds_fn'], k_exposed, ml_model, proportion)
+
+
+def neutralize_topk2(ddf, preds, k, ml_model, proportion):
+    df = ddf.copy()
+    k_exposed = get_topk(df, preds, k)
+    df['preds_fn'] = preds
+
+    preds_neutr_topk_era = df.groupby("era",sort=True).apply(lambda x: neutralize_topk_era(x, x['preds_fn'], k, ml_model, proportion))
+
+
+    params = [df, preds, k, ml_model, proportion]
+    preds_netur_topk_era = df.groupby("era", sort=False).apply(neutralize_topk_era, *params)
+
+    return preds_neutralized_old(df, ['preds_fn'], k_exposed, ml_model, proportion)
+
+#####################################################################################################################
+#####################################################################################################################
+#####################################################################################################################
 
 
 
@@ -172,6 +241,7 @@ fn_strategy_dict = {
                       
                    'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
                    'factor': []
+
                   },
 
 
@@ -248,11 +318,34 @@ fn_strategy_dict = {
                   },
 
 
+
+
+
+'nr__shanghai':{'strategy': 'double_fn',
+                   'func': preds_neutralized_groups, 
+                   'columns': ['preds'],
+
+
+                    'by': {'constitution':[2.0,-0.5], 'strength': [2.0,-0.5], 
+                           'dexterity':   [2.0,-0.5], 'charisma':    [0.0,0], 
+                           'wisdom':      [0.0,0], 'intelligence':[2.0,-0.5]},
+            
+                      
+                   'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)], 
+                   'factor': [],
+
+                    'double': {'func2': neutralize_topk,
+                               'params2': 0.10,
+                               'factor2': [0.50, 0.0],
+                               'columns_fn': ['preds_fn'],
+                               'model2': [LinearRegression(fit_intercept=False), None]},
+                  },
+
+
+
+
+
 }
-
-
-
-
 
 
 
