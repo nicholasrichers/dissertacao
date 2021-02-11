@@ -183,6 +183,7 @@ def  get_metrics_dicts(values):
 
 
 
+
     #
     dict_val_mmc = {"Metrica": 'val_mmc_mean', 
                        "Valor": values['val_mmc_mean'], 
@@ -216,6 +217,13 @@ def  get_metrics_dicts(values):
                        "Range_Aceitavel": "[..]", 
                        "Descricao": ".." }
 
+
+      #OK
+    dict_FNC = {"Metrica": 'FNC', 
+                       "Valor": values['FNC'], 
+                       "Categoria": "MMC_FN", 
+                       "Range_Aceitavel": "[0.00027..0.027]", 
+                       "Descricao": "Score médio com feature neutral = 1.0" }
 
 
 
@@ -255,6 +263,7 @@ def  get_metrics_dicts(values):
                              ,dict_corr_ex_preds #OK
 
                              #MMC_FN
+                             ,dict_FNC
                              ,dict_corr_mmc_FN
                              ,dict_val_mmc_FN
                              ,dict_corr_ex_FN100

@@ -241,7 +241,6 @@ def neutralize(df, columns, extra_neutralizers=None, proportion=1.0, normalize=T
 
 
 
-
 def get_feature_neutral_mean(ddf, preds):
     df = ddf.copy()
     df[PREDICTION_NAME] = preds
@@ -251,6 +250,31 @@ def get_feature_neutral_mean(ddf, preds):
     scores = df.groupby("era").apply(lambda x: spearman(x["neutral_sub"], x[TARGET_NAME])).mean()
     return np.mean(scores)
 
+
+
+
+def calculate_fnc(sub, targets, features):
+    """    
+    Args:
+        sub (pd.Series)
+        targets (pd.Series)
+        features (pd.DataFrame)
+    """
+    
+    # Normalize submission
+    sub = (sub.rank(method="first").values - 0.5) / len(sub)
+
+    # Neutralize submission to features
+    f = features.values
+    sub -= f.dot(np.linalg.pinv(f).dot(sub))
+    sub /= sub.std()
+    
+    sub = pd.Series(np.squeeze(sub)) # Convert np.ndarray to pd.Series
+
+    # FNC: Spearman rank-order correlation of neutralized submission to target
+    fnc = np.corrcoef(sub.rank(pct=True, method="first"), targets)[0, 1]
+
+    return fnc
 
 
 
@@ -274,9 +298,6 @@ def neutralize_series(series, by, proportion=1.0):
 def unif(df):
     x = (df.rank(method="first") - 0.5) / len(df)
     return pd.Series(x, index=df.index)
-
-
-
 
 
 
@@ -349,7 +370,7 @@ def metrics_consolidated(df):
 
 def submission_metrics(df_val, preds, model_name, full=True, meta=''):
 
-
+    features = [c for c in df_val if c.startswith("feature")]
     new_df = df_val.copy()
     #new_df['target'] = new_df['target']
     new_df[PREDICTION_NAME] = preds #caso seja classificacao (1..4)
@@ -394,6 +415,8 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
         #print("Calculating all metrics")
         values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
         values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], _ = mmc_metrics(df_val, preds, 'ex_preds')
+        values['FNC'] = calculate_fnc(pd.Series(pred, index=df_val.index), df_val.target, df_val[features])
+        
 
         values['Median_corr'] = np.median(era_scores)
         values['Variance'] = np.var(era_scores)
@@ -417,6 +440,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
         #print("Summary all metrics")
         values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = 0,0,0 #feature_exposure(df_val, preds)
         values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], _ = 0,0,0,0 #mmc_metrics(df_val, preds, 'ex_preds')
+        values['FNC'] = 0
 
 
         values['Median_corr'] = 0

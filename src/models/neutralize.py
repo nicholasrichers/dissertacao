@@ -119,49 +119,14 @@ def neutralize_topk_era(df, preds, k, ml_model, proportion):
 
 def neutralize_topk(ddf, preds, k, ml_model, proportion):
     df = ddf.copy()
-    df['preds_fn'] = df[preds]
+    df['preds_fn'] = preds
 
-    preds_neutr_topk_era = df.groupby("era",sort=False).apply(lambda x: neutralize_topk_era(x, x['preds_fn'], k, ml_model, proportion))
+    preds_neutr_topk_era = df.groupby("era", sort=False).apply(lambda x: neutralize_topk_era(x, x['preds_fn'], k, ml_model, proportion))
 
     return np.hstack(preds_neutr_topk_era)
 
 
 
-
-#####################################################################################################################
-#####################################################################################################################
-#####################################################################################################################
-
-def get_topk(df, preds, k):
-    _, _, feat_exp = feature_exposure_old(df, preds)
-    k_exposed = feat_exp[feat_exp.abs() > feat_exp.abs().quantile(1-k)].index
-    return k_exposed
-
-
-def neutralize_topk_era2(ddf, preds, k, ml_model, proportion):
-    df = ddf.copy()
-    k_exposed = get_topk(df, preds, k)
-    df['preds_fn'] = preds
-
-    return preds_neutralized_old(df, ['preds_fn'], k_exposed, ml_model, proportion)
-
-
-def neutralize_topk2(ddf, preds, k, ml_model, proportion):
-    df = ddf.copy()
-    k_exposed = get_topk(df, preds, k)
-    df['preds_fn'] = preds
-
-    preds_neutr_topk_era = df.groupby("era",sort=True).apply(lambda x: neutralize_topk_era(x, x['preds_fn'], k, ml_model, proportion))
-
-
-    params = [df, preds, k, ml_model, proportion]
-    preds_netur_topk_era = df.groupby("era", sort=False).apply(neutralize_topk_era, *params)
-
-    return preds_neutralized_old(df, ['preds_fn'], k_exposed, ml_model, proportion)
-
-#####################################################################################################################
-#####################################################################################################################
-#####################################################################################################################
 
 
 
