@@ -415,7 +415,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
         #print("Calculating all metrics")
         values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
         values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], _ = mmc_metrics(df_val, preds, 'ex_preds')
-        values['FNC'] = calculate_fnc(pd.Series(pred, index=df_val.index), df_val.target, df_val[features])
+        values['FNC'] = calculate_fnc(pd.Series(preds, index=df_val.index), df_val.target, df_val[features])
         
 
         values['Median_corr'] = np.median(era_scores)
