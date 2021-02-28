@@ -244,7 +244,54 @@ def  get_metrics_dicts(values):
                        "Descricao": ".." }
 
 
-    
+        #
+    dict_percentile_rank = {"Metrica": 'percentile_rank', 
+                            "Valor": values['percentile_rank'], 
+                            "Categoria": "Live", 
+                            "Range_Aceitavel": "[..]", 
+                            "Descricao": ".." }
+
+
+        #
+    dict_std_correlation = {"Metrica": 'std_correlation', 
+                            "Valor": values['std_correlation'], 
+                            "Categoria": "Live", 
+                            "Range_Aceitavel": "[..]", 
+                            "Descricao": ".." }
+
+
+        #
+    dict_std_mmc = {"Metrica": 'std_mmc', 
+                            "Valor": values['std_mmc'], 
+                            "Categoria": "Live", 
+                            "Range_Aceitavel": "[..]", 
+                            "Descricao": ".." }
+
+
+        #
+    dict_std_fnc = {"Metrica": 'std_fnc', 
+                            "Valor": values['std_fnc'], 
+                            "Categoria": "Live", 
+                            "Range_Aceitavel": "[..]", 
+                            "Descricao": ".." }
+
+
+        #
+    dict_std_corr_metamodel = {"Metrica": 'std_corr_metamodel', 
+                            "Valor": values['std_corr_metamodel'], 
+                            "Categoria": "Live", 
+                            "Range_Aceitavel": "[..]", 
+                            "Descricao": ".." }
+
+
+        #
+    dict_std_percentile_rank = {"Metrica": 'std_percentile_rank', 
+                            "Valor": values['std_percentile_rank'], 
+                            "Categoria": "Live", 
+                            "Range_Aceitavel": "[..]", 
+                            "Descricao": ".." }
+
+
     metrics_dicts_list = [dict_Model_Name
 
                               #Performance
@@ -295,6 +342,15 @@ def  get_metrics_dicts(values):
                              ,dict_Exc_Kurtosis
                              ,dict_Std_Error_Mean
                              ,dict_Feat_exp_std
+
+
+                             #Live
+                             ,dict_percentile_rank
+                             ,dict_std_percentile_rank
+                             ,dict_std_correlation
+                             ,dict_std_mmc
+                             ,dict_std_fnc
+                             ,dict_std_corr_metamodel
 
 
 

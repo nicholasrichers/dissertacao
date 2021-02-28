@@ -254,14 +254,14 @@ def plot_feat_cors(df, model_names):
 
 
 
-def plot_era_scores(df, model_names):
+def plot_era_scores(df, model_names, xaxis='era_'):
 
   cores = px.colors.cyclical.HSV
   data=[]
 
 
   #lista com as eras
-  eras =  ["era_"+era for era in df.index.astype('str')]
+  eras =  [xaxis+era for era in df.index.astype('str')]
 
   #note que usamos a lista de status do gráfico de boxplot
   for cor, model in enumerate(model_names):
@@ -288,21 +288,38 @@ def plot_era_scores(df, model_names):
 
 
 import datetime
-def live_eras_perfomance(models_dict, first_round):
+def live_eras_perfomance(models_dict, round_range):
+
+   # import warnings
     import numerapi
+    #warnings.filterwarnings('ignore')
     api = numerapi.NumerAPI()
-    last_closed_round = api.get_current_round()-4
-    rounds = np.arange(first_round, last_closed_round+1)
+    #last_closed_round = api.get_current_round()-4
+    rounds = np.arange(round_range[0], round_range[-1]+1)
     df_models_rounds = pd.DataFrame()
-    
-    
+
     for model_name, model_alias in models_dict.items():
+
         df = pd.DataFrame(api.daily_submissions_performances(model_name))
-        df_model = pd.DataFrame(df[df['roundNumber']==first_round-1].head(20).tail(1))
-        df_model['correlation'], df_model['correlationWithMetamodel'], df_model['mmc'] = 0,0,0
-        
+        df_model = pd.DataFrame()
+
         for round_ in rounds:
-            last_day_round = df[df['roundNumber']==round_].head(20).tail(1)
+            temp_df = pd.DataFrame(api.round_details(int(round_)))
+            temp_df['round_number'] = round_
+            temp_df['percentile_rank'] = temp_df.groupby(['round_number','date']).rank(pct=True)
+
+            complete_round = df[df['roundNumber']==round_].head(20)
+            complete_round['percentile_rank'] = temp_df[temp_df['username'] == model_name].percentile_rank.values
+
+
+            last_day_round = complete_round.tail(1)
+            last_day_round['std_correlation'] = np.std(complete_round['correlation'])
+            last_day_round['std_mmc'] = np.std(complete_round['mmc'])
+            last_day_round['std_fnc'] = complete_round[np.logical_not(np.isnan(complete_round['fnc']))].fnc.values.std()
+            last_day_round['std_correlationWithMetamodel'] = np.std(complete_round['correlationWithMetamodel'])
+            last_day_round['std_percentile_rank'] = np.std(complete_round['percentile_rank'])
+
+
             df_model = pd.concat([df_model,last_day_round], axis=0)
 
         
@@ -314,40 +331,108 @@ def live_eras_perfomance(models_dict, first_round):
 
 
 
-def plot_live_scores(models_dict, first_round, base="acum"):
+def plot_live_scores_line(df, column, base="acum", return_data = False):
 
     data=[]
     cores = px.colors.cyclical.HSV
-    df = live_eras_perfomance(models_dict, first_round)
-
+    cores = px.colors.qualitative.Plotly
+    #df = live_eras_perfomance(models_dict, round_range)
 
 
     #note que usamos a lista de status do gráfico de boxplot
     for cor, model in enumerate(df['model_name'].unique()):
         
-        returns = df[df['model_name']==model].correlation*100
-        acumulated = [sum(returns[:i+1]) for i in range(len(returns))]
+        returns = df[df['model_name']==model][column]*1
+        acumulated = [(sum(returns[:i+1])/1)+1 for i in range(len(returns))]
 
-        if base=="acum": line_values = acumulated
-        else: line_values = returns
+        if base=="acum": 
+          line_values = [1]+acumulated
+          dates = df['date'].unique()
+          dates = np.insert(dates, 0, dates[0] - pd.Timedelta("1 day"))
+
+        else: 
+          line_values = returns[:]
+          dates = df['date'].unique()[:]
+
 
       # Gerando gráficos para cada modelo
         trace =  go.Scatter(y = line_values,
-                      x = df['date'].unique(),
+                      x = dates,
                       name = model,
                       line_shape='linear',
-                      marker = {'color': cores[cor]})
+                      marker = {'color': cores[cor]}) 
       
         data.append(trace)
 
 
-    layout = go.Layout(title = 'Live Scores por Modelo',
-                       xaxis = {'title': 'Rounds'},
-                       yaxis = {'title': 'Retorno (%)'})
+    layout = go.Layout(title = 'Live Scores by Model',
+                       xaxis = {'title': 'Round Closing Date'},
+                       yaxis = {'title': column+' (%)'}
                        #barmode = 'stack') #Atenção a opção "stack"
+    )
     fig = go.Figure(data=data, layout=layout)
+
+    if return_data==True: return fig, data
     py.iplot(fig)
 
+
+
+def plot_live_scores_bar(df, column, return_data=False):
+
+  cores = px.colors.cyclical.HSV
+  cores = px.colors.qualitative.Plotly
+  data=[]
+
+
+  for cor, model in enumerate(df['model_name'].unique()):
+        
+        returns = df[df['model_name']==model][column]*1
+        #acumulated = [(sum(returns[:i+1])/1)+1 for i in range(len(returns))]
+
+        line_values = returns[:]
+        dates = df['date'].unique()[:]
+
+
+      # Gerando gráficos para cada modelo
+        trace =  go.Bar(y = line_values,
+                        x = dates,
+                        name = model,
+                        #line_shape='linear',
+                        marker = {'color': cores[cor]}) 
+      
+        data.append(trace)
+
+
+  layout = go.Layout(title = 'Live Scores by Model',
+                       xaxis = {'title': 'Closing Round Date'},
+                       yaxis = {'title': column+' (%)'}
+                       #barmode = 'stack') #Atenção a opção "stack"
+  )
+  fig = go.Figure(data=data, layout=layout)
+
+  if return_data==True: return fig, data
+  py.iplot(fig)
+
+
+from plotly.subplots import make_subplots
+def plot_live_scores_stacked(df, base, column1, column2):
+    fig1, data1 = plot_live_scores_line(df, column1, base=base, return_data=True)
+    fig2, data2 = plot_live_scores_bar(df, column2, return_data=True)
+
+    fig = make_subplots(rows=2, cols=1,
+                        shared_xaxes=True,
+                        vertical_spacing=0.02,
+                        x_title='Round Closing Date'
+                        )
+
+    for dt1 in data1: fig.add_trace(dt1, row=1, col=1)
+    for dt2 in data2: fig.add_trace(dt2, row=2, col=1)
+
+    fig['layout']['yaxis']['title']= column1+' (%)'
+    fig['layout']['yaxis2']['title']=column2+' (%)'
+
+    fig.update_layout(height=600, width=900, title_text=" Live Eras " + column1 +" & "+ column2)
+    fig.show()
 
 
 
@@ -355,7 +440,8 @@ def plot_live_scores(models_dict, first_round, base="acum"):
 def highlight_max(s):
     min_cols = ["Feat_exp_max", 'Validation_SD', 'corr_with_example_preds', 'corr_with_ex_FN100']    
     if s.name in min_cols:
-        #print(s.name)
+        print(s.name)
+        print(111)
         # Get the smallest values of the column
         is_small = s.nsmallest(1).values
         # Apply style is the current value is among the biggest values
@@ -370,7 +456,10 @@ def highlight_max(s):
 
 
 def highlight_max_(s):
-    min_cols = ["Feat_exp_max", 'Validation_SD', 'corr_with_example_preds', 'corr_with_ex_FN100']    
+    min_cols = ["Feat_exp_max", 'Validation_SD', 'corr_with_example_preds', 'corr_with_ex_FN100', 
+                'std_percentile_rank', 'std_correlation', 'std_mmc', 'std_fnc'] 
+
+
     if s.name in min_cols:
         #print(s.name)
         # Get the smallest values of the column
@@ -409,7 +498,10 @@ def leaderboard_test_val(metrics_test, metrics_val, model_names, cols):
 
 
 def highlight_max(s):
-    min_cols = ["Feat_exp_max", 'Validation_SD', 'corr_with_example_preds']    
+
+    if s.name=='Feat_exp_max_': return ['background-color: lightgrey' if v in s.nsmallest(1).values else '' for v in s]
+
+    min_cols = ["Feat_exp_max", 'Validation_SD', 'Live_SD','corr_with_example_preds']    
     if s.name in min_cols:
         # Get the smallest values of the column
         is_large = s.nsmallest(1).values
@@ -448,7 +540,16 @@ VALIDATION_METRIC_INTERVALS = {
     "corr_plus_mmc_sharpe": (0.41, 1.34),
     "Max_Drawdown": (-0.115, -0.025),
     "Feat_neutral_mean": (0.006, 0.022),
-    "corr_with_example_preds": (1, 0.4)
+    "corr_with_example_preds": (1, 0.4),
+
+    "Live_Mean": (0.013, 0.028),
+    "Live_Sharpe": (0.53, 1.24),
+    "Live_SD": (0.0303, 0.0168),
+    "Live_mmc_mean": (-0.008, 0.008),
+    "Feat_exp_max_": (0.1, -0.1),
+
+
+
 }
 
 

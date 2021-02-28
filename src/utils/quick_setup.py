@@ -39,6 +39,7 @@ def get_libs(local=False):
     load_library('metrics_description', 'src/validation/metrics_description.py', local=local)
     load_library('dsr', 'src/validation/dsr.py', local=local)
     load_library('metrics', 'src/validation/metrics.py', local=local)
+    load_library('metrics_live', 'src/validation/metrics_live.py', local=local)
     load_library('stat', 'src/validation/stat.py', local=local)
 
     

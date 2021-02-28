@@ -62,13 +62,17 @@ def validation_sharpe(x):
 
 
 
-def max_drawdown(x):
-	#print("checking max drawdown...")
+def max_drawdown(xx):
+    #print("checking max drawdown...")
+    x = pd.Series([0], index=[0])
+    x = x.append(xx)#,ignore_index=True)
+
+
     rolling_max = (x + 1).cumprod().rolling(window=100, min_periods=1).max()
     daily_value = (x + 1).cumprod()
-    max_drawdown = -(rolling_max - daily_value).max()
+    max_dd = -(rolling_max - daily_value).max()
     #print(f"max drawdown: {max_drawdown}")
-    return max_drawdown
+    return max_dd
 
 
 ##ddof = delta degrees of freedom
@@ -463,7 +467,9 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
 
         
         
-
+    #live metrics
+    values['percentile_rank'], values['std_correlation'] = 0,0
+    values['std_mmc'], values['std_fnc'], values['std_corr_metamodel'],values['std_percentile_rank']  = 0,0,0,0
 
 
     metrics = metrics_description.get_metrics_dicts(values)
@@ -500,6 +506,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
 
 
 
+
 def sharpe_metrics(era_scores):
      
 
@@ -522,6 +529,101 @@ def sharpe_metrics(era_scores):
     
     values['hparam'] = model_name
     return values
+
+
+########################################################################################################################
+########################################################################################################################
+########################################################################################################################
+
+
+
+def submission_metrics_live(df_results, model_name):
+
+    new_df = df_results.copy()
+    era_scores = pd.Series(new_df['correlation'].values, index=new_df['roundNumber'].unique())
+
+ 
+    #era_scores.sort_values(inplace=True)
+    #era_scores.sort_index(inplace=True)
+
+
+    values = dict()
+    values['Model_Name'] = model_name
+    
+    #performance
+    values['Validation_Sharpe'] = validation_sharpe(era_scores)
+    values['Validation_Mean'] = np.mean(era_scores)
+    values['Feat_neutral_mean'] = new_df['fnc'].mean()
+
+    #risk
+    values['Validation_SD'] = np.std(era_scores)
+    values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = 0,0,0 #feature_exposure(df_val, preds)
+    values['Max_Drawdown'] = max_drawdown(era_scores.reset_index(drop=True))
+
+    #mmc
+    values['val_mmc_mean'] = new_df['mmc'].mean()
+    values['corr_plus_mmc_sharpe'] = validation_sharpe(new_df['mmc'] + new_df['correlation'])
+    values['corr_with_example_preds'] = new_df['correlationWithMetamodel'].mean()
+
+    #if full:
+    #print("Calculating all metrics")
+    #values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
+    #values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], _ = mmc_metrics(df_val, preds, 'ex_preds')
+    values['FNC'] = 0 #calculate_fnc(pd.Series(preds, index=df_val.index), df_val.target, df_val[features])
+    
+
+    values['Median_corr'] = np.median(era_scores)
+    values['Variance'] = np.var(era_scores)
+    values['AR(1)'] = ar1(era_scores)
+    values['Skewness'] = skew(era_scores)
+    values['Exc_Kurtosis'] = kurtosis(era_scores)
+    values['Std_Error_Mean'] = sem(era_scores)   # fonte: https://www.investopedia.com/ask/answers/042415/what-difference-between-standard-error-means-and-standard-deviation.asp
+    values['Smart_Sharpe'] = smart_sharpe(era_scores)
+    values['Numerai_Sharpe'] = numerai_sharpe(era_scores)
+    values['Ann_Sharpe'] = annual_sharpe(era_scores)
+    values['Adj_Sharpe'] = adj_sharpe(era_scores)
+    values['Prob_Sharpe'] = probabilistic_sharpe_ratio(era_scores)
+    values['VaR_10%'] = VaR(era_scores)
+    values['Sortino_Ratio'] = sortino_ratio(era_scores)
+    values['Smart_Sortino_Ratio'] = smart_sortino_ratio(era_scores)
+    values['Payout'] = payout(era_scores)
+    values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], _  =0,0,0,0# mmc_metrics(df_val, preds, 'ex_FN100')
+    values['percentile_rank'] = new_df['percentile_rank'].mean()
+
+    #vol metrics 
+    values['std_correlation'] = new_df['std_correlation'].mean()
+    values['std_mmc'] = new_df['std_mmc'].mean()
+    values['std_fnc'] = new_df['std_fnc'].mean()
+    values['std_corr_metamodel'] = new_df['std_correlationWithMetamodel'].mean()
+    values['std_percentile_rank'] = new_df['std_percentile_rank'].mean()
+
+
+
+    metrics = metrics_description.get_metrics_dicts(values)
+
+    #get DSR
+    dict_dsr = {"Metrica": 'Deflated_Sharpe', 
+                 "Valor": 0, 
+                 "Categoria": "Special", 
+                 "Range_Aceitavel": "[0.5..1]", 
+                 "Descricao": "Sharpe Descontado pelas tentativas" }
+
+
+    metrics.append(dict_dsr)
+    df_metrics = pd.DataFrame.from_dict(metrics)
+    df_metrics = df_metrics.set_index('Metrica')
+
+
+    return era_scores, df_metrics
+
+
+
+########################################################################################################################
+########################################################################################################################
+########################################################################################################################
+
+
+
 
 
 
