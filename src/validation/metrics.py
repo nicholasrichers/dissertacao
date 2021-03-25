@@ -305,12 +305,16 @@ def unif(df):
 
 
 
-def mmc_metrics(df, preds, model):
+def mmc_metrics(df, preds, model):  ex_preds_preds_test.csv   ex_preds_preds_train.csv
+
+    if df.shape[0] == 501808: file = '_preds_train.csv'
+    else: file = '_preds_test.csv'
+
 
     validation_data = df.copy()
 
     # Load example preds to get MMC metrics
-    file_path = 'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/predicoes_validacao/'+model+'_preds_test.csv'
+    file_path = 'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/predicoes_validacao/raw/'+model+file
     example_preds = pd.read_csv(file_path).set_index("id")[model]
     validation_data.set_index("id", inplace=True)
 
