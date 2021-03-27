@@ -305,7 +305,7 @@ def unif(df):
 
 
 
-def mmc_metrics(df, preds, model):  ex_preds_preds_test.csv   ex_preds_preds_train.csv
+def mmc_metrics(df, preds, model):
 
     if df.shape[0] == 501808: file = '_preds_train.csv'
     else: file = '_preds_test.csv'
