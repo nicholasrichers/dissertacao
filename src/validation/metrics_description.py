@@ -51,9 +51,24 @@ def  get_metrics_dicts(values):
     #OK
     dict_AR1 = {"Metrica": 'AR(1)', 
                 "Valor": values['AR(1)'], 
-                "Categoria": "Estatistica", 
+                "Categoria": "AR", 
                 "Range_Aceitavel": "[0..] Próximo a zero", 
                 "Descricao": "AR(1) pearson corr eras[:-1] e eras[1:]" }
+
+        #OK
+    dict_AR1_sign = {"Metrica": 'AR(1)_sign', 
+                "Valor": values['AR(1)_sign'], 
+                "Categoria": "AR", 
+                "Range_Aceitavel": "[0..] Próximo a zero", 
+                "Descricao": "AR(1) pearson corr eras[:-1] e eras[1:]" }
+
+    #ok
+    dict_preds_dep = {"Metrica": 'Preds_Dependence', 
+                "Valor": values['Preds_Dependence'], 
+                "Categoria": "AR", 
+                "Range_Aceitavel": "[0..] Próximo a zero", 
+                "Descricao": "" }
+
 
     #OK
     dict_Skewness = {"Metrica": 'Skewness', 
@@ -90,7 +105,7 @@ def  get_metrics_dicts(values):
     #OK
     dict_Smart_Sharpe = {"Metrica": "Smart_Sharpe", 
                          "Valor": values['Smart_Sharpe'], 
-                         "Categoria": "Financeira", 
+                         "Categoria": "AR", 
                          "Range_Aceitavel": "Pouco menor que o shape", 
                          "Descricao": "Sharpe * auto_corr_penalty" }
 
@@ -316,16 +331,8 @@ def  get_metrics_dicts(values):
                              ,dict_corr_ex_FN100
 
 
-                             #Special
-                             ,dict_Adj_Sharpe
-                             ,dict_Prob_Sharpe
-                             #dict_dsr por fora
-                             
-
-
 
                               #Financeira
-                             ,dict_Smart_Sharpe
                              ,dict_Numerai_Sharpe
                              ,dict_ann_Sharpe
                              ,dict_Payout
@@ -337,11 +344,18 @@ def  get_metrics_dicts(values):
                              #Estatistica
                              ,dict_Median_corr
                              ,dict_Variance
-                             ,dict_AR1
                              ,dict_Skewness
                              ,dict_Exc_Kurtosis
                              ,dict_Std_Error_Mean
                              ,dict_Feat_exp_std
+
+
+                             #AR
+                             ,dict_AR1
+                             ,dict_AR1_sign
+                             ,dict_Smart_Sharpe
+                             ,dict_preds_dep
+
 
 
                              #Live
@@ -351,6 +365,12 @@ def  get_metrics_dicts(values):
                              ,dict_std_mmc
                              ,dict_std_fnc
                              ,dict_std_corr_metamodel
+
+
+                             #Special
+                             ,dict_Adj_Sharpe
+                             ,dict_Prob_Sharpe
+                             #dict_dsr por fora
 
 
 

@@ -47,6 +47,9 @@ def correlation(predictions, targets):
 def ar1(x):
     return np.corrcoef(x[:-1], x[1:])[0,1]
 
+def ar1_sign(x):
+    return ar1((x>np.mean(x))*1)
+
 #https://forum.numer.ai/t/performance-stationarity/151 (VER O PAPER KEY QUANT)
 def autocorr_penalty(x):
     n = len(x)
@@ -139,7 +142,23 @@ def payout(scores):
     return scores.clip(lower=-0.25, upper=0.25).mean()
 
 
+def richards_dependence(df, target_col, era_col, prediction_col):    
+    scores_by_era = df.groupby(era_col).apply(
+        lambda d: d[[prediction_col, target_col]].corr()[target_col][0]
+    )
 
+    # these need to be ranked within era so "error" makes sense
+    df[prediction_col] = df.groupby(era_col)[prediction_col].rank(pct=True)
+    df[target_col] = df.groupby(era_col)[target_col].rank(pct=True)
+
+    df["era_score"] = df.era.map(scores_by_era)
+
+    df["error"] = (df[target_col] - df[prediction_col]) ** 2
+    df["1-error"] = 1 - df["error"]
+
+    # Returns the correlation of the 1-error with the era_score
+    # i.e. how dependent/correlated each prediction is with its era_score
+    return df[["1-error", "era_score"]].corr()["era_score"][0]
 
 
 
@@ -154,11 +173,13 @@ def feature_exposure(df, pred):
 
     # Check the feature exposure of your validation predictions
     #feature_exposures = df[feature_columns].apply(lambda d: correlation(pred, d), axis=0)
-    max_per_era = df.groupby("era").apply(lambda d: d[feature_columns].corrwith(pred).abs().max())
-    mean_per_era = df.groupby("era").apply(lambda d: np.sqrt(np.mean(np.square(d[feature_columns].corrwith(pred))))) 
+    #max_per_era = df.groupby("era").apply(lambda d: d[feature_columns].corrwith(pred).abs().max())
+    corr_series = df.groupby("era").apply(lambda d: d[feature_columns].corrwith(pred))
+
+    max_per_era = corr_series.apply(lambda d: d.abs().max())
 
 
-    return max_per_era.std(), max_per_era.mean(), mean_per_era
+    return max_per_era.std(), max_per_era.mean(), corr_series
 
 
 
@@ -429,6 +450,8 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
         values['Median_corr'] = np.median(era_scores)
         values['Variance'] = np.var(era_scores)
         values['AR(1)'] = ar1(era_scores)
+        values['AR(1)_sign'] = ar1_sign(era_scores)
+        values['Preds_Dependence'] = richards_dependence(new_df, 'target', 'era', PREDICTION_NAME)
         values['Skewness'] = skew(era_scores)
         values['Exc_Kurtosis'] = kurtosis(era_scores)
         values['Std_Error_Mean'] = sem(era_scores)   # fonte: https://www.investopedia.com/ask/answers/042415/what-difference-between-standard-error-means-and-standard-deviation.asp
@@ -451,21 +474,23 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
         values['FNC'] = 0
 
 
-        values['Median_corr'] = 0
-        values['Variance'] = 0
-        values['AR(1)'] = 0
-        values['Skewness'] = 0
-        values['Exc_Kurtosis'] = 0
-        values['Std_Error_Mean'] = 0
-        values['Smart_Sharpe'] = 0
-        values['Numerai_Sharpe'] = 0
-        values['Ann_Sharpe'] = 0
-        values['Adj_Sharpe'] = 0
-        values['Prob_Sharpe'] = 0
-        values['VaR_10%'] = 0
-        values['Sortino_Ratio'] = 0
-        values['Smart_Sortino_Ratio'] =0
-        values['Payout'] = 0
+        values['Median_corr'] = np.median(era_scores)
+        values['Variance'] = np.var(era_scores)
+        values['AR(1)'] = ar1(era_scores)
+        values['AR(1)_sign'] = ar1_sign(era_scores)
+        values['Preds_Dependence'] = richards_dependence(new_df, 'target', 'era', PREDICTION_NAME)
+        values['Skewness'] = skew(era_scores)
+        values['Exc_Kurtosis'] = kurtosis(era_scores)
+        values['Std_Error_Mean'] = sem(era_scores)   # fonte: https://www.investopedia.com/ask/answers/042415/what-difference-between-standard-error-means-and-standard-deviation.asp
+        values['Smart_Sharpe'] = smart_sharpe(era_scores)
+        values['Numerai_Sharpe'] = numerai_sharpe(era_scores)
+        values['Ann_Sharpe'] = annual_sharpe(era_scores)
+        values['Adj_Sharpe'] = adj_sharpe(era_scores)
+        values['Prob_Sharpe'] = probabilistic_sharpe_ratio(era_scores)
+        values['VaR_10%'] = VaR(era_scores)
+        values['Sortino_Ratio'] = sortino_ratio(era_scores)
+        values['Smart_Sortino_Ratio'] = smart_sortino_ratio(era_scores)
+        values['Payout'] = payout(era_scores)
         values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], _  = 0,0,0,0
 
 
@@ -501,7 +526,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
 
 
 
-    return scores['spearman'], df_metrics, feat_corrs
+    return era_scores, df_metrics, feat_corrs
 
 
 ########################################################################################################################
@@ -625,8 +650,6 @@ def submission_metrics_live(df_results, model_name):
 ########################################################################################################################
 ########################################################################################################################
 ########################################################################################################################
-
-
 
 
 

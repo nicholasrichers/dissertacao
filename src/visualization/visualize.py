@@ -437,21 +437,6 @@ def plot_live_scores_stacked(df, base, column1, column2):
 
 
 
-def highlight_max(s):
-    min_cols = ["Feat_exp_max", 'Validation_SD', 'corr_with_example_preds', 'corr_with_ex_FN100']    
-    if s.name in min_cols:
-        print(s.name)
-        print(111)
-        # Get the smallest values of the column
-        is_small = s.nsmallest(1).values
-        # Apply style is the current value is among the biggest values
-        return ['background-color: yellow' if v in is_small else '' for v in s]
-    
-    else:
-        # Get the largest values of the column
-        is_large = s.nlargest(1).values
-        # Apply style is the current value is among the smallest values
-        return ['background-color: yellow' if v in is_large else '' for v in s]
 
 
 
@@ -500,13 +485,14 @@ def leaderboard_test_val(metrics_test, metrics_val, model_names, cols):
 def highlight_max(s):
 
     if s.name=='Feat_exp_max_': return ['background-color: lightgrey' if v in s.nsmallest(1).values else '' for v in s]
+    min_cols = ["Feat_exp_max", 'Validation_SD', 'Live_SD','corr_with_example_preds', 'AR(1)', 'AR(1)_sign', 'Preds_Dependence']  
 
-    min_cols = ["Feat_exp_max", 'Validation_SD', 'Live_SD','corr_with_example_preds']    
     if s.name in min_cols:
+        #print(s.abs())
         # Get the smallest values of the column
-        is_large = s.nsmallest(1).values
+        is_small = s.abs().nsmallest(1).values
         # Apply style is the current value is among the biggest values
-        return ['background-color: yellow' if v in is_large else '' for v in s]
+        return ['background-color: yellow' if v in is_small else '' for v in s]
     
     else:
         # Get the largest values of the column
