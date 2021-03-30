@@ -652,7 +652,28 @@ def submission_metrics_live(df_results, model_name):
 ########################################################################################################################
 
 
+def submission_scores(df_val, preds):
 
+    features = [c for c in df_val if c.startswith("feature")]
+    new_df = df_val.copy()
+    #new_df['target'] = new_df['target']
+    new_df[PREDICTION_NAME] = preds #caso seja classificacao (1..4)
+    era_scores = pd.Series(index=new_df['era'].unique())
+    era_scores_pearson = pd.Series(index=new_df['era'].unique())
+    era_scores_diff = pd.Series(index=new_df['era'].unique())
+
+        
+    for era in new_df['era'].unique():
+        era_df = new_df[new_df['era'] == era]
+        era_scores[era] = spearman(era_df[PREDICTION_NAME], era_df['target'])
+        era_scores_pearson[era] = np.corrcoef(era_df[PREDICTION_NAME], era_df['target'])[0,1]
+        era_scores_diff[era] = era_scores[era] - era_scores_pearson[era]
+
+    era_scores.sort_values(inplace=True)
+    era_scores.sort_index(inplace=True)
+
+
+    return era_scores
 
 
 
