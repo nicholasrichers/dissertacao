@@ -169,7 +169,7 @@ def preds_neutralized_custom(ddf, columns, metric_func, ml_model, p):
 
     for p, feat_by in by.items():
 
-        df[columns]=df.groupby("era").apply(lambda x:normalize_and_neutralize(x,columns,feat_by,ml_model,[p[0], 0]))
+        df[columns]=df.groupby("era").apply(lambda x:normalize_and_neutralize(x,columns,feat_by,ml_model,[p, 0]))
         preds_neutr_after = MinMaxScaler().fit_transform(df[columns]).reshape(1,-1)[0]
 
     return preds_neutr_after
