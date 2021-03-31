@@ -50,6 +50,12 @@ def normalize_and_neutralize(df, columns, by, ml_model, proportion):
    
 
 
+################################################################################################################
+################################################################################################################
+################################################################################################################
+################################################################################################################
+
+
 def preds_neutralized_old(ddf, columns, by, ml_model, proportion):
 
     df = ddf.copy()
@@ -92,7 +98,18 @@ def preds_neutralized_groups(ddf, columns, by, ml_model, _):
 
     return preds_neutr_after
 
+################################################################################################################
+################################################################################################################
+################################################################################################################
+################################################################################################################
 
+
+
+def ar1(x):
+    return np.corrcoef(x[:-1], x[1:])[0,1]
+
+def ar1_sign(x):
+    return ar1((x>np.mean(x))*1)
 
 def feature_exposure_old(df, pred):
     #df = df[df.data_type == 'validation']
@@ -105,6 +122,10 @@ def feature_exposure_old(df, pred):
     corr_series = pd.Series(correlations, index=feature_columns)
     return np.std(correlations), max(np.abs(correlations)), corr_series
 
+################################################################################################################
+################################################################################################################
+################################################################################################################
+################################################################################################################
 
 
 def neutralize_topk_era(df, preds, k, ml_model, proportion):
@@ -127,8 +148,36 @@ def neutralize_topk(ddf, preds, k, ml_model, proportion):
 
 
 
+def fn_criteria_func(df, metric_func, k):
+    path="https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/predicoes_validacao/shanghai/shanghai_preds_corr/era_scores/era_scores_train_target.csv"
+    era_scores = pd.read_csv(path)
+    
+    mode_series = era_scores.apply(lambda x: metric_func(x)).sort_values(ascending=False)    
+    feats = mode_series[mode_series.abs() > mode_series.abs().quantile(1-k)].index
+    
+    return feats
 
 
+def preds_neutralized_custom(ddf, columns, metric_func, ml_model, p):
+
+    df = ddf.copy()  
+    feats = fn_criteria_func(df, metric_func[0], metric_func[1])
+    by = {p[0]: feats}
+
+    print(str(metric_func[0]))
+    print(by)
+
+    for p, feat_by in by.items():
+
+        df[columns]=df.groupby("era").apply(lambda x:normalize_and_neutralize(x,columns,feat_by,ml_model,[p[0], 0]))
+        preds_neutr_after = MinMaxScaler().fit_transform(df[columns]).reshape(1,-1)[0]
+
+    return preds_neutr_after
+
+################################################################################################################
+################################################################################################################
+################################################################################################################
+################################################################################################################
 
 
 
@@ -307,6 +356,15 @@ fn_strategy_dict = {
                   },
 
 
+'nr__bangalore':{'strategy': 'after', 
+                   'func': preds_neutralized_custom, 
+                   'columns': ['preds'],
+
+                    'by': [ar1_sign, .1],            
+                      
+                   'model': [LinearRegression(fit_intercept=False), None], 
+                   'factor': [1]
+                  },
 
 
 
