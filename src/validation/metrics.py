@@ -376,7 +376,7 @@ def mmc_metrics(df, preds, model):
     #print(f"Corr with example preds: {corr_with_example_preds}")
 
 
-    return val_mmc_mean, corr_plus_mmc_sharpe, corr_with_example_preds, validation_data["ExamplePreds"]
+    return val_mmc_mean, corr_plus_mmc_sharpe, corr_with_example_preds, mmc_scores
 
 
 #############
@@ -443,7 +443,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
     if full:
         #print("Calculating all metrics")
         values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
-        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], _ = mmc_metrics(df_val, preds, 'ex_preds')
+        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], mmc_scores = mmc_metrics(df_val, preds, 'ex_preds')
         values['FNC'] = calculate_fnc(pd.Series(preds, index=df_val.index), df_val.target, df_val[features])
         
 
@@ -464,13 +464,13 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
         values['Sortino_Ratio'] = sortino_ratio(era_scores)
         values['Smart_Sortino_Ratio'] = smart_sortino_ratio(era_scores)
         values['Payout'] = payout(era_scores)
-        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], _  = mmc_metrics(df_val, preds, 'ex_FN100')
+        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], mmc_scores_FN  = mmc_metrics(df_val, preds, 'ex_FN100')
 
 
     else:
         #print("Summary all metrics")
         values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = 0,0,0 #feature_exposure(df_val, preds)
-        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], _ = 0,0,0,0 #mmc_metrics(df_val, preds, 'ex_preds')
+        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], mmc_scores = 0,0,0,0 #mmc_metrics(df_val, preds, 'ex_preds')
         values['FNC'] = 0
 
 
@@ -491,7 +491,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
         values['Sortino_Ratio'] = sortino_ratio(era_scores)
         values['Smart_Sortino_Ratio'] = smart_sortino_ratio(era_scores)
         values['Payout'] = payout(era_scores)
-        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], _  = 0,0,0,0
+        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], mmc_scores_FN  = 0,0,0,0
 
 
         
@@ -522,11 +522,12 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
     df_metrics = df_metrics.set_index('Metrica')
     scores = {'spearman': era_scores, 
               'pearson':  era_scores_pearson, 
-              'diff':     era_scores_diff}
+              'diff':     era_scores_diff,
+              'mmc':      mmc_scores}
 
 
 
-    return era_scores, df_metrics, feat_corrs
+    return scores, df_metrics, feat_corrs
 
 
 ########################################################################################################################
