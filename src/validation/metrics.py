@@ -375,7 +375,7 @@ def mmc_metrics(df, preds, model):
 
     #print(f"Corr with example preds: {corr_with_example_preds}")
 
-
+    mmc_scores = pd.Series(mmc_scores, index=df['era'].unique())
     return val_mmc_mean, corr_plus_mmc_sharpe, corr_with_example_preds, mmc_scores
 
 
@@ -527,7 +527,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
 
 
 
-    return scores, df_metrics, feat_corrs
+    return era_scores, df_metrics, feat_corrs, mmc_scores
 
 
 ########################################################################################################################
