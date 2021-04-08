@@ -218,6 +218,34 @@ def plot_corr_matrix(df):
                 square=True, linewidths=.75, cbar_kws={"shrink": .8},  annot=True)
 
 
+def plot_corr_matrix_full(df):
+
+    from string import ascii_letters
+    import numpy as np
+    import pandas as pd
+
+    sns.set(style="white")
+    #pyplot.rcParams['axes.titlesize'] = 18
+    #pyplot.rcParams['axes.labelsize'] = 12
+
+    # Compute the correlation matrix
+    corr = df.corr(method="spearman")
+
+    # Generate a mask for the upper triangle
+    mask = np.triu(np.ones_like(corr, dtype=np.bool))
+
+    # Set up the matplotlib figure
+    f, ax = pyplot.subplots(figsize=(12, 12) )
+
+
+    # Generate a custom diverging colormap
+    cmap = sns.diverging_palette(220, 10, as_cmap=True)
+
+    ax.set_title('Spearman Corr Matrix', fontsize=18)
+    # Draw the heatmap with the mask and correct aspect ratio
+    sns.heatmap(corr,  cmap=cmap, vmax=.8, center=0.4, 
+                square=True, linewidths=.75, cbar_kws={"shrink": .8},  annot=True)
+
 
 
 import plotly.offline as py

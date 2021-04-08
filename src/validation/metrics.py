@@ -65,16 +65,19 @@ def validation_sharpe(x):
 
 
 
-def max_drawdown(xx):
+def max_drawdown(x):
     #print("checking max drawdown...")
-    x = pd.Series([0], index=[0])
-    x = x.append(xx)#,ignore_index=True)
+    #x = pd.Series([0], index=[0])
+    #x = x.append(xx)#,ignore_index=True)
 
 
-    rolling_max = (x + 1).cumprod().rolling(window=100, min_periods=1).max()
+    rolling_max = (x + 1).cumprod().rolling(window=100,min_periods=1).max()
     daily_value = (x + 1).cumprod()
-    max_dd = -(rolling_max - daily_value).max()
-    #print(f"max drawdown: {max_drawdown}")
+
+    max_dd = -((rolling_max - daily_value) / rolling_max).max()
+
+
+    #print(f"max drawdown: {max_dd}")
     return max_dd
 
 
@@ -176,7 +179,7 @@ def feature_exposure(df, pred):
     #max_per_era = df.groupby("era").apply(lambda d: d[feature_columns].corrwith(pred).abs().max())
     corr_series = df.groupby("era").apply(lambda d: d[feature_columns].corrwith(pred))
 
-    max_per_era = corr_series.apply(lambda d: d.abs().max())
+    max_per_era = corr_series.T.abs().max()
 
 
     return max_per_era.std(), max_per_era.mean(), corr_series
@@ -376,7 +379,7 @@ def mmc_metrics(df, preds, model):
     #print(f"Corr with example preds: {corr_with_example_preds}")
 
     mmc_scores = pd.Series(mmc_scores, index=df['era'].unique())
-    return val_mmc_mean, corr_plus_mmc_sharpe, corr_with_example_preds, mmc_scores
+    return val_mmc_mean, corr_plus_mmc_sharpe, corr_with_example_preds, mmc_scores, val_mmc_sharpe
 
 
 #############
@@ -443,7 +446,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
     if full:
         #print("Calculating all metrics")
         values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = feature_exposure(df_val, preds)
-        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], mmc_scores = mmc_metrics(df_val, preds, 'ex_preds')
+        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], mmc_scores, values['val_mmc_sharpe'] = mmc_metrics(df_val, preds, 'ex_preds')
         values['FNC'] = calculate_fnc(pd.Series(preds, index=df_val.index), df_val.target, df_val[features])
         
 
@@ -464,13 +467,13 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
         values['Sortino_Ratio'] = sortino_ratio(era_scores)
         values['Smart_Sortino_Ratio'] = smart_sortino_ratio(era_scores)
         values['Payout'] = payout(era_scores)
-        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], mmc_scores_FN  = mmc_metrics(df_val, preds, 'ex_FN100')
+        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], mmc_scores_FN, values['val_mmc_sharpe_FN']   = mmc_metrics(df_val, preds, 'ex_FN100')
 
 
     else:
         #print("Summary all metrics")
         values['Feat_exp_std'], values['Feat_exp_max'], feat_corrs  = 0,0,0 #feature_exposure(df_val, preds)
-        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], mmc_scores = 0,0,0,0 #mmc_metrics(df_val, preds, 'ex_preds')
+        values['val_mmc_mean'], values['corr_plus_mmc_sharpe'], values['corr_with_example_preds'], mmc_scores, values['val_mmc_sharpe']  = 0,0,0,era_scores,0 #mmc_metrics(df_val, preds, 'ex_preds')
         values['FNC'] = 0
 
 
@@ -491,7 +494,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
         values['Sortino_Ratio'] = sortino_ratio(era_scores)
         values['Smart_Sortino_Ratio'] = smart_sortino_ratio(era_scores)
         values['Payout'] = payout(era_scores)
-        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], mmc_scores_FN  = 0,0,0,0
+        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], mmc_scores_FN, values['val_mmc_sharpe_FN']   = 0,0,0,era_scores,0
 
 
         
