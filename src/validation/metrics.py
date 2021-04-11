@@ -373,8 +373,10 @@ def mmc_metrics(df, preds, model):
     #)
 
     # Check correlation with example predictions
-    corr_with_example_preds = np.corrcoef(validation_example_preds.rank(pct=True, method="first"),
-                                          validation_data[PREDICTION_NAME].rank(pct=True, method="first"))[0, 1]
+    per_era_corrs = validation_data.groupby('era').apply(lambda d: correlation(unif(d[PREDICTION_NAME]), unif(d["ExamplePreds"])))
+    corr_with_example_preds = np.mean(per_era_corrs)
+    #print(corr_with_example_preds)
+    
 
     #print(f"Corr with example preds: {corr_with_example_preds}")
 
