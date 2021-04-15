@@ -1,4 +1,3 @@
-
 import numpy as np
 import pandas as pd
 import scipy
@@ -9,22 +8,20 @@ from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Ridge
 
 
-
-
 def _neutralize(df, columns, by, ml_model, proportion):  # ['preds'], features,
     scores = df[columns]  # preds
     exposures = df[by].values  # features
-    ml_model[0].fit(exposures, scores.values.reshape(1 ,-1)[0])
+    ml_model[0].fit(exposures, scores.values.reshape(1, -1)[0])
     neutr_preds = pd.DataFrame(ml_model[0].predict(exposures), index=df.index, columns=columns)
     # exposures.dot(np.linalg.pinv(exposures).dot(scores))
 
-
     if ml_model[1] != None:
-        ml_model[1].fit(exposures, scores.values.reshape(1 ,-1)[0])
+        ml_model[1].fit(exposures, scores.values.reshape(1, -1)[0])
         neutr_preds2 = pd.DataFrame(ml_model[1].predict(exposures), index=df.index, columns=columns)
         # print(neutr_preds2)
 
-    else: neutr_preds2 =  0# np.zeros(len(scores))
+    else:
+        neutr_preds2 = 0  # np.zeros(len(scores))
 
     scores = scores - ((proportion[0] * neutr_preds) + ((proportion[1]) * neutr_preds2))
 
@@ -159,6 +156,38 @@ def preds_neutralized_custom(ddf, columns, metric_func, ml_model, p):
     for p, feat_by in by.items():
         df[columns] = df.groupby("era").apply(lambda x: normalize_and_neutralize(x, columns, feat_by, ml_model, [p, 0]))
         preds_neutr_after = MinMaxScaler().fit_transform(df[columns]).reshape(1, -1)[0]
+
+    return preds_neutr_after
+
+
+from sklearn.preprocessing import OneHotEncoder
+
+
+def preds_neutralized_one_hot(ddf, columns, by, ml_model, p):
+    df = ddf.copy()
+    features = [x for x in df.columns if x.startswith('feature_')]
+
+    enc = OneHotEncoder(sparse=False)
+    enc_array = enc.fit_transform(df[features])
+    enc_features = enc.get_feature_names(features)
+    df_enc = pd.DataFrame(enc_array, columns=enc_features)
+    df_enc['era'] = df.era
+
+    print(columns[0])
+    print(df.preds)
+
+    df_enc[columns[0]] = df.preds
+
+    df_OH = df_enc.copy()
+    for key, feat_value in by.items():
+        # feat_by = [c for c in df if c.endswith(group_by)]
+        feat_by = enc_features[feat_value::5]
+        # print(feat_by[-3:])
+
+        df_OH[columns] = df_OH.groupby("era").apply(
+            lambda x: normalize_and_neutralize(x, columns, feat_by, ml_model, p[key]))
+
+        preds_neutr_after = MinMaxScaler().fit_transform(df_OH[columns]).reshape(1, -1)[0]
 
     return preds_neutr_after
 
@@ -312,6 +341,14 @@ fn_strategy_dict = {
                       'model': [LinearRegression(fit_intercept=False), None],
                       'factor': [1]
                       },
+
+    'nr__hanoi': {'strategy': 'after',
+                  'func': preds_neutralized_one_hot,
+                  'columns': ['preds'],
+                  'by': {0.25: 1, 0.75: 3, 1: 4},
+                  'model': [LinearRegression(fit_intercept=False), None],
+                  'factor': {0.25: [1, 0], 0.75: [1, 0], 1: [.50, 0]}
+                  },
 
 }
 

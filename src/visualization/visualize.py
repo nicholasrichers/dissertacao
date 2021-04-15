@@ -520,7 +520,7 @@ def highlight_max(s):
         # Get the smallest values of the column
         is_small = s.abs().nsmallest(1).values
         # Apply style is the current value is among the biggest values
-        return ['background-color: yellow' if v in is_small else '' for v in s]
+        return ['background-color: yellow' if v in is_small else '' for v in s.abs()]
     
     else:
         # Get the largest values of the column
