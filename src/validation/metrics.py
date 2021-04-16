@@ -334,6 +334,8 @@ def mmc_metrics(df, preds, model):
     if df.shape[0] == 501808: file = '_preds_train.csv'
     else: file = '_preds_test.csv'
 
+    if df.shape[0] == 229802: model = 'ex_preds_exc_40_60'
+
 
     validation_data = df.copy()
 
@@ -419,8 +421,8 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
         era_scores_pearson[era] = np.corrcoef(era_df[PREDICTION_NAME], era_df['target'])[0,1]
         era_scores_diff[era] = era_scores[era] - era_scores_pearson[era]
 
-    era_scores.sort_values(inplace=True)
-    era_scores.sort_index(inplace=True)
+    #era_scores.sort_values(inplace=True)
+    #era_scores.sort_index(inplace=True)
     
     #print("Qtde. eras:", len(new_df['era'].unique()))
     #era_scores.plot(kind="bar")
