@@ -406,6 +406,7 @@ def metrics_consolidated(df):
 
 def submission_metrics(df_val, preds, model_name, full=True, meta=''):
 
+
     features = [c for c in df_val if c.startswith("feature")]
     new_df = df_val.copy()
     #new_df['target'] = new_df['target']
@@ -426,7 +427,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
     
     #print("Qtde. eras:", len(new_df['era'].unique()))
     #era_scores.plot(kind="bar")
-    #print("performance over time")
+    print("performance over time")
     #plt.show()
 
 
