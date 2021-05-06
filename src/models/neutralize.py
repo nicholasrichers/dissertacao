@@ -160,34 +160,45 @@ def preds_neutralized_custom(ddf, columns, metric_func, ml_model, p):
     return preds_neutr_after
 
 
+
+
+################################################################################################################
+################################################################################################################
+################################################################################################################
+################################################################################################################
+
+
 from sklearn.preprocessing import OneHotEncoder
 
 
-def preds_neutralized_one_hot(ddf, columns, by, ml_model, p):
-    df = ddf.copy()
+def nn_OH(df, columns, feat_value, ml_model, proportion):
+
+
     features = [x for x in df.columns if x.startswith('feature_')]
 
     enc = OneHotEncoder(sparse=False)
     enc_array = enc.fit_transform(df[features])
     enc_features = enc.get_feature_names(features)
-    df_enc = pd.DataFrame(enc_array, columns=enc_features)
-    df_enc['era'] = df.era
 
-    print(columns[0])
-    print(df.preds)
+    df_enc = pd.DataFrame(enc_array, columns=enc_features, index=df.index)
+    df_enc['era'] = df.era.values
+    df_enc[columns[0]] = df.preds.values
 
-    df_enc[columns[0]] = df.preds
+    feat_by = enc_features[feat_value::5]
 
-    df_OH = df_enc.copy()
+
+    df[columns] = normalize_and_neutralize(df_enc, columns, feat_by, ml_model, proportion)
+    return df[columns]
+
+
+def preds_neutralized_one_hot(ddf, columns, by, ml_model, p):
+
+    df = ddf.copy()
+    df_OH = df.copy()
+
     for key, feat_value in by.items():
-        # feat_by = [c for c in df if c.endswith(group_by)]
-        feat_by = enc_features[feat_value::5]
-        # print(feat_by[-3:])
-
-        df_OH[columns] = df_OH.groupby("era").apply(
-            lambda x: normalize_and_neutralize(x, columns, feat_by, ml_model, p[key]))
-
-        preds_neutr_after = MinMaxScaler().fit_transform(df_OH[columns]).reshape(1, -1)[0]
+        df_OH[columns]=df_OH.groupby("era", sort=False).apply(lambda x: nn_OH(x,columns,feat_value,ml_model,p[key]))
+        preds_neutr_after = MinMaxScaler().fit_transform(df_OH[columns]).reshape(1,-1)[0]
 
     return preds_neutr_after
 
@@ -253,7 +264,7 @@ fn_strategy_dict = {
                      'columns': ['preds'],
 
                      'by': {'constitution': [2.0, -0.5], 'strength': [2.0, -0.5],
-                            'dexterity': [0.0, -0.5], 'charisma': [0.0, 0],
+                            'dexterity': [2.0, -0.5], 'charisma': [0.0, 0],
                             'wisdom': [0.0, 0], 'intelligence': [2.0, -0.5]},
 
                      'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)],
@@ -349,6 +360,16 @@ fn_strategy_dict = {
                   'model': [LinearRegression(fit_intercept=False), None],
                   'factor': {0.25: [1, 0], 0.75: [1, 0], 1: [.50, 0]}
                   },
+
+
+
+    'nr__sydney': {'strategy': None,
+                 'func': None,
+                 'columns': ['preds'],
+                 'by': [''],
+                 'model': [None, None],
+                 'factor': [0, 0]
+                 },
 
 }
 
