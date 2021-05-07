@@ -264,8 +264,8 @@ fn_strategy_dict = {
                      'columns': ['preds'],
 
                      'by': {'constitution': [2.0, -0.5], 'strength': [2.0, -0.5],
-                            'dexterity': [2.0, -0.5], 'charisma': [0.0, 0],
-                            'wisdom': [0.0, 0], 'intelligence': [2.0, -0.5]},
+                            'dexterity': [2.0, -0.5], 'charisma': [1.0, 0],
+                            'wisdom': [1.0, 0], 'intelligence': [2.0, -0.5]},
 
                      'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)],
                      'factor': []
