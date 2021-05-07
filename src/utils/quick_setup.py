@@ -45,3 +45,17 @@ def get_libs(local=False):
     
     #folder src.visualization
     load_library('visualize', 'src/visualization/visualize.py', local=local)
+
+
+    #folder src.collection/mlfinlab/feature_importance
+    load_library('importance', 'src/collection/mlfinlab/feature_importance/importance.py', local=local)
+
+
+
+
+
+
+
+
+
+
