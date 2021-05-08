@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 from scipy.stats import weightedtau, kendalltau, spearmanr, pearsonr
 
-from mlfinlab.util import devadarsh
+#from mlfinlab.util import devadarsh
 
 
 def _get_eigen_vector(dot_matrix, variance_thresh, num_features=None):
@@ -73,7 +73,7 @@ def get_orthogonal_features(feature_df, variance_thresh=.95, num_features=None):
     :return: (pd.DataFrame): Compressed PCA features which explain %variance_thresh of variance.
     """
 
-    devadarsh.track('get_orthogonal_features')
+    #devadarsh.track('get_orthogonal_features')
 
     # Given a dataframe of features, compute orthogonal features
     feature_df_standard = _standardize_df(feature_df)  # Standardize
@@ -96,7 +96,7 @@ def get_pca_rank_weighted_kendall_tau(feature_imp, pca_rank):
     :return: (float): Weighted Kendall Tau of feature importance and inverse PCA rank with p_value.
     """
 
-    devadarsh.track('get_pca_rank_weighted_kendall_tau')
+    #devadarsh.track('get_pca_rank_weighted_kendall_tau')
 
     return weightedtau(feature_imp, pca_rank ** -1.0)
 
@@ -114,7 +114,7 @@ def feature_pca_analysis(feature_df, feature_importance, variance_thresh=0.95):
     :return: (dict): Dictionary with kendall, spearman, pearson and weighted_kendall correlations and p_values.
     """
 
-    devadarsh.track('feature_pca_analysis')
+    #devadarsh.track('feature_pca_analysis')
 
     feature_df_standard = _standardize_df(feature_df)  # Standardize
     dot = pd.DataFrame(np.dot(feature_df_standard.T, feature_df_standard), index=feature_df.columns,

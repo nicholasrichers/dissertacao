@@ -30,7 +30,6 @@ def get_libs(local=False):
     load_library('rank_cv', 'src/models/rank_cv.py', local=local)
     load_library('meta_model', 'src/models/meta_model.py', local=local)
     load_library('neutralize', 'src/models/neutralize.py', local=local)
-    load_library('importance3', 'src/models/importance3.py', local=local)
 
 
 
@@ -50,8 +49,10 @@ def get_libs(local=False):
 
 
     #folder src.collection/mlfinlab/feature_importance
-    #load_library('importance', 'src/collection/mlfinlab/feature_importance/importance.py', local=local)
-    load_library('importance2', 'src/collection/mlfinlab/feature_importance/importance2.py', local=local)
+    load_library('importance', 'src/collection/mlfinlab/feature_importance/importance.py', local=local)
+    load_library('fingerpint', 'src/collection/mlfinlab/feature_importance/fingerpint.py', local=local)
+    load_library('orthogonal', 'src/collection/mlfinlab/feature_importance/orthogonal.py', local=local)
+
 
 
 
