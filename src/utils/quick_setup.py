@@ -47,6 +47,14 @@ def get_libs(local=False):
     #folder src.visualization
     load_library('visualize', 'src/visualization/visualize.py', local=local)
 
+    ################################################################
+    ################################################################
+
+
+    #folder src.collection/mlfinlab/cross_validation
+    load_library('cross_validation', 'src/collection/mlfinlab/cross_validation/cross_validation.py', local=local)
+    load_library('combinatorial', 'src/collection/mlfinlab/cross_validation/combinatorial.py', local=local)
+
 
     #folder src.collection/mlfinlab/feature_importance
     load_library('importance', 'src/collection/mlfinlab/feature_importance/importance.py', local=local)

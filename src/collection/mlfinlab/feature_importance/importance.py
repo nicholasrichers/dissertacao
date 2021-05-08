@@ -21,7 +21,13 @@ from sklearn.metrics import log_loss
 from sklearn.model_selection import BaseCrossValidator
 import matplotlib.pyplot as plt
 
-from mlfinlab.cross_validation.cross_validation import ml_cross_val_score, stacked_dataset_from_dict
+try:
+    from mlfinlab.cross_validation.cross_validation import ml_cross_val_score, stacked_dataset_from_dict
+
+
+except:
+    from cross_validation import ml_cross_val_score, stacked_dataset_from_dict
+
 #from mlfinlab.util import devadarsh
 
 

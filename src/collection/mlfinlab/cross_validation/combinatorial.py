@@ -18,8 +18,12 @@ import numpy as np
 from scipy.special import comb
 from sklearn.model_selection import KFold
 
-from mlfinlab.cross_validation.cross_validation import ml_get_train_times
-from mlfinlab.util import devadarsh
+try:
+    from mlfinlab.cross_validation.cross_validation import ml_get_train_times
+
+except:
+    from cross_validation import ml_get_train_times
+#from mlfinlab.util import devadarsh
 
 
 def _get_number_of_backtest_paths(n_train_splits: int, n_test_splits: int) -> int:
@@ -63,7 +67,7 @@ class CombinatorialPurgedKFold(KFold):
             raise ValueError('The samples_info_sets param must be a pd.Series')
         super().__init__(n_splits, shuffle=False, random_state=None)
 
-        devadarsh.track('CombinatorialPurgedKFold')
+        #devadarsh.track('CombinatorialPurgedKFold')
         self.samples_info_sets = samples_info_sets
         self.pct_embargo = pct_embargo
         self.n_test_splits = n_test_splits
@@ -195,7 +199,7 @@ class StackedCombinatorialPurgedKFold(KFold):
 
         super().__init__(n_splits, shuffle=False, random_state=None)
 
-        devadarsh.track('StackedCombinatorialPurgedKFold')
+        #devadarsh.track('StackedCombinatorialPurgedKFold')
         self.samples_info_sets_dict = samples_info_sets_dict
         self.pct_embargo = pct_embargo
         self.n_test_splits = n_test_splits

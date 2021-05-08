@@ -20,7 +20,7 @@ from sklearn.model_selection import KFold
 from sklearn.base import ClassifierMixin, clone
 from sklearn.model_selection import BaseCrossValidator
 
-from mlfinlab.util import devadarsh
+#from mlfinlab.util import devadarsh
 
 
 def ml_get_train_times(samples_info_sets: pd.Series, test_times: pd.Series) -> pd.Series:
@@ -40,7 +40,7 @@ def ml_get_train_times(samples_info_sets: pd.Series, test_times: pd.Series) -> p
     :return: (pd.Series) Training set.
     """
 
-    devadarsh.track('ml_get_train_times')
+    #devadarsh.track('ml_get_train_times')
 
     train = samples_info_sets.copy(deep=True)
     for start_ix, end_ix in test_times.iteritems():
@@ -78,7 +78,7 @@ class PurgedKFold(KFold):
             raise ValueError('The samples_info_sets param must be a pd.Series.')
         super().__init__(n_splits, shuffle=False, random_state=None)
 
-        devadarsh.track('PurgedKFold')
+        #devadarsh.track('PurgedKFold')
         self.samples_info_sets = samples_info_sets
         self.pct_embargo = pct_embargo
 
@@ -162,7 +162,7 @@ def ml_cross_val_score(
     :return: (np.array) The computed score.
     """
 
-    devadarsh.track('ml_cross_val_score')
+    #devadarsh.track('ml_cross_val_score')
 
     # If no sample_weight then broadcast a value of 1 to all samples (full weight).
     if sample_weight_train is None:
@@ -241,7 +241,7 @@ class StackedPurgedKFold(KFold):
 
         super().__init__(n_splits, shuffle=False, random_state=None)
 
-        devadarsh.track('StackedPurgedKFold')
+        #devadarsh.track('StackedPurgedKFold')
 
         self.samples_info_sets_dict = samples_info_sets_dict
         self.pct_embargo = pct_embargo
@@ -338,7 +338,7 @@ def stacked_ml_cross_val_score(
     :return: (np.array) The computed score.
     """
 
-    devadarsh.track('stacked_ml_cross_val_score')
+    #devadarsh.track('stacked_ml_cross_val_score')
 
     # If no sample_weight then broadcast a value of 1 to all samples (full weight)
     if sample_weight_train_dict is None:
@@ -377,7 +377,7 @@ def stacked_dataset_from_dict(X_dict: dict, y_dict: dict, sample_weights_train_d
     :return: (tuple) Tuple of appended datasets: X, y, sample weights train, sample_weights score.
     """
 
-    devadarsh.track('stacked_dataset_from_dict')
+    #devadarsh.track('stacked_dataset_from_dict')
 
     appended_X = pd.DataFrame()
     appended_y = pd.Series(dtype='float64')
