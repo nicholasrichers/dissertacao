@@ -48,9 +48,10 @@ def get_libs(local=False):
 
 
     #folder src.collection/mlfinlab/feature_importance
-    load_library('importance', 'src/collection/mlfinlab/feature_importance/importance.py', local=local)
+    #load_library('importance', 'src/collection/mlfinlab/feature_importance/importance.py', local=local)
+    load_library('importance2', 'src/collection/mlfinlab/feature_importance/importance2.py', local=local)
 
-  
+
 
 
 
