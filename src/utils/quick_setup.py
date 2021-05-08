@@ -30,6 +30,8 @@ def get_libs(local=False):
     load_library('rank_cv', 'src/models/rank_cv.py', local=local)
     load_library('meta_model', 'src/models/meta_model.py', local=local)
     load_library('neutralize', 'src/models/neutralize.py', local=local)
+    load_library('importance3', 'src/models/importance3.py', local=local)
+
 
 
     #folder src.validation (MANTER A ORDEM)
