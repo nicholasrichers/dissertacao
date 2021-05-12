@@ -597,7 +597,7 @@ def shadow_stacked_bars(df):
   sns.set_theme(style="darkgrid")
 
   # Initialize the matplotlib figure
-  f, ax = plt.subplots(figsize=(8, 6))
+  f, ax = pyplot.subplots(figsize=(8, 6))
 
   # Plot the total crashes
   sns.set_color_codes("pastel")
