@@ -1,0 +1,7 @@
+
+
+Empresa Consultoria Gringa
+
+Pediram pra explicar como resolver esse desafio
+
+https://www.kaggle.com/c/web-traffic-time-series-forecasting

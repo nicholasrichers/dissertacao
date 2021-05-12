@@ -2,9 +2,10 @@ import scipy
 import math
 from scipy.stats import skew, kurtosis, sem, gmean, norm
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import minmax_scale
+from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
 import numpy as np
+
 #from scipy import stats as scipy_stats
 
 #to use in google colab
@@ -410,7 +411,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
     features = [c for c in df_val if c.startswith("feature")]
     new_df = df_val.copy()
     #new_df['target'] = new_df['target']
-    new_df[PREDICTION_NAME] = preds #caso seja classificacao (1..4)
+    new_df[PREDICTION_NAME] = MinMaxScaler().fit_transform(preds.reshape(-1, 1)) ##caso seja classificacao (0..100)
     era_scores = pd.Series(index=new_df['era'].unique())
     era_scores_pearson = pd.Series(index=new_df['era'].unique())
     era_scores_diff = pd.Series(index=new_df['era'].unique())
