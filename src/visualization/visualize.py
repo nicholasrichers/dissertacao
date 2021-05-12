@@ -617,16 +617,18 @@ def shadow_stacked_bars(df):
 
 
 def features_selected_by_group(features, sel_features, groups, plot=True):
+
   features_selected = {g: [c for c in sel_features if c.startswith(f"feature_{g}")] for g in groups}
+  feature_groups = {g: [c for c in df_validation if c.startswith(f"feature_{g}")] for g in groups}
 
   full_length = {k:len(v) for k, v in feature_groups.items()}
   selected_length = {k:len(v) for k, v in features_selected.items()}
 
   selected_df = pd.DataFrame([selected_length, full_length], index=['selected', 'total']).T
-  
   if plot==True: shadow_stacked_bars(selected_df)
 
   return selected_df
+
 
 
 
