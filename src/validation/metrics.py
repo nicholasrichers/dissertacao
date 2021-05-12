@@ -400,7 +400,7 @@ def metrics_consolidated(df):
     #adicionando as colunas de descricao
     df_cons["Categoria"] = df[model]["Categoria"]
     df_cons["Range_Aceitavel"] = df[model]["Range_Aceitavel"]
-    df_cons["Descricao"] = df[model]["Descricao"]
+    df_cons["Descricao"] = df[model]["Descricao"] 
     df_cons = pd.DataFrame.from_dict(df_cons)
     return df_cons
 
