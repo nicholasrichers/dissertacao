@@ -167,7 +167,8 @@ def _mean_decrease_accuracy_round(model, X, y, cv_gen, clustered_subsets=None, s
     # Clustered feature subsets will be used for CFI if clustered_subsets exists
     # else will operate on the single column as MDA
     feature_sets = clustered_subsets if clustered_subsets else [[x] for x in X.columns]
-    for i, (train, test) in enumerate(cv_gen.split(X=X)):
+    for i, (train, test) in enumerate(cv_gen):
+    #for i, (train, test) in enumerate(cv_gen.split(X=X)):
         fit = model.fit(X=X.iloc[train, :], y=y.iloc[train], sample_weight=sample_weight_train[train])
         pred = fit.predict(X.iloc[test, :])
 
