@@ -64,6 +64,11 @@ def get_libs(local=False):
 
 
 
+    #folder src.collection/mlfinlab/util
+    load_library('multiprocess', 'src/collection/mlfinlab/util/multiprocess.py', local=local)
+
+
+
 
 
 
