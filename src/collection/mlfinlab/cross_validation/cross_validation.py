@@ -127,11 +127,11 @@ def ml_cross_val_score(
         cv_gen: BaseCrossValidator,
         sample_weight_train: np.ndarray = None,
         sample_weight_score: np.ndarray = None,
-        scoring,#: Callable[[np.array, np.array], float] = log_loss,
-        require_proba,#: bool = True,
-        n_jobs_score,#: int = 1
-        ) -> np.array:
-    """
+        scoring: Callable[[np.array, np.array], float] = log_loss,
+        require_proba: bool = True,
+        n_jobs_score: int = 1) -> np.array:
+
+"""
     Advances in Financial Machine Learning, Snippet 7.4, page 110.
     Using the PurgedKFold Class.
 

@@ -263,11 +263,11 @@ fn_strategy_dict = {
                      'func': preds_neutralized_groups,
                      'columns': ['preds'],
 
-                     'by': {'constitution': [2.0, -0.5], 'strength': [2.0, -0.5],
-                            'dexterity': [2.0, -0.5], 'charisma': [1.0, 0],
-                            'wisdom': [1.0, 0], 'intelligence': [2.0, -0.5]},
+                     'by': {'constitution': [-.5, 0], 'strength': [1.0, 0],
+                            'dexterity': [2.0, 0], 'charisma': [1.0, 0],
+                            'wisdom': [-1.0, 0], 'intelligence': [2.0, 0]},
 
-                     'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)],
+                     'model': [LinearRegression(fit_intercept=False), None],
                      'factor': []
 
                      },
