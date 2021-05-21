@@ -592,9 +592,9 @@ def diagnostic_colors(col):
   
 
 
-def shadow_stacked_bars(df):
+def shadow_stacked_bars(df, model):
 
-  sns.set_theme(style="darkgrid")
+  #sns.set_theme(style="darkgrid")
 
   # Initialize the matplotlib figure
   f, ax = pyplot.subplots(figsize=(8, 6))
@@ -611,12 +611,12 @@ def shadow_stacked_bars(df):
 
   # Add a legend and informative axis label
   ax.legend(ncol=2, loc="lower right", frameon=True)
-  ax.set(ylabel="", xlabel="Features selected by group")
+  ax.set(ylabel="", xlabel= model+": Features selected by group")
 
   sns.despine(left=True, bottom=True)
 
 
-def features_selected_by_group(features, sel_features, groups, plot=True):
+def features_selected_by_group(features, sel_features, groups, model, plot=True):
 
   features_selected = {g: [c for c in sel_features if c.startswith(f"feature_{g}")] for g in groups}
   feature_groups = {g: [c for c in features if c.startswith(f"feature_{g}")] for g in groups}
@@ -625,7 +625,7 @@ def features_selected_by_group(features, sel_features, groups, plot=True):
   selected_length = {k:len(v) for k, v in features_selected.items()}
 
   selected_df = pd.DataFrame([selected_length, full_length], index=['selected', 'total']).T
-  if plot==True: shadow_stacked_bars(selected_df)
+  if plot==True: shadow_stacked_bars(selected_df, model)
 
   return selected_df
 
