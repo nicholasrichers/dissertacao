@@ -184,6 +184,7 @@ def _mean_decrease_accuracy_round(model, X, y, cv_gen, clustered_subsets=None, s
         for j in feature_sets:
             X1_ = X.iloc[test, :].copy(deep=True)
             for j_i in j:
+                print(j_i)
                 rs_obj.shuffle(
                     X1_[j_i].values)  # Permutation of a single column for MDA or through the whole subset for CFI
             if require_proba is True:
