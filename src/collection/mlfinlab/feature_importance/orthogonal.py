@@ -137,7 +137,139 @@ def feature_pca_analysis(feature_df, feature_importance, variance_thresh=0.95):
     # Get Rank based weighted Tau correlation
     feature_pca_rank = (eigen_val * eigen_vec).abs().sum(axis=1).rank(
         ascending=False)  # Sum of absolute values across all eigen vectors
+
+    
+    print(repeated_importance_array)
+    print(all_eigen_values)
+    #print(eigen_vec)
+    #print((eigen_val * eigen_vec).abs().sum(axis=1))
+    #print(feature_importance['mean'])
+
+    print(feature_pca_rank.values)
+    #print(eigen_val)
+    print(eigen_vec)
+    #print((eigen_val * eigen_vec).abs().sum(axis=1))
+    #print(feature_importance['mean'])
+    
     corr_dict['Weighted_Kendall_Rank'] = get_pca_rank_weighted_kendall_tau(feature_importance['mean'].values,
                                                                            feature_pca_rank.values)
 
     return corr_dict
+
+
+
+
+
+
+
+
+
+
+def _get_eigen_vectork(dot_matrix, feature_df, variance_thresh, num_features=None):
+    """
+    Advances in Financial Machine Learning, Snippet 8.5, page 119.
+
+    Computation of Orthogonal Features
+
+    Gets eigen values and eigen vector from matrix which explain % variance_thresh of total variance.
+
+    :param dot_matrix: (np.array): Matrix for which eigen values/vectors should be computed.
+    :param variance_thresh: (float): Percentage % of overall variance which compressed vectors should explain.
+    :param num_features: (int) Manually set number of features, overrides variance_thresh. (None by default)
+    :return: (pd.Series, pd.DataFrame): Eigenvalues, Eigenvectors.
+    """
+
+    # Compute eigen_vec from dot prod matrix, reduce dimension
+    eigen_val, eigen_vec = np.linalg.eigh(dot_matrix)
+    idx = eigen_val.argsort()[::-1]  # Arguments for sorting eigen_val desc
+    eigen_val, eigen_vec = eigen_val[idx], eigen_vec[:, idx]
+    print(eigen_val)
+    print(len(eigen_vec))
+
+
+    kernel = 'linear' 
+    print(kernel)
+    from sklearn.decomposition import KernelPCA
+    scikit_kpca = KernelPCA( kernel=kernel, gamma=None)
+    X_skernpca = scikit_kpca.fit(feature_df)
+    eigen_val, eigen_vec = X_skernpca.lambdas_, X_skernpca.alphas_
+    print(eigen_val)
+    print(len(eigen_vec)) 
+
+
+    # 2) Only positive eigen_vals
+    eigen_val = pd.Series(eigen_val, index=['PC_' + str(i + 1) for i in range(eigen_val.shape[0])])
+    eigen_vec = pd.DataFrame(eigen_vec, index=dot_matrix.index, columns=eigen_val.index)
+    eigen_vec = eigen_vec.loc[:, eigen_val.index]
+
+    # 3) Reduce dimension, form PCs
+    cum_var = eigen_val.cumsum() / eigen_val.sum()
+    if num_features is not None:  # Either a preset number of features
+        dim = num_features - 1
+    else:  # Or defined by variance level
+        dim = cum_var.values.searchsorted(variance_thresh)
+    eigen_val, eigen_vec = eigen_val.iloc[:dim + 1], eigen_vec.iloc[:, :dim + 1]
+
+    return eigen_val, eigen_vec
+
+
+
+
+
+
+
+def feature_kpca_analysis(feature_df, feature_importance, variance_thresh=0.95):
+    """
+    Performs correlation analysis between feature importance (MDI for example, supervised) and PCA eigenvalues
+    (unsupervised).
+
+    High correlation means that probably the pattern identified by the ML algorithm is not entirely overfit.
+
+    :param feature_df: (pd.DataFrame): Features dataframe.
+    :param feature_importance: (pd.DataFrame): Individual MDI feature importance.
+    :param variance_thresh: (float): Percentage % of overall variance which compressed vectors should explain in PCA compression.
+    :return: (dict): Dictionary with kendall, spearman, pearson and weighted_kendall correlations and p_values.
+    """
+
+    #devadarsh.track('feature_pca_analysis')
+
+    feature_df_standard = _standardize_df(feature_df)  # Standardize
+    dot = pd.DataFrame(np.dot(feature_df_standard.T, feature_df_standard), index=feature_df.columns,
+                       columns=feature_df.columns)
+    eigen_val, eigen_vec = _get_eigen_vectork(dot, feature_df_standard, variance_thresh)
+
+    # Compute correlations between eigen values for each eigen vector vs mdi importance
+    all_eigen_values = []  # All eigen values in eigen vectors
+    corr_dict = {'Pearson': [], 'Spearman': [], 'Kendall': []}  # Dictionary containing correlation metrics
+    for vec in eigen_vec.columns:
+        all_eigen_values.extend(abs(eigen_vec[vec].values * eigen_val[vec]))
+
+    # We need to repeat importance array # of eigen vector times to generate correlation for all_eigen_values
+    repeated_importance_array = np.tile(feature_importance['mean'].values, len(eigen_vec.columns))
+
+    for corr_type, function in zip(corr_dict.keys(), [pearsonr, spearmanr, kendalltau]):
+        corr_coef = function(repeated_importance_array, all_eigen_values)
+        corr_dict[corr_type] = corr_coef
+
+    # Get Rank based weighted Tau correlation
+    feature_pca_rank = (eigen_val * eigen_vec).abs().sum(axis=1).rank(
+        ascending=False)  # Sum of absolute values across all eigen vectors
+
+    
+    #print(repeated_importance_array)
+    #print(all_eigen_values)
+    #print(eigen_vec)
+    #print((eigen_val * eigen_vec).abs().sum(axis=1))
+    #print(feature_importance['mean'])
+
+    #print(feature_pca_rank.values)
+    #print(eigen_val)
+    #print(eigen_vec)
+    #print((eigen_val * eigen_vec).abs().sum(axis=1))
+    #print(feature_importance['mean'])
+    
+    corr_dict['Weighted_Kendall_Rank'] = get_pca_rank_weighted_kendall_tau(feature_importance['mean'].values,
+                                                                           feature_pca_rank.values)
+
+    return corr_dict
+
