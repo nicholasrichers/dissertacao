@@ -321,6 +321,7 @@ def single_feature_importance(clf, X, y, cv_gen, sample_weight_train=None, sampl
 
     imp = pd.DataFrame(columns=['mean', 'std'])
     for feat in feature_names:
+        print(feat)
         feat_cross_val_scores = ml_cross_val_score(clf, X=X[[feat]], y=y, sample_weight_train=sample_weight_train,
                                                    sample_weight_score=sample_weight_score,
                                                    scoring=scoring, cv_gen=cv_gen, require_proba=require_proba)

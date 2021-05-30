@@ -263,11 +263,11 @@ fn_strategy_dict = {
                      'func': preds_neutralized_groups,
                      'columns': ['preds'],
 
-                     'by': {'constitution': [-.5, 0], 'strength': [1.0, 0],
-                            'dexterity': [1.0, 0], 'charisma': [-.5, 0],
-                            'wisdom': [0.0, 0], 'intelligence': [0.0, 0]},
+                     'by': {'constitution': [0.0, 0], 'strength': [0.0, 0],
+                            'dexterity': [2.0, 0], 'charisma': [1.0, 0],
+                            'wisdom': [-1.0, 0], 'intelligence': [0.0, 0]},
 
-                     'model': [LinearRegression(fit_intercept=False), None],
+                    'model': [LinearRegression(fit_intercept=False), None],
                      'factor': []
 
                      },
@@ -370,6 +370,20 @@ fn_strategy_dict = {
                  'model': [None, None],
                  'factor': [0, 0]
                  },
+
+
+      'nr_johannesburg': {'strategy': 'after',
+                     'func': preds_neutralized_groups,
+                     'columns': ['preds'],
+
+                     'by': {'constitution': [1.0, 0], 'strength': [1.0, 0],
+                            'dexterity': [-1.0, 0], 'charisma': [0.0, 0],
+                            'wisdom': [2.0, 0], 'intelligence': [1.0, 0]},
+
+                    'model': [LinearRegression(fit_intercept=False), None],
+                     'factor': []
+
+                     },
 
 }
 
