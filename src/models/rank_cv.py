@@ -1,9 +1,10 @@
 
 import pandas
 from xgboost import XGBRanker
+from sklearn.base import BaseEstimator, RegressorMixin
 
 
-class XGBRanker_Custom(XGBRanker):
+class XGBRanker_Custom(XGBRanker, BaseEstimator, RegressorMixin):
     def fit(self, x, y):
         cdf = x.groupby('era').agg(['count'])
         group = cdf[cdf.columns[0]].values
