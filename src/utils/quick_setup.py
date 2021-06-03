@@ -17,7 +17,7 @@ def load_library(NAME_LIB, FILE_PATH, local=False):
 
 def get_libs(local=False):
     #folder notebooks
-    #load_library('paths', 'notebooks/Baseline/paths.py')
+    #load_library('paths', 'notebooks/Baseline/paths.py') 
 
     
     #folder src.data
@@ -27,10 +27,11 @@ def get_libs(local=False):
     #folder src.models
     load_library('train_model', 'src/models/train_model.py', local=local)
     load_library('evaluation', 'src/models/evaluation.py', local=local)
-    load_library('rank_cv', 'src/models/rank_cv.py', local=local)
+    load_library('rank_cv',    'src/models/rank_cv.py', local=local)
     load_library('meta_model', 'src/models/meta_model.py', local=local)
     load_library('neutralize', 'src/models/neutralize.py', local=local)
-    load_library('get_model', 'src/models/get_model.py', local=local)
+    load_library('get_model',  'src/models/get_model.py', local=local)
+    load_library('xgb_ranker_class', 'src/models/xgb_ranker_class.py', local=local)
 
 
 
