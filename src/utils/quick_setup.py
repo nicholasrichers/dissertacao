@@ -27,11 +27,11 @@ def get_libs(local=False):
     #folder src.models
     load_library('train_model', 'src/models/train_model.py', local=local)
     load_library('evaluation', 'src/models/evaluation.py', local=local)
-    load_library('rank_cv',    'src/models/rank_cv.py', local=local)
     load_library('meta_model', 'src/models/meta_model.py', local=local)
     load_library('neutralize', 'src/models/neutralize.py', local=local)
     load_library('get_model',  'src/models/get_model.py', local=local)
     load_library('xgb_ranker_class', 'src/models/xgb_ranker_class.py', local=local)
+    load_library('pipelines', 'src/models/pipelines.py', local=local)
 
 
 
