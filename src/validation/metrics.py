@@ -332,8 +332,14 @@ def unif(df):
 
 def mmc_metrics(df, preds, model):
 
-    if df.shape[0] == 501808: file = '_preds_train.csv'
-    else: file = '_preds_test.csv'
+    if df.shape[0] == 501808: 
+        file = '_preds_train.csv'
+        path= 'predicoes_treino_cv'
+
+
+    else: 
+        file = '_preds_test.csv'
+        path= 'predicoes_validacao'
 
     if df.shape[0] == 229802: model = 'ex_preds_exc_40_60'
 
@@ -341,7 +347,7 @@ def mmc_metrics(df, preds, model):
     validation_data = df.copy()
 
     # Load example preds to get MMC metrics
-    file_path = 'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/predicoes_validacao/raw/'+model+file
+    file_path = 'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/'+path+'/raw/'+model+file
     example_preds = pd.read_csv(file_path).set_index("id")[model]
     validation_data.set_index("id", inplace=True)
 
@@ -473,7 +479,7 @@ def submission_metrics(df_val, preds, model_name, full=True, meta=''):
         values['Sortino_Ratio'] = sortino_ratio(era_scores)
         values['Smart_Sortino_Ratio'] = smart_sortino_ratio(era_scores)
         values['Payout'] = payout(era_scores)
-        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], mmc_scores_FN, values['val_mmc_sharpe_FN']   = mmc_metrics(df_val, preds, 'ex_FN100')
+        values['val_mmc_mean_FN'], values['corr_plus_mmc_sharpe_FN'], values['corr_with_ex_FN100'], mmc_scores_FN, values['val_mmc_sharpe_FN']   = 0,0,0,era_scores,0 #mmc_metrics(df_val, preds, 'ex_FN100')
 
 
     else:
