@@ -1,5 +1,6 @@
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline, FeatureUnion
+import pandas as pd
 
 def get_criteria(model):
 
