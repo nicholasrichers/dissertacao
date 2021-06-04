@@ -2,11 +2,12 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline, FeatureUnion
 import pandas as pd
 
-def get_criteria(model):
 
-  if model[:3]=='linear/mdi': criteria = 1/importances_df.shape[0]
-  if model[:3]=='linear/mda': criteria = 0
-  if model[:3]=='linear/sfi': criteria = importances_df['mean'].quantile(.3)   
+def get_criteria(model, importances_df):
+
+  if model[:10]=='linear/mdi': criteria = 1/importances_df.shape[0]
+  if model[:10]=='linear/mda': criteria = 0
+  if model[:10]=='linear/sfi': criteria = importances_df['mean'].quantile(.3)   
 
   return criteria
 
@@ -17,7 +18,7 @@ def get_features(model_path, features_sort):
   importances_df = importances_df.reindex(features_sort)
 
 
-  criteria = get_criteria(model_path)
+  criteria = get_criteria(model_path, importances_df)
   importances_df = importances_df[importances_df['mean']>criteria]
   features_selected = ['era']+list(importances_df.index)
 
