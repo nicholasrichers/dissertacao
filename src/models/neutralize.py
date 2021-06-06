@@ -135,26 +135,55 @@ def neutralize_topk(ddf, preds, k, ml_model, proportion):
     return np.hstack(preds_neutr_topk_era)
 
 
-def fn_criteria_func(df, metric_func, k):
-    path = "https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/predicoes_validacao/shanghai/shanghai_preds_corr/era_scores/era_scores_train_target.csv"
-    era_scores = pd.read_csv(path)
 
-    mode_series = era_scores.apply(lambda x: metric_func(x)).sort_values(ascending=False)
+
+#from typing import Callable
+
+
+def fs_bangalore(metric, k):
+    path = "https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/predicoes_validacao/shanghai/"
+    era_scores = pd.read_csv(path+'shanghai_preds_corr/era_scores/era_scores_train_target.csv')
+
+    mode_series = era_scores.apply(lambda x: metric(x)).sort_values(ascending=False)
     feats = mode_series[mode_series.abs() > mode_series.abs().quantile(1 - k)].index
 
     return feats
 
 
-def preds_neutralized_custom(ddf, columns, metric_func, ml_model, p):
+def fs_johannesburg(model_fs):#, ranker=True):
+
+    url = 'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/feature_importance/'
+    importances_df = pd.read_csv(url+model_fs+'.csv')
+    #importances_df = importances_df.reindex(df[])
+    
+    if model_fs[:10]=='linear/mdi': criteria = 1/importances_df.shape[0]
+    if model_fs[:10]=='linear/mda': criteria = 0
+    if model_fs[:10]=='linear/sfi': criteria = importances_df['mean'].quantile(.3)
+        
+    features = list(importances_df.index)
+    importances_df = importances_df[importances_df['mean']>criteria]
+    features_selected = list(importances_df.index)
+
+    #if ranker ==True: features_selected = ['era']+features_selected 
+    features_neutralize = list(set(features) - set(features_selected))
+
+    return features_neutralize
+
+
+
+
+def preds_neutralized_fs(ddf, columns, func, param_func, ml_model, p):
     df = ddf.copy()
-    feats = fn_criteria_func(df, metric_func[0], metric_func[1])
+
+    
+    feats = func(*param_func)
     by = {p[0]: feats}
 
-    print(str(metric_func[0]))
-    print(by)
+    #print(str(param_func[0]))
+    #print(len(feats))
 
     for p, feat_by in by.items():
-        df[columns] = df.groupby("era").apply(lambda x: normalize_and_neutralize(x, columns, feat_by, ml_model, [p, 0]))
+        df[columns]=df.groupby("era").apply(lambda x:normalize_and_neutralize(x,columns,feat_by,ml_model,[p,0]))
         preds_neutr_after = MinMaxScaler().fit_transform(df[columns]).reshape(1, -1)[0]
 
     return preds_neutr_after
@@ -264,8 +293,8 @@ fn_strategy_dict = {
                      'columns': ['preds'],
 
                      'by': {'constitution': [0.0, 0], 'strength': [0.0, 0],
-                            'dexterity': [2.0, 0], 'charisma': [1.0, 0],
-                            'wisdom': [-1.0, 0], 'intelligence': [0.0, 0]},
+                            'dexterity': [1.5, 0], 'charisma': [1.0, 0],
+                            'wisdom': [-1.0, 0], 'intelligence': [1.0, 0]},
 
                     'model': [LinearRegression(fit_intercept=False), None],
                      'factor': []
@@ -344,11 +373,9 @@ fn_strategy_dict = {
                      },
 
     'nr__bangalore': {'strategy': 'after',
-                      'func': preds_neutralized_custom,
+                      'func': preds_neutralized_fs,
                       'columns': ['preds'],
-
-                      'by': [ar1_sign, .1],
-
+                      'by': [fs_bangalore, [ar1_sign, .1]],
                       'model': [LinearRegression(fit_intercept=False), None],
                       'factor': [1]
                       },
@@ -372,22 +399,17 @@ fn_strategy_dict = {
                  },
 
 
+
+
       'nr_johannesburg': {'strategy': 'after',
-                     'func': preds_neutralized_groups,
-                     'columns': ['preds'],
-
-                     'by': {'constitution': [1.0, 0], 'strength': [1.0, 0],
-                            'dexterity': [-1.0, 0], 'charisma': [0.0, 0],
-                            'wisdom': [2.0, 0], 'intelligence': [1.0, 0]},
-
-                    'model': [LinearRegression(fit_intercept=False), None],
-                     'factor': []
-
-                     },
+                      'func': preds_neutralized_fs,
+                      'columns': ['preds'],
+                      'by': [fs_johannesburg, ['linear/sfi_vanilla']],
+                      'model': [LinearRegression(fit_intercept=False), None],
+                      'factor': [1]
+                      },
 
 }
-
-
 
 
 
