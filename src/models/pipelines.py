@@ -17,7 +17,7 @@ def get_features(model_path, features_sort, ranker=False):
 
     url = 'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/feature_importance/'
     importances_df = pd.read_csv(url+model_path+'.csv')
-    importances_df = importances_df.reindex(features_sort)
+    #importances_df = importances_df.reindex(features_sort)
 
     features_selected = get_criteria(model_path, importances_df)
     if ranker ==True: features_selected = ['era']+features_selected
