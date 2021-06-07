@@ -309,3 +309,13 @@ type,names,mean
 307,univariate,feature_wisdom44,0.0001419626794680941
 308,univariate,feature_wisdom45,0.000209060123799528
 309,univariate,feature_wisdom46,0.00015649699996780236
+310,univariate,feature_dexterity6 x feature_constitution12,0.000650049496769394
+311,univariate,feature_dexterity5 x feature_constitution12,0.0005471481828858268
+312,univariate,feature_dexterity6 x feature_constitution101,0.00040365180780060493
+313,univariate,feature_strength3 x feature_dexterity7,0.0006847159489083938
+314,univariate,feature_dexterity11 x feature_constitution55,0.0004911543581931716
+315,univariate,feature_dexterity4 x feature_wisdom1,0.0006627062032871141
+316,univariate,feature_dexterity11 x feature_constitution12,0.00036919467838128907
+317,univariate,feature_strength36 x feature_dexterity1,0.0005322251480444086
+318,univariate,feature_dexterity7 x feature_constitution29,0.0004274577167834495
+319,univariate,feature_charisma63 x feature_strength10,0.0005094053021760336
