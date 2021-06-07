@@ -1,4 +1,4 @@
-type,names,mean
+type,name,mean
 0,univariate,feature_intelligence1,0.06351341680590693
 1,univariate,feature_intelligence2,0.008907488435276207
 2,univariate,feature_intelligence3,0.011755530238722311
