@@ -8,11 +8,12 @@ def get_criteria(model, importances_df):
     if model[:10]=='linear/mdi': criteria = 1/importances_df.shape[0]
     if model[:10]=='linear/mda': criteria = 0
     if model[:10]=='linear/sfi': criteria = importances_df['mean'].quantile(.3)
+    if model_fs[:8]=='shap/ebm': criteria = importances_df['mean'].quantile(.3)
         
     importances_df = importances_df[importances_df['mean']>criteria]
     return list(importances_df.index)
 
-def get_features(model_path, features_sort, ranker=True):
+def get_features(model_path, features_sort, ranker=False):
 
     url = 'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/feature_importance/'
     importances_df = pd.read_csv(url+model_path+'.csv')
@@ -24,8 +25,8 @@ def get_features(model_path, features_sort, ranker=True):
     return features_selected
 
 
-def feature_selection_pipeline(model_path, features_sort, ranker=True):
-  # Create the transformers for numeric features
+def feature_selection_pipeline(model_path, features_sort, ranker=False):
+  # Create the transformers for numeric features 
 
   #model_path = 'linear/sfi_vanilla'
   features_selected = get_features(model_path, features_sort, ranker)
