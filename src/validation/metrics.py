@@ -89,13 +89,14 @@ def smart_sharpe(x):
 
 
 ##approximated their average trading costs
+## usado embaixo
 def numerai_sharpe(x):
     return ((np.mean(x) -0.010415154) /np.std(x, ddof=1)) #* np.sqrt(12)
 
 
-## usado embaixo
+
 def annual_sharpe(x):
-    return ((np.mean(x) -0.010415154) /np.std(x, ddof=1)) #* np.sqrt(12) 
+    return ((np.mean(x) -0.010415154) /np.std(x, ddof=1)) * np.sqrt(12) 
 
 
 
@@ -105,7 +106,7 @@ def annual_sharpe(x):
 # fonte: https://forum.numer.ai/t/probabilistic-sharpe-ratio/446/5
 #https://quantdare.com/probabilistic-sharpe-ratio/
 def adj_sharpe(x):
-    return annual_sharpe(x) * (1 + ((skew(x) / 6) * annual_sharpe(x)) - ((kurtosis(x) - 0) / 24) * (annual_sharpe(x) ** 2)) #(kurtosis(x) - 3)
+    return numerai_sharpe(x) * (1 + ((skew(x) / 6) * numerai_sharpe(x)) - ((kurtosis(x) - 0) / 24) * (numerai_sharpe(x) ** 2)) #(kurtosis(x) - 3)
 
 
 
