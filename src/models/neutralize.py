@@ -140,7 +140,7 @@ def neutralize_topk(ddf, preds, k, ml_model, proportion):
 #from typing import Callable
 
 
-def fs_bangalore(metric, k):
+def fs_ar1_sign(metric, k):
     path = "https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/predicoes_validacao/shanghai/"
     era_scores = pd.read_csv(path+'shanghai_preds_corr/era_scores/era_scores_train_target.csv')
 
@@ -150,7 +150,7 @@ def fs_bangalore(metric, k):
     return feats
 
 
-def fs_johannesburg(model_fs):#, ranker=True):
+def fs_sfi(model_fs, qt=.3):#, ranker=True):
 
     url = 'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/feature_importance/'
     importances_df = pd.read_csv(url+model_fs+'.csv')
@@ -158,7 +158,7 @@ def fs_johannesburg(model_fs):#, ranker=True):
     
     if model_fs[:10]=='linear/mdi': criteria = 1/importances_df.shape[0]
     if model_fs[:10]=='linear/mda': criteria = 0
-    if model_fs[:10]=='linear/sfi': criteria = importances_df['mean'].quantile(.3)
+    if model_fs[:10]=='linear/sfi': criteria = importances_df['mean'].quantile(qt)
         
     features = list(importances_df.index)
     importances_df = importances_df[importances_df['mean']>criteria]
@@ -170,6 +170,30 @@ def fs_johannesburg(model_fs):#, ranker=True):
     return features_neutralize
 
 
+def fs_ebm_reg(model_fs, qt=.3):  # , ranker=True):
+
+    url = 'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/feature_importance/'
+    # url = '../../reports/feature_importance/'
+
+    importances_df = pd.read_csv(url + model_fs + '.csv')
+    # importances_df = importances_df.reindex(df[])
+
+    if model_fs[:] == 'shap/vanilla': criteria = -1
+    if model_fs[:] == 'shap/full_FN': criteria = 1
+    if model_fs[:8] == 'shap/ebm': criteria = importances_df['mean'].quantile(qt)  # 1/importances_df.shape[0]
+    if model_fs[:11] == 'shap/morris': criteria = importances_df['mean'].quantile(qt)
+    if model_fs[:9] == 'shap/shap': criteria = importances_df['mean'].quantile(qt)
+
+    #print('criteria: ', criteria)
+    features = list(importances_df.index)
+    importances_df = importances_df[importances_df['mean'] > criteria]
+    features_selected = list(importances_df.index)
+    
+    # if ranker ==True: features_selected = ['era']+features_selected
+    features_neutralize = list(set(features) - set(features_selected))
+    #print('nao neutralizarei: ', len(features_selected))
+
+    return features_neutralize
 
 
 def preds_neutralized_fs(ddf, columns, func, param_func, ml_model, p):
@@ -180,7 +204,7 @@ def preds_neutralized_fs(ddf, columns, func, param_func, ml_model, p):
     by = {p[0]: feats}
 
     #print(str(param_func[0]))
-    #print(len(feats))
+    print(len(feats))
 
     for p, feat_by in by.items():
         df[columns]=df.groupby("era").apply(lambda x:normalize_and_neutralize(x,columns,feat_by,ml_model,[p,0]))
@@ -375,7 +399,7 @@ fn_strategy_dict = {
     'nr__bangalore': {'strategy': 'after',
                       'func': preds_neutralized_fs,
                       'columns': ['preds'],
-                      'by': [fs_bangalore, [ar1_sign, .1]],
+                      'by': [fs_ar1_sign, [ar1_sign, .1]],
                       'model': [LinearRegression(fit_intercept=False), None],
                       'factor': [1]
                       },
@@ -404,15 +428,32 @@ fn_strategy_dict = {
       'nr_johannesburg': {'strategy': 'after',
                       'func': preds_neutralized_fs,
                       'columns': ['preds'],
-                      'by': [fs_johannesburg, ['linear/sfi_vanilla']],
+                      'by': [fs_sfi, ['linear/sfi_vanilla']],
                       'model': [LinearRegression(fit_intercept=False), None],
                       'factor': [1]
                       },
 
+
+
+
+#############################################################################################################################
+#############################################################################################################################
+#############################################################################################################################
+
+
+
+#ANTI VEGAS
+'moon_rhea': {'strategy': 'after',
+                     'func': preds_neutralized_groups,
+                     'columns': ['preds'],
+
+                     'by': {'constitution': [1.0, 0], 'strength': [1.0, 0],
+                            'dexterity': [-0.5, 0], 'charisma': [0.0, 0],
+                            'wisdom': [2.0, 0], 'intelligence': [0.0, 0]},
+
+                     'model': [LinearRegression(fit_intercept=False), None],
+                     'factor': []
+
+                     },
+
 }
-
-
-
-
-
-
