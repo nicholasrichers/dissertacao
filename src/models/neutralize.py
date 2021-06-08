@@ -204,7 +204,7 @@ def preds_neutralized_fs(ddf, columns, func, param_func, ml_model, p):
     by = {p[0]: feats}
 
     #print(str(param_func[0]))
-    print(len(feats))
+    #print(len(feats))
 
     for p, feat_by in by.items():
         df[columns]=df.groupby("era").apply(lambda x:normalize_and_neutralize(x,columns,feat_by,ml_model,[p,0]))
@@ -316,9 +316,9 @@ fn_strategy_dict = {
                      'func': preds_neutralized_groups,
                      'columns': ['preds'],
 
-                     'by': {'constitution': [0.0, 0], 'strength': [0.0, 0],
-                            'dexterity': [1.5, 0], 'charisma': [1.0, 0],
-                            'wisdom': [-1.0, 0], 'intelligence': [1.0, 0]},
+                     'by': {'constitution': [0.0, 0], 'strength': [0.0, 0], #VEGAS
+                            'dexterity': [0.0, 0], 'charisma': [0.0, 0],
+                            'wisdom': [0.0, 0], 'intelligence': [0.0, 0]},
 
                     'model': [LinearRegression(fit_intercept=False), None],
                      'factor': []
