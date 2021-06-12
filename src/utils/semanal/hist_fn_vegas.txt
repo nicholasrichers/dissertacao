@@ -1,4 +1,6 @@
-by rdd 267 (xgbranker1_120)
+
+====rdd 268
+xgbranker1_120
 intelligence,1.0
 charisma,0.0
 strength,1.5
@@ -7,7 +9,9 @@ constitution,0.5
 wisdom,0.25
 
 
-bb__test8(infinity) rdd 268 
+
+====rdd 268
+bb__test8/xgb_infinity
 intelligence,1.0
 charisma,1.0
 strength,1.0
