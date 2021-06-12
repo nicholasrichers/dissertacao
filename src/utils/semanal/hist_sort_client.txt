@@ -12,3 +12,20 @@ nr__medellin
 nr__bangalore
 nr__shanghai
 nr_johannesburg
+
+=========================
+
+sort 268
+nr__sydney
+nick_richers
+nrichers
+nr__bangalore
+nr_rio
+nr__guadalajara
+nr__san_francisco
+nr__hanoi
+nr__rio
+nr__sao_paulo
+nr__medellin
+nr__shanghai
+nr_johannesburg
