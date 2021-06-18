@@ -1,7 +1,7 @@
-bb__test8/xgb_infinity
+bb__test3/xgb_60
 intelligence,1.25
-charisma,0.5
-strength,1.0
-dexterity,1.0
-constitution,0.0
-wisdom,0.0
+charisma,0.0
+strength,0.0
+dexterity,0.5
+constitution,0.5
+wisdom,-0.5
