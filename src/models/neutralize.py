@@ -304,7 +304,7 @@ fn_strategy_dict = {
                       'factor': [0.0, 0.0]
                       },
 
-    'nrichers': {'strategy': None,
+    'nr_home': {'strategy': None,
                  'func': None,
                  'columns': ['preds'],
                  'by': [''],
@@ -312,11 +312,11 @@ fn_strategy_dict = {
                  'factor': [0, 0]
                  },
 
-    'nick_richers': {'strategy': 'after',
+    'nr_vegas': {'strategy': 'after',
                      'func': preds_neutralized_groups,
                      'columns': ['preds'],
 
-                     'by': {'constitution': [0.0, 0], 'strength': [0.0, 0], #VEGAS
+                     'by': {'constitution': [0.0, 0], 'strength': [0.0, 0],
                             'dexterity': [0.0, 0], 'charisma': [0.0, 0],
                             'wisdom': [0.0, 0], 'intelligence': [0.0, 0]},
 
@@ -326,7 +326,7 @@ fn_strategy_dict = {
                      },
 
     # R1
-    'nr_rio': {'strategy': 'after',
+    'nr_buenos_aires': {'strategy': 'after',
                'func': preds_neutralized,
                'columns': ['preds'],
                'by': [''],
@@ -334,7 +334,7 @@ fn_strategy_dict = {
                'factor': [0.4, 0.0]
                },
 
-    'nr__rio': {'strategy': 'after',
+    'nr_rio_de_janeiro': {'strategy': 'after',
                 'func': preds_neutralized,
                 'columns': ['preds'],
                 'by': [''],
@@ -342,7 +342,7 @@ fn_strategy_dict = {
                 'factor': [0.75, 0.25]
                 },
 
-    'nr__sao_paulo': {'strategy': 'after',
+    'nr_sao_paulo': {'strategy': 'after',
                       'func': preds_neutralized,
                       'columns': ['preds'],
                       'by': [''],
@@ -350,7 +350,7 @@ fn_strategy_dict = {
                       'factor': [0.9, 0.1]
                       },
 
-    'nr__medellin': {'strategy': 'after',
+    'nr_medellin': {'strategy': 'after',
                      'func': preds_neutralized,
                      'columns': ['preds'],
                      'by': [''],
@@ -358,7 +358,7 @@ fn_strategy_dict = {
                      'factor': [0.75, 0.25]
                      },
 
-    'nr__guadalajara': {'strategy': 'after',
+    'nr_guadalajara': {'strategy': 'after',
                         'func': preds_neutralized,
                         'columns': ['preds'],
                         'by': ['constitution', 'strength', 'dexterity', 'intelligence'],
@@ -366,7 +366,7 @@ fn_strategy_dict = {
                         'factor': [0.75, 0.25]
                         },
 
-    'nr__san_francisco': {'strategy': 'after',
+    'nr_san_francisco': {'strategy': 'after',
                           'func': preds_neutralized_groups,
                           'columns': ['preds'],
 
@@ -378,7 +378,7 @@ fn_strategy_dict = {
                           'factor': []
                           },
 
-    'nr__shanghai': {'strategy': 'double_fn',
+    'nr_shanghai': {'strategy': 'double_fn',
                      'func': preds_neutralized_groups,
                      'columns': ['preds'],
 
@@ -396,7 +396,7 @@ fn_strategy_dict = {
                                 'model2': [LinearRegression(fit_intercept=False), None]},
                      },
 
-    'nr__bangalore': {'strategy': 'after',
+    'nr_bangalore': {'strategy': 'after',
                       'func': preds_neutralized_fs,
                       'columns': ['preds'],
                       'by': [fs_ar1_sign, [ar1_sign, .1]],
@@ -404,7 +404,7 @@ fn_strategy_dict = {
                       'factor': [1]
                       },
 
-    'nr__hanoi': {'strategy': 'after',
+    'nr_hanoi': {'strategy': 'after',
                   'func': preds_neutralized_one_hot,
                   'columns': ['preds'],
                   'by': {0.25: 1, 0.75: 3, 1: 4},
@@ -414,7 +414,7 @@ fn_strategy_dict = {
 
 
 
-    'nr__sydney': {'strategy': None,
+    'nr_sydney': {'strategy': None,
                  'func': None,
                  'columns': ['preds'],
                  'by': [''],
@@ -436,24 +436,5 @@ fn_strategy_dict = {
 
 
 
-#############################################################################################################################
-#############################################################################################################################
-#############################################################################################################################
-
-
-
-#ANTI VEGAS
-'moon_rhea': {'strategy': 'after',
-                     'func': preds_neutralized_groups,
-                     'columns': ['preds'],
-
-                     'by': {'constitution': [1.0, 0], 'strength': [1.0, 0],
-                            'dexterity': [-0.5, 0], 'charisma': [0.0, 0],
-                            'wisdom': [2.0, 0], 'intelligence': [0.0, 0]},
-
-                     'model': [LinearRegression(fit_intercept=False), None],
-                     'factor': []
-
-                     },
 
 }

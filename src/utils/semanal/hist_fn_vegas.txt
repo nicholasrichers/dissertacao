@@ -29,3 +29,14 @@ strength,0.0
 dexterity,0.5
 constitution,0.5
 wisdom,-0.5
+
+
+
+====rdd 270
+bb__test2/xgb_40
+intelligence,1.25
+charisma,0.0
+strength,0.0
+dexterity,0.5
+constitution,1.0
+wisdom,-0.5
