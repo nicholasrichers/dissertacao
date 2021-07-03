@@ -272,13 +272,7 @@ fn_strategy_dict = {
                  'factor': [0.0, 0.0]
                  },
 
-    'ex_preds1': {'strategy': 'after',
-                  'func': preds_neutralized,
-                  'columns': ['preds'],
-                  'by': [''],
-                  'model': [LinearRegression(fit_intercept=False), None],
-                  'factor': [0.0, 0.0]
-                  },
+
 
     'ex_FN100': {'strategy': 'after',
                  'func': preds_neutralized,
@@ -288,21 +282,6 @@ fn_strategy_dict = {
                  'factor': [0.0, 0.0]
                  },
 
-    'lgbm_exp20': {'strategy': 'after',
-                   'func': preds_neutralized,
-                   'columns': ['preds'],
-                   'by': [''],
-                   'model': [SGDRegressor(tol=0.001), None],
-                   'factor': [0.0, 0.0]
-                   },
-
-    'lgbm_slider20': {'strategy': 'after',
-                      'func': preds_neutralized,
-                      'columns': ['preds'],
-                      'by': [''],
-                      'model': [SGDRegressor(tol=0.001), None],
-                      'factor': [0.0, 0.0]
-                      },
 
     'nr_home': {'strategy': None,
                  'func': None,
@@ -320,7 +299,7 @@ fn_strategy_dict = {
                             'dexterity': [0.0, 0], 'charisma': [0.0, 0],
                             'wisdom': [0.0, 0], 'intelligence': [0.0, 0]},
 
-                    'model': [LinearRegression(fit_intercept=False), None],
+                    'model': [LinearRegression(), None],
                      'factor': []
 
                      },
@@ -338,8 +317,8 @@ fn_strategy_dict = {
                 'func': preds_neutralized,
                 'columns': ['preds'],
                 'by': [''],
-                'model': [SGDRegressor(tol=0.001), Ridge(alpha=0.5)],
-                'factor': [0.75, 0.25]
+                'model': [SGDRegressor(tol=0.001), None],
+                'factor': [-1.0, 0.0]
                 },
 
     'nr_sao_paulo': {'strategy': 'after',
@@ -354,27 +333,27 @@ fn_strategy_dict = {
                      'func': preds_neutralized,
                      'columns': ['preds'],
                      'by': [''],
-                     'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)],
-                     'factor': [0.75, 0.25]
+                     'model': [LinearRegression(), None],
+                     'factor': [0.9, 0.0]
                      },
 
     'nr_guadalajara': {'strategy': 'after',
                         'func': preds_neutralized,
                         'columns': ['preds'],
-                        'by': ['constitution', 'strength', 'dexterity', 'intelligence'],
-                        'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)],
-                        'factor': [0.75, 0.25]
+                        'by': ['constitution', 'strength', 'intelligence'],
+                        'model': [LinearRegression(), None],
+                        'factor': [0.75, 0.0]
                         },
 
     'nr_san_francisco': {'strategy': 'after',
                           'func': preds_neutralized_groups,
                           'columns': ['preds'],
 
-                          'by': {'constitution': [2.0, 0.15], 'strength': [2.0, 0.25],
-                                 'dexterity': [2.0, 0.0], 'charisma': [-1.0, 0.25],
-                                 'wisdom': [-1.0, 0.5], 'intelligence': [2.0, 0.0]},
+                          'by': {'constitution': [1.5, 0.0], 'strength': [1.5, 0.0],
+                                 'dexterity': [-1.0, 0.0], 'charisma': [-1.0, 0.0],
+                                 'wisdom': [1.5, 0.0], 'intelligence': [1.5, 0.0]},
 
-                          'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)],
+                          'model': [LinearRegression(), None],
                           'factor': []
                           },
 
@@ -382,18 +361,18 @@ fn_strategy_dict = {
                      'func': preds_neutralized_groups,
                      'columns': ['preds'],
 
-                     'by': {'constitution': [2.0, -0.5], 'strength': [2.0, -0.5],
-                            'dexterity': [2.0, -0.5], 'charisma': [0.0, 0],
-                            'wisdom': [0.0, 0], 'intelligence': [2.0, -0.5]},
+                     'by': {'constitution': [1.5, 0.0], 'strength': [1.5, 0.0],
+                            'dexterity': [0.0, 0.0], 'charisma': [0.0, 0.0],
+                            'wisdom': [1.5, 0], 'intelligence': [1.5, 0.0]},
 
-                     'model': [LinearRegression(fit_intercept=False), Ridge(alpha=0.5)],
+                     'model': [LinearRegression(), None],
                      'factor': [],
 
                      'double': {'func2': neutralize_topk,
                                 'params2': 0.10,
-                                'factor2': [0.50, 0.0],
+                                'factor2': [0.25, 0.0],
                                 'columns_fn': ['preds_fn'],
-                                'model2': [LinearRegression(fit_intercept=False), None]},
+                                'model2': [LinearRegression(), None]},
                      },
 
     'nr_bangalore': {'strategy': 'after',
@@ -408,8 +387,8 @@ fn_strategy_dict = {
                   'func': preds_neutralized_one_hot,
                   'columns': ['preds'],
                   'by': {0.25: 1, 0.75: 3, 1: 4},
-                  'model': [LinearRegression(fit_intercept=False), None],
-                  'factor': {0.25: [1, 0], 0.75: [1, 0], 1: [.50, 0]}
+                  'model': [LinearRegression(), None],
+                  'factor': {0.25: [1, 0], 0.75: [1, 0], 1: [0.0, 0]}
                   },
 
 

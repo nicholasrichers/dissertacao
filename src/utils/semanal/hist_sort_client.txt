@@ -68,6 +68,22 @@ nr_johannesburg
 
 
 
+=========================
+
+sort 271
+nr_home
+nr_vegas
+nr_johannesburg
+nr_sao_paulo
+nr_bangalore
+nr_guadalajara
+nr_rio_de_janeiro
+nr_san_francisco
+nr_hanoi
+nr_rio
+nr_medellin
+nr_shanghai
+nr_sydney
 
 
 
