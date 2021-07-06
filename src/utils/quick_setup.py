@@ -65,6 +65,19 @@ def get_libs(local=False):
 
 
 
+    #folder src.collection/mlfinlab/clustering
+    load_library('onc', 'src/collection/mlfinlab/clustering/onc.py', local=local)
+    load_library('feature_clusters', 'src/collection/mlfinlab/clustering/feature_clusters.py', local=local)
+    load_library('hierarchical_clustering', 'src/collection/mlfinlab/clustering/hierarchical_clustering.py', local=local)
+
+
+
+    #folder src.collection/mlfinlab/codependence
+    load_library('information', 'src/collection/mlfinlab/codependence/information.py', local=local)
+    load_library('correlation', 'src/collection/mlfinlab/codependence/correlation.py', local=local)
+    load_library('codependence_matrix', 'src/collection/mlfinlab/codependence/codependence_matrix.py', local=local)
+
+
     #folder src.collection/mlfinlab/util
     load_library('multiprocess', 'src/collection/mlfinlab/util/multiprocess.py', local=local)
 
