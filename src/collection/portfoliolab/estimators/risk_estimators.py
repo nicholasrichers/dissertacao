@@ -12,8 +12,21 @@ from scipy.optimize import minimize
 from scipy.cluster.hierarchy import average, complete, single, dendrogram
 from matplotlib import pyplot as plt
 
-from portfoliolab.estimators.returns_estimators import ReturnsEstimators
+#from portfoliolab.estimators.returns_estimators import ReturnsEstimators
 #from portfoliolab.utils import devadarsh
+
+
+
+try:
+    from portfoliolab.estimators.returns_estimators import ReturnsEstimators
+
+
+except:
+
+    from returns_estimators import ReturnsEstimators
+
+
+
 
 
 class RiskEstimators:

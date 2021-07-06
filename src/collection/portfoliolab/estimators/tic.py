@@ -8,8 +8,21 @@ import pandas as pd
 import scipy.spatial.distance as ssd
 import scipy.cluster.hierarchy as sch
 
-from portfoliolab.estimators.risk_estimators import RiskEstimators
-from portfoliolab.utils import devadarsh
+#from portfoliolab.estimators.risk_estimators import RiskEstimators
+#from portfoliolab.utils import devadarsh
+
+
+
+try:
+    from portfoliolab.estimators.risk_estimators import RiskEstimators
+
+except:
+
+    from risk_estimators import RiskEstimators
+
+
+
+
 
 
 class TheoryImpliedCorrelation:
@@ -24,7 +37,7 @@ class TheoryImpliedCorrelation:
         """
         Initialize
         """
-        devadarsh.track('TheoryImpliedCorrelation')
+        #devadarsh.track('TheoryImpliedCorrelation')
 
     def tic_correlation(self, tree_struct, corr_matrix, tn_relation, kde_bwidth=0.01):
         """

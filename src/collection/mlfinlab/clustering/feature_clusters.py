@@ -22,6 +22,16 @@ from mlfinlab.codependence.codependence_matrix import get_dependence_matrix, get
 #from mlfinlab.util import devadarsh
 
 
+try:
+    from mlfinlab.clustering.onc import get_onc_clusters
+    from mlfinlab.codependence.codependence_matrix import get_dependence_matrix, get_distance_matrix
+
+
+except:
+    from onc import get_onc_clusters
+    from codependence_matrix import get_dependence_matrix, get_distance_matrix
+
+
 def get_feature_clusters(X: pd.DataFrame, dependence_metric: str, distance_metric: str = None,
                          linkage_method: str = None, n_clusters: int = None, check_silhouette_scores: bool = True,
                          critical_threshold: float = 0.0, ) -> list:

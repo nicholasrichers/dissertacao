@@ -75,14 +75,20 @@ def get_libs(local=False):
     #folder src.collection/mlfinlab/codependence
     load_library('information', 'src/collection/mlfinlab/codependence/information.py', local=local)
     load_library('correlation', 'src/collection/mlfinlab/codependence/correlation.py', local=local)
+    load_library('gnpr_distance', 'src/collection/mlfinlab/codependence/gnpr_distance.py', local=local)
+    load_library('optimal_transport', 'src/collection/mlfinlab/codependence/optimal_transport.py', local=local)
     load_library('codependence_matrix', 'src/collection/mlfinlab/codependence/codependence_matrix.py', local=local)
+
 
 
     #folder src.collection/mlfinlab/util
     load_library('multiprocess', 'src/collection/mlfinlab/util/multiprocess.py', local=local)
 
 
-
+    #folder src.collection/portfoliolab/estimators
+    load_library('returns_estimators', 'src/collection/portfoliolab/estimators/returns_estimators.py', local=local)
+    load_library('risk_estimators', 'src/collection/portfoliolab/estimators/risk_estimators.py', local=local)
+    load_library('tic', 'src/collection/portfoliolab/estimators/tic.py', local=local)
 
 
 

@@ -4,7 +4,7 @@
 
 
 # pylint: disable=missing-module-docstring
-from portfoliolab.utils import devadarsh
+#from portfoliolab.utils import devadarsh
 
 
 class ReturnsEstimators:
@@ -18,7 +18,7 @@ class ReturnsEstimators:
         """
         Initialize
         """
-        devadarsh.track('ReturnsEstimators')
+        #devadarsh.track('ReturnsEstimators')
 
     @staticmethod
     def calculate_mean_historical_returns(asset_prices, resample_by=None, frequency=252):

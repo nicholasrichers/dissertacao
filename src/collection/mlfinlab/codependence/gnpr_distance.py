@@ -14,7 +14,7 @@ import pandas as pd
 from scipy.stats import spearmanr
 import ot
 
-from mlfinlab.util import devadarsh
+#from mlfinlab.util import devadarsh
 
 
 def spearmans_rho(x: np.array, y: np.array) -> float:
@@ -37,7 +37,7 @@ def spearmans_rho(x: np.array, y: np.array) -> float:
     :return: (float) Spearman's rho statistical estimate.
     """
 
-    devadarsh.track('spearmans_rho')
+    #devadarsh.track('spearmans_rho')
 
     # Coefficient calculationS
     rho, _ = spearmanr(x, y)
@@ -66,7 +66,7 @@ def gpr_distance(x: np.array, y: np.array, theta: float) -> float:
     :return: (float) Distance under GPR approach.
     """
 
-    devadarsh.track('gpr_distance')
+    #devadarsh.track('gpr_distance')
 
     # Calculating the GPR distance
     distance = theta * (1 - spearmans_rho(x, y)) / 2 + \
@@ -104,7 +104,7 @@ def gnpr_distance(x: np.array, y: np.array, theta: float, n_bins: int = 50) -> f
     :return: (float) Distance under GNPR approach.
     """
 
-    devadarsh.track('gnpr_distance')
+    #devadarsh.track('gnpr_distance')
 
     # Number of observations
     num_obs = x.shape[0]

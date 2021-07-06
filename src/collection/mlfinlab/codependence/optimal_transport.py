@@ -12,7 +12,7 @@ import numpy as np
 import scipy.stats as ss
 import ot
 
-from mlfinlab.util import devadarsh
+#from mlfinlab.util import devadarsh
 
 
 def _get_empirical_copula(x: np.array, y: np.array) -> np.array:
@@ -70,7 +70,7 @@ def optimal_transport_dependence(x: np.array, y: np.array, target_dependence: st
     :return: (float) Optimal copula transport dependence.
     """
 
-    devadarsh.track('optimal_transport_dependence')
+    #devadarsh.track('optimal_transport_dependence')
 
     # Defining a number of observations used
     n_obs = x.shape[0]
