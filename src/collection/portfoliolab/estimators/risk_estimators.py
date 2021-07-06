@@ -13,7 +13,7 @@ from scipy.cluster.hierarchy import average, complete, single, dendrogram
 from matplotlib import pyplot as plt
 
 from portfoliolab.estimators.returns_estimators import ReturnsEstimators
-from portfoliolab.utils import devadarsh
+#from portfoliolab.utils import devadarsh
 
 
 class RiskEstimators:
@@ -28,7 +28,7 @@ class RiskEstimators:
         """
         Initialize
         """
-        devadarsh.track('RiskEstimators')
+        #devadarsh.track('RiskEstimators')
 
     @staticmethod
     def minimum_covariance_determinant(returns, price_data=False, assume_centered=False,

@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 from scipy.spatial.distance import squareform, pdist
 
-from mlfinlab.util import devadarsh
+#from mlfinlab.util import devadarsh
 
 
 def angular_distance(x: np.array, y: np.array) -> float:
@@ -32,7 +32,7 @@ def angular_distance(x: np.array, y: np.array) -> float:
     :return: (float) Angular distance.
     """
 
-    devadarsh.track('angular_distance')
+    #devadarsh.track('angular_distance')
 
     corr_coef = np.corrcoef(x, y)[0][1]
     return np.sqrt(0.5 * (1 - corr_coef))
@@ -55,7 +55,7 @@ def absolute_angular_distance(x: np.array, y: np.array) -> float:
     :return: (float) Absolute angular distance.
     """
 
-    devadarsh.track('absolute_angular_distance')
+    #devadarsh.track('absolute_angular_distance')
 
     corr_coef = np.corrcoef(x, y)[0][1]
     return np.sqrt(0.5 * (1 - abs(corr_coef)))
@@ -78,7 +78,7 @@ def squared_angular_distance(x: np.array, y: np.array) -> float:
     :return: (float) Squared angular distance.
     """
 
-    devadarsh.track('squared_angular_distance')
+    #devadarsh.track('squared_angular_distance')
 
     corr_coef = np.corrcoef(x, y)[0][1]
     return np.sqrt(0.5 * (1 - corr_coef ** 2))
@@ -103,7 +103,7 @@ def distance_correlation(x: np.array, y: np.array) -> float:
     :return: (float) Distance correlation coefficient.
     """
 
-    devadarsh.track('distance_correlation')
+    #devadarsh.track('distance_correlation')
 
     x = x[:, None]
     y = y[:, None]
@@ -144,7 +144,7 @@ def kullback_leibler_distance(corr_a, corr_b):
     :return: (np.float64) the Kullback-Leibler distance between the two matrices.
     """
 
-    devadarsh.track('kullback_leibler_distance')
+    #devadarsh.track('kullback_leibler_distance')
 
     # Check if input type is pd.DataFrame
     if isinstance(corr_a, pd.DataFrame) and isinstance(corr_b, pd.DataFrame):
@@ -178,7 +178,7 @@ def norm_distance(matrix_a, matrix_b, r_val=2):
     :return: (float) The Euclidean distance between the two matrices.
     """
 
-    devadarsh.track('norm_distance')
+    #devadarsh.track('norm_distance')
 
     # Check if input type is pd.DataFrame
     if isinstance(matrix_a, pd.DataFrame) and isinstance(matrix_b, pd.DataFrame):

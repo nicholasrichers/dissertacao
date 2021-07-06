@@ -12,7 +12,7 @@ import numpy as np
 import scipy.stats as ss
 from sklearn.metrics import mutual_info_score
 
-from mlfinlab.util import devadarsh
+#from mlfinlab.util import devadarsh
 
 
 def get_optimal_number_of_bins(num_obs: int, corr_coef: float = None) -> int:
@@ -29,7 +29,7 @@ def get_optimal_number_of_bins(num_obs: int, corr_coef: float = None) -> int:
     :return: (int) Optimal number of bins.
     """
 
-    devadarsh.track('get_optimal_number_of_bins')
+    #devadarsh.track('get_optimal_number_of_bins')
 
     # Univariate case
     if corr_coef is None or abs(corr_coef - 1) <= 1e-4:
@@ -76,7 +76,7 @@ def get_mutual_info(x: np.array, y: np.array, n_bins: int = None, normalize: boo
     :return: (float) Mutual information score.
     """
 
-    devadarsh.track('get_mutual_info')
+    #devadarsh.track('get_mutual_info')
 
     if n_bins is None:
         corr_coef = np.corrcoef(x, y)[0][1]
@@ -142,7 +142,7 @@ def variation_of_information_score(x: np.array, y: np.array, n_bins: int = None,
     :return: (float) Variation of information score.
     """
 
-    devadarsh.track('variation_of_information_score')
+    #devadarsh.track('variation_of_information_score')
 
     if n_bins is None:
         corr_coef = np.corrcoef(x, y)[0][1]

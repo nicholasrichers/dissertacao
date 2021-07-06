@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from scipy.cluster import hierarchy
 
-from mlfinlab.util import devadarsh
+#from mlfinlab.util import devadarsh
 
 
 def optimal_hierarchical_cluster(mat: np.array, method: str = "ward") -> np.array:
@@ -35,7 +35,7 @@ def optimal_hierarchical_cluster(mat: np.array, method: str = "ward") -> np.arra
     :return: (np.array) Optimal hierarchy cluster matrix.
     """
 
-    devadarsh.track('optimal_hierarchical_cluster')
+    #devadarsh.track('optimal_hierarchical_cluster')
 
     if isinstance(mat, pd.DataFrame):
         mat = mat.values

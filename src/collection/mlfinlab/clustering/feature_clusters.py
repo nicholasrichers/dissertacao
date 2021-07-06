@@ -19,7 +19,7 @@ from statsmodels.regression.linear_model import OLS
 
 from mlfinlab.clustering.onc import get_onc_clusters
 from mlfinlab.codependence.codependence_matrix import get_dependence_matrix, get_distance_matrix
-from mlfinlab.util import devadarsh
+#from mlfinlab.util import devadarsh
 
 
 def get_feature_clusters(X: pd.DataFrame, dependence_metric: str, distance_metric: str = None,
@@ -50,7 +50,7 @@ def get_feature_clusters(X: pd.DataFrame, dependence_metric: str, distance_metri
     :return: (list) Feature subsets.
     """
 
-    devadarsh.track('get_feature_clusters')
+    #devadarsh.track('get_feature_clusters')
 
     # Get the dependence matrix
     if dependence_metric != 'linear':

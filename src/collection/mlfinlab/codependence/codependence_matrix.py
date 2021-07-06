@@ -16,7 +16,7 @@ from mlfinlab.codependence.information import variation_of_information_score, ge
 from mlfinlab.codependence.correlation import distance_correlation
 from mlfinlab.codependence.gnpr_distance import spearmans_rho, gpr_distance, gnpr_distance
 from mlfinlab.codependence.optimal_transport import optimal_transport_dependence
-from mlfinlab.util import devadarsh
+#from mlfinlab.util import devadarsh
 
 
 def get_dependence_matrix(df: pd.DataFrame, dependence_method: str, theta: float = 0.5,
@@ -51,7 +51,7 @@ def get_dependence_matrix(df: pd.DataFrame, dependence_method: str, theta: float
     :return: (pd.DataFrame) Dependence matrix.
     """
 
-    devadarsh.track('get_dependence_matrix')
+    #devadarsh.track('get_dependence_matrix')
 
     # Get the feature names
     features_cols = df.columns.values
@@ -115,7 +115,7 @@ def get_distance_matrix(X: pd.DataFrame, distance_metric: str = 'angular') -> pd
     :return: (pd.DataFrame) Distance matrix.
     """
 
-    devadarsh.track('get_distance_matrix')
+    #devadarsh.track('get_distance_matrix')
 
     if distance_metric == 'angular':
         distfun = lambda x: ((1 - x).round(5) / 2.) ** .5
