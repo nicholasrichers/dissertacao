@@ -65,11 +65,6 @@ def get_libs(local=False):
 
 
 
-    #folder src.collection/mlfinlab/clustering
-    load_library('onc', 'src/collection/mlfinlab/clustering/onc.py', local=local)
-    load_library('feature_clusters', 'src/collection/mlfinlab/clustering/feature_clusters.py', local=local)
-    load_library('hierarchical_clustering', 'src/collection/mlfinlab/clustering/hierarchical_clustering.py', local=local)
-
 
 
     #folder src.collection/mlfinlab/codependence
@@ -78,6 +73,13 @@ def get_libs(local=False):
     load_library('gnpr_distance', 'src/collection/mlfinlab/codependence/gnpr_distance.py', local=local)
     load_library('optimal_transport', 'src/collection/mlfinlab/codependence/optimal_transport.py', local=local)
     load_library('codependence_matrix', 'src/collection/mlfinlab/codependence/codependence_matrix.py', local=local)
+
+
+    #folder src.collection/mlfinlab/clustering
+    load_library('onc', 'src/collection/mlfinlab/clustering/onc.py', local=local)
+    load_library('feature_clusters', 'src/collection/mlfinlab/clustering/feature_clusters.py', local=local)
+    load_library('hierarchical_clustering', 'src/collection/mlfinlab/clustering/hierarchical_clustering.py', local=local)
+
 
 
 
