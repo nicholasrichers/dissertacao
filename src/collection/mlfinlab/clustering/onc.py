@@ -133,6 +133,7 @@ def cluster_kmeans_top(corr_mat: pd.DataFrame, repeat: int = 10) -> Union[pd.Dat
     # Get cluster quality scores
     cluster_quality = {i: float('Inf') if np.std(silh[clusters[i]]) == 0 else np.mean(silh[clusters[i]]) /
                           np.std(silh[clusters[i]]) for i in clusters.keys()}
+
     avg_quality = np.mean(list(cluster_quality.values()))
     redo_clusters = [i for i in cluster_quality.keys() if cluster_quality[i] < avg_quality]
 
@@ -153,8 +154,25 @@ def cluster_kmeans_top(corr_mat: pd.DataFrame, repeat: int = 10) -> Union[pd.Dat
                                                              {i: clusters[i] for i in clusters.keys() if
                                                               i not in redo_clusters},
                                                              top_clusters)
+        
+        #new_tstat_mean = np.mean(
+        #    [np.mean(silh_new[clusters_new[i]]) / np.std(silh_new[clusters_new[i]]) for i in clusters_new])
+
+
+        #new_tstat_mean = np.mean(
+        #            [float('Inf') if np.std(silh_new[clusters_new[i]]) == 0 else
+        #             np.mean(silh_new[clusters_new[i]]) / np.std(silh_new[clusters_new[i]]) for i in clusters_new]
+        #            )
+
+
         new_tstat_mean = np.mean(
-            [np.mean(silh_new[clusters_new[i]]) / np.std(silh_new[clusters_new[i]]) for i in clusters_new])
+                    [np.mean(silh_new[clusters_new[i]]) if np.std(silh_new[clusters_new[i]]) == 0 else
+                     np.mean(silh_new[clusters_new[i]]) / np.std(silh_new[clusters_new[i]]) for i in clusters_new]
+                    )
+        
+
+
+
 
         return _check_improve_clusters(new_tstat_mean, mean_redo_tstat, (corr1, clusters, silh),
                                        (corr_new, clusters_new, silh_new))
