@@ -32,7 +32,7 @@ except:
     from codependence_matrix import get_dependence_matrix, get_distance_matrix
 
 
-def get_feature_clusters(X: pd.DataFrame, dependence_metric: str, distance_metric: str = None,
+def get_feature_clusters(X: pd.DataFrame, Xcorr: pd.DataFrame, dependence_metric: str, distance_metric: str = None,
                          linkage_method: str = None, n_clusters: int = None, check_silhouette_scores: bool = True,
                          critical_threshold: float = 0.0, ) -> list:
     """
@@ -42,6 +42,7 @@ def get_feature_clusters(X: pd.DataFrame, dependence_metric: str, distance_metri
     Gets clustered features subsets from the given set of features.
 
     :param X: (pd.DataFrame) Dataframe of features.
+    :param Xcorr: (pd.DataFrame) Dataframe of Correlation.
     :param dependence_metric: (str) Method to be use for generating dependence_matrix, either 'linear' or
                               'information_variation' or 'mutual_information' or 'distance_correlation'.
     :param distance_metric: (str) The distance operator to be used for generating the distance matrix. The methods that
@@ -63,10 +64,14 @@ def get_feature_clusters(X: pd.DataFrame, dependence_metric: str, distance_metri
     #devadarsh.track('get_feature_clusters')
 
     # Get the dependence matrix
-    if dependence_metric != 'linear':
+    if (dependence_metric != 'linear') or (dependence_metric != 'denoise') or (dependence_metric != 'detone'):
         dep_matrix = get_dependence_matrix(X, dependence_method=dependence_metric)
+
     else:
-        dep_matrix = X.corr()
+        #dep_matrix = X.corr()
+        dep_matrix = Xcorr
+
+
 
     # Checking if dataset contains features low silhouette
     if check_silhouette_scores is True:
