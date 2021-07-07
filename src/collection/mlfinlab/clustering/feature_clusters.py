@@ -64,7 +64,7 @@ def get_feature_clusters(X: pd.DataFrame, Xcorr: pd.DataFrame, dependence_metric
     #devadarsh.track('get_feature_clusters')
 
     # Get the dependence matrix
-    if (dependence_metric != 'linear') or (dependence_metric != 'denoise') or (dependence_metric != 'detone'):
+    if dependence_metric != 'linear':
         dep_matrix = get_dependence_matrix(X, dependence_method=dependence_metric)
 
     else:
