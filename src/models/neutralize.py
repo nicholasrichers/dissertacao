@@ -318,7 +318,7 @@ fn_strategy_dict = {
                 'columns': ['preds'],
                 'by': [''],
                 'model': [SGDRegressor(tol=0.001), None],
-                'factor': [-1.0, 0.0]
+                'factor': [0.9, 0.1]
                 },
 
     'nr_sao_paulo': {'strategy': 'after',
@@ -334,7 +334,7 @@ fn_strategy_dict = {
                      'columns': ['preds'],
                      'by': [''],
                      'model': [LinearRegression(), None],
-                     'factor': [0.9, 0.0]
+                     'factor': [-1.0, 0.0]
                      },
 
     'nr_guadalajara': {'strategy': 'after',

@@ -52,7 +52,14 @@ constitution,-0.5
 wisdom,-0.5
 
 
-
+====rdd 272
+bb__test8/xgb_infinity
+intelligence,1.0
+charisma,0.0
+strength,0.0
+dexterity,1.0
+constitution,1.0
+wisdom,1.0
 
 
 
