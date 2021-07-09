@@ -32,6 +32,7 @@ def get_libs(local=False):
     load_library('get_model',  'src/models/get_model.py', local=local)
     load_library('xgb_ranker_class', 'src/models/xgb_ranker_class.py', local=local)
     load_library('pipelines', 'src/models/pipelines.py', local=local)
+    load_library('clusters_selection', 'src/models/clusters_selection.py', local=local)
 
 
 
@@ -48,6 +49,8 @@ def get_libs(local=False):
     
     #folder src.visualization
     load_library('visualize', 'src/visualization/visualize.py', local=local)
+
+
 
     ################################################################
     ################################################################
