@@ -1,12 +1,12 @@
 
 ====rdd 267
 xgbranker1_120
-intelligence,1.0
-charisma,0.0
-strength,1.5
-dexterity,2.0
-constitution,0.5
-wisdom,0.25
+intelligence,1.0 (0.0)
+charisma,0.0 OK
+strength,1.5 OK
+dexterity,2.0 (-1.0)
+constitution,0.5 (1.0)
+wisdom,0.25 (2.0)
 
 
 
