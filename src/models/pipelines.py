@@ -7,6 +7,10 @@ def get_criteria(model, importances_df):
 
     if model[:10]=='linear/mdi': criteria = 1/importances_df.shape[0]
     if model[:10]=='linear/mda': criteria = 0
+
+    if model[:21]=='cluster/clustered_mdi': criteria = 1/importances_df.shape[0]
+    if model[:21]=='cluster/clustered_mda': criteria = 0
+
     if model[:10]=='linear/sfi': criteria = importances_df['mean'].quantile(.3)
     if model[:8]=='shap/ebm': criteria = importances_df['mean'].quantile(.3)
         
@@ -14,6 +18,8 @@ def get_criteria(model, importances_df):
     return list(importances_df.index)
 
 def get_features(model_path, features_sort, ranker=False):
+
+          #'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/feature_importance/linear/mda_linear_reg.csv'  
 
     url = 'https://raw.githubusercontent.com/nicholasrichers/dissertacao/master/reports/feature_importance/'
     importances_df = pd.read_csv(url+model_path+'.csv')
